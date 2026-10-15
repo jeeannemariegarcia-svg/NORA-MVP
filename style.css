@@ -1,0 +1,99 @@
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #faf9fd;
+  color: #29253b;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 8%;
+  background: white;
+}
+
+header h1 {
+  color: #7050a2;
+  letter-spacing: 3px;
+}
+
+nav a {
+  margin-left: 18px;
+  color: #29253b;
+  text-decoration: none;
+}
+
+section {
+  padding: 65px 8%;
+}
+
+.hero {
+  background: #eee7f8;
+  padding-top: 100px;
+  padding-bottom: 100px;
+}
+
+.hero h2 {
+  font-size: 42px;
+  max-width: 600px;
+}
+
+.hero p {
+  max-width: 520px;
+  line-height: 1.6;
+}
+
+.button {
+  display: inline-block;
+  padding: 14px 24px;
+  background: #7050a2;
+  color: white;
+  border-radius: 8px;
+  text-decoration: none;
+}
+
+.cards {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit, minmax(220px, 1fr));
+  gap: 18px;
+  margin-top: 24px;
+}
+
+.card {
+  padding: 24px;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 3px 12px #0000000d;
+}
+
+.card strong {
+  font-size: 28px;
+  color: #7050a2;
+}
+
+footer {
+  padding: 25px;
+  background: #eee7f8;
+  text-align: center;
+}
+
+@media (max-width: 600px) {
+  header {
+    flex-direction: column;
+  }
+
+  nav a {
+    margin: 0 7px;
+  }
+
+  .hero h2 {
+    font-size: 32px;
+  }
+}
