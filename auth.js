@@ -49,11 +49,14 @@ loginForm.addEventListener("submit", async event => {
   try {
     await signInWithEmailAndPassword(auth, email, password);
     window.location.replace("admin.html");
-  } catch (error) {
-    console.error("Firebase login error:", error.code);
-    loginMessage.textContent =
-      "Unable to sign in. Please check your email and password.";
-  } finally {
+  
+} catch (error) {
+  console.error("Firebase login error:", error.code, error.message);
+
+  loginMessage.textContent =
+    "Login error: " + error.code;
+}
+ finally {
     loginButton.disabled = false;
     loginButton.textContent = "Sign In";
   }
