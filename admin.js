@@ -98,7 +98,34 @@ function displayInventory() {
       renderDashboard();
     });
 
-    card.append(heading, quantity, status, button);
+    
+const lowStockButton = document.createElement("button");
+lowStockButton.className = "button";
+lowStockButton.textContent = "Simulate Low Stock";
+
+lowStockButton.style.marginLeft = "10px";
+lowStockButton.style.marginTop = "10px";
+
+lowStockButton.addEventListener("click", () => {
+  // Simulate products being taken from the basket
+  basket.stock = 8;
+
+  // Save the new inventory quantity
+  saveInventory();
+
+  // Update the dashboard
+  renderDashboard();
+});
+
+// Display both buttons
+card.append(
+  heading,
+  quantity,
+  status,
+  button,
+  lowStockButton
+);
+
     inventoryContainer.appendChild(card);
   });
 }
