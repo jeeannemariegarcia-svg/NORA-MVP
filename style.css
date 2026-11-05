@@ -97,3 +97,20 @@ footer {
     font-size: 32px;
   }
 }
+
+#location-search {
+  width: 100%;
+  max-width: 500px;
+  padding: 14px 18px;
+  border: 2px solid #EAD9FD;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 16px;
+  background: white;
+  color: #3B1F6B;
+}
+
+#location-search:focus {
+  outline: 2px solid #7C4DAD;
+  outline-offset: 2px;
+}
