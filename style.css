@@ -127,3 +127,32 @@ footer {
   color: #A65B00;
   font-weight: 600;
 }
+
+/* NORA Interactive Campus Map */
+
+.campus-map-section {
+  margin-top: 40px;
+}
+
+#campus-map {
+  width: 100%;
+  height: 420px;
+  border: 2px solid #EAD9FD;
+  border-radius: 16px;
+  margin-top: 20px;
+  z-index: 0;
+}
+
+.map-disclaimer {
+  font-size: 0.85rem;
+  color: #666;
+  margin-top: 12px;
+}
+
+.nora-map-popup {
+  font-family: "Poppins", sans-serif;
+}
+
+.nora-map-popup strong {
+  color: #3B1F6B;
+}
