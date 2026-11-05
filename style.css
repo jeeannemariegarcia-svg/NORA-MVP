@@ -114,3 +114,16 @@ footer {
   outline: 2px solid #7C4DAD;
   outline-offset: 2px;
 }
+
+
+/* NORA Inventory Status */
+
+.status-available {
+  color: #237A45;
+  font-weight: 600;
+}
+
+.status-low {
+  color: #A65B00;
+  font-weight: 600;
+}
