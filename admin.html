@@ -1,1 +1,80 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>NORA | Admin Dashboard</title>
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <header>
+    <h1>NORA</h1>
+
+    <nav>
+      <a href="index.html">Student Website</a>
+      <a href="admin.html">Admin Dashboard</a>
+    </nav>
+  </header>
+
+  <section id="admin-dashboard">
+
+    <h2>Inventory Management Dashboard</h2>
+
+    <p>
+      Monitor menstrual product availability,
+      track restocking activities, and identify
+      locations requiring attention.
+    </p>
+
+    <p><strong>Prototype — Simulated Inventory Data</strong></p>
+
+    <div class="cards">
+
+      <div class="card">
+        <h3>Monitored Baskets</h3>
+        <strong id="total-baskets">0</strong>
+      </div>
+
+      <div class="card">
+        <h3>Estimated Products Remaining</h3>
+        <strong id="total-products">0</strong>
+      </div>
+
+      <div class="card">
+        <h3>Low Stock / Empty</h3>
+        <strong id="low-stock-count">0</strong>
+      </div>
+
+    </div>
+
+    <h2>Basket Inventory</h2>
+
+    <div id="admin-inventory" class="cards"></div>
+
+    <h2>Restocking Activity</h2>
+
+    <div id="restock-history" class="card">
+      <p>No restocking activities recorded yet.</p>
+    </div>
+
+  </section>
+
+  <footer>
+    NORA © 2026 | Admin Prototype — Simulated Data
+  </footer>
+
+  <script src="admin.js?v=1"></script>
+
+</body>
+</html>
+
