@@ -1,7 +1,8 @@
 
 /* NORA Admin Dashboard — Simulated Data */
 
-const baskets = [
+
+const defaultBaskets = [
   {
     id: 1,
     name: "Stan Grad Centre",
@@ -15,6 +16,22 @@ const baskets = [
     capacity: 50
   }
 ];
+
+// Load previously saved inventory, if available
+const savedBaskets = localStorage.getItem("noraBaskets");
+
+const baskets = savedBaskets
+  ? JSON.parse(savedBaskets)
+  : defaultBaskets;
+
+function saveInventory() {
+  localStorage.setItem("noraBaskets", JSON.stringify(baskets));
+}
+
+// Make initial demonstration data available
+// to the student website
+saveInventory();
+
 
 const inventoryContainer =
   document.getElementById("admin-inventory");
@@ -70,6 +87,7 @@ function displayInventory() {
       if (added === 0) return;
 
       basket.stock = basket.capacity;
+      saveInventory();
 
       restockHistory.unshift({
         location: basket.name,
