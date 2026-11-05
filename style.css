@@ -156,3 +156,28 @@ footer {
 .nora-map-popup strong {
   color: #3B1F6B;
 }
+
+
+/* NORA Inventory Map Markers */
+
+.nora-marker {
+  width: 28px;
+  height: 28px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+}
+
+.nora-marker.available {
+  background: #7C4DAD;
+}
+
+.nora-marker.low {
+  background: #E49B36;
+}
+
+.nora-marker.empty {
+  background: #D94A57;
+}
+
