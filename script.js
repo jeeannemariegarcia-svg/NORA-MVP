@@ -1,4 +1,20 @@
-
+const locations = [
+  {
+    name: "Campus Building A",
+    products: "Pads and tampons",
+    stock: "Available"
+  },
+  {
+    name: "Campus Building B",
+    products: "Pads",
+    stock: "Low stock"
+  },
+  {
+    name: "Campus Building C",
+    products: "Pads and tampons",
+    stock: "Available"
+  }
+];
 const locationList = document.getElementById("location-list");
 const searchInput = document.getElementById("location-search");
 
