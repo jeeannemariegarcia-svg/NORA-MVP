@@ -54,7 +54,7 @@ loginForm.addEventListener("submit", async event => {
   console.error("Firebase login error:", error.code, error.message);
 
   loginMessage.textContent =
-    "Login error: " + error.code;
+    "Login error: " + (error.code || "unknown");
 }
  finally {
     loginButton.disabled = false;
