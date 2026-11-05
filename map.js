@@ -4,6 +4,7 @@
    Demonstration locations and inventory
 ========================================= */
 
+// Initialize campus map
 const campusMap = L.map("campus-map").setView(
   [51.064, -114.089],
   16
@@ -18,8 +19,7 @@ L.tileLayer(
   }
 ).addTo(campusMap);
 
-// Approximate building markers for MVP.
-// Verify precise coordinates before deployment.
+// Approximate demonstration building locations
 const mapLocations = [
   {
     id: 1,
@@ -33,11 +33,14 @@ const mapLocations = [
   }
 ];
 
+// Store map markers
 const markers = [];
 
+// Read inventory from Admin Dashboard
 function getMapInventory() {
   try {
     const saved = localStorage.getItem("noraBaskets");
+
     return saved ? JSON.parse(saved) : [];
   } catch (error) {
     console.error("Unable to load map inventory:", error);
@@ -45,21 +48,51 @@ function getMapInventory() {
   }
 }
 
+// Determine stock status
 function getMapStatus(stock) {
   if (stock === 0) return "Out of stock";
   if (stock <= 10) return "Low stock";
   return "Available";
 }
 
+// Determine marker colour
+function getMarkerStatus(basket) {
+  if (!basket) return "unknown";
+
+  if (basket.stock === 0) {
+    return "empty";
+  }
+
+  if (basket.stock <= 10) {
+    return "low";
+  }
+
+  return "available";
+}
+
+// Create custom NORA marker
+function createNoraIcon(markerStatus) {
+  return L.divIcon({
+    className: "",
+    html: `<div class="nora-marker ${markerStatus}"></div>`,
+    iconSize: [34, 34],
+    iconAnchor: [17, 34],
+    popupAnchor: [0, -34]
+  });
+}
+
+// Update map markers from inventory
 function updateMapMarkers() {
   const inventory = getMapInventory();
 
+  // Remove old markers
   markers.forEach(marker => {
     campusMap.removeLayer(marker);
   });
 
   markers.length = 0;
 
+  // Create updated markers
   mapLocations.forEach(location => {
     const basket = inventory.find(
       item => item.id === location.id
@@ -73,10 +106,17 @@ function updateMapMarkers() {
       ? `${basket.stock} / ${basket.capacity}`
       : "Unavailable";
 
-    const marker = L.marker(location.coordinates)
-      .addTo(campusMap);
+    // Select marker colour
+    const markerStatus = getMarkerStatus(basket);
 
-    // All popup content is from predefined demo data.
+    // Create custom coloured marker
+    const customIcon = createNoraIcon(markerStatus);
+
+    const marker = L.marker(location.coordinates, {
+      icon: customIcon
+    }).addTo(campusMap);
+
+    // Display inventory popup
     marker.bindPopup(`
       <div class="nora-map-popup">
         <strong>${location.name}</strong>
@@ -90,13 +130,13 @@ function updateMapMarkers() {
   });
 }
 
-// Draw the initial map markers
+// Display initial markers
 updateMapMarkers();
 
-// Refresh after returning from the admin page
+// Refresh inventory when returning to the page
 window.addEventListener("pageshow", updateMapMarkers);
 
-// Update if inventory changes in another tab
+// Detect inventory changes from another tab
 window.addEventListener("storage", event => {
   if (event.key === "noraBaskets") {
     updateMapMarkers();
@@ -108,21 +148,21 @@ window.addEventListener("storage", event => {
    NORA — Search and Map Connection
 ========================================= */
 
-// Connect to the existing search bar
+// Connect to search bar
 const mapSearchInput = document.getElementById("location-search");
 
-// Find a building and focus the map on it
+// Focus map on selected building
 function focusMapOnBuilding(searchTerm) {
   const search = searchTerm.toLowerCase().trim();
 
-  // Return to campus overview when search is empty
+  // Return to campus overview
   if (search === "") {
     campusMap.setView([51.064, -114.089], 16);
     campusMap.closePopup();
     return;
   }
 
-  // Find a matching building
+  // Find matching building
   const matchingLocation = mapLocations.find(location =>
     location.name.toLowerCase().includes(search)
   );
@@ -131,10 +171,10 @@ function focusMapOnBuilding(searchTerm) {
     return;
   }
 
-  // Move the map to the selected building
+  // Zoom to building
   campusMap.setView(matchingLocation.coordinates, 18);
 
-  // Find its marker and open the popup
+  // Open its inventory popup
   const markerIndex = mapLocations.indexOf(matchingLocation);
   const matchingMarker = markers[markerIndex];
 
@@ -143,10 +183,9 @@ function focusMapOnBuilding(searchTerm) {
   }
 }
 
-// Listen for searches
+// Listen for building searches
 if (mapSearchInput) {
   mapSearchInput.addEventListener("input", () => {
     focusMapOnBuilding(mapSearchInput.value);
   });
 }
-
