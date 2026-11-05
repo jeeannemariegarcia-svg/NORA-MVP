@@ -1,60 +1,127 @@
 
-/* NORA Firebase Administrator Login */
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport"
+        content="width=device-width, initial-scale=1">
 
-import { initializeApp } from
-  "https://www.gstatic.com/firebasejs/10.14.1/firebase-app.js";
+  <title>NORA | Administrator Login</title>
 
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  onAuthStateChanged
-} from
-  "https://www.gstatic.com/firebasejs/10.14.1/firebase-auth.js";
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
 
-// Firebase web app configuration
-const firebaseConfig = {
-  apiKey: "AIzaSyCE92SwUbk3nFXB-fhmabxASdwsAd10S9M",
-  authDomain: "nora-mvp.firebaseapp.com",
-  projectId: "nora-mvp",
-  storageBucket: "nora-mvp.firebasestorage.app",
-  messagingSenderId: "826981118486",
-  appId: "1:826981118486:web:5e3cda9f092f4ffb31bb37"
-};
+  <link rel="stylesheet" href="style.css">
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
+  <style>
+    .login-page {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #F8F4FC;
+      padding: 24px;
+    }
 
-const loginForm = document.getElementById("login-form");
-const loginMessage = document.getElementById("login-message");
-const loginButton = document.getElementById("login-button");
+    .login-card {
+      background: white;
+      width: 100%;
+      max-width: 420px;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 8px 30px rgba(59,31,107,0.1);
+    }
 
-// Redirect already signed-in users
-onAuthStateChanged(auth, user => {
-  if (user) {
-    window.location.replace("admin.html");
-  }
-});
+    .login-card h1 {
+      color: #3B1F6B;
+      text-align: center;
+      font-size: 36px;
+      margin-bottom: 5px;
+    }
 
-// Handle sign-in
-loginForm.addEventListener("submit", async event => {
-  event.preventDefault();
+    .login-card h2 {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 28px;
+    }
 
-  const email = document.getElementById("admin-email").value.trim();
-  const password = document.getElementById("admin-password").value;
+    .login-card label {
+      display: block;
+      margin-top: 18px;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
 
-  loginMessage.textContent = "";
-  loginButton.disabled = true;
-  loginButton.textContent = "Signing in...";
+    .login-card input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #D8C9E8;
+      border-radius: 8px;
+      font: inherit;
+      box-sizing: border-box;
+    }
 
-  try {
-    await signInWithEmailAndPassword(auth, email, password);
-    window.location.replace("admin.html");
-  } catch (error) {
-    console.error("Firebase login error:", error.code);
-    loginMessage.textContent =
-      "Unable to sign in. Please check your email and password.";
-  } finally {
-    loginButton.disabled = false;
-    loginButton.textContent = "Sign In";
-  }
-});
+    .login-card button {
+      width: 100%;
+      margin-top: 25px;
+      cursor: pointer;
+    }
+
+    #login-message {
+      margin-top: 16px;
+      text-align: center;
+      color: #B42318;
+    }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 20px;
+      color: #3B1F6B;
+    }
+  </style>
+</head>
+
+<body>
+  <main class="login-page">
+    <div class="login-card">
+
+      <h1>NORA</h1>
+      <h2>Administrator Login</h2>
+
+      <form id="login-form">
+        <label for="admin-email">Email Address</label>
+        <input
+          type="email"
+          id="admin-email"
+          required
+          autocomplete="username"
+        >
+
+        <label for="admin-password">Password</label>
+        <input
+          type="password"
+          id="admin-password"
+          required
+          autocomplete="current-password"
+        >
+
+        <button type="submit" class="button" id="login-button">
+          Sign In
+        </button>
+      </form>
+
+      <p id="login-message" role="alert"></p>
+
+      <a href="index.html" class="back-link">
+        Back to NORA Student Website
+      </a>
+
+    </div>
+  </main>
+
+  <script type="module" src="auth.js?v=1"></script>
+</body>
+</html>
