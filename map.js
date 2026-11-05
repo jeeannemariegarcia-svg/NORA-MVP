@@ -102,3 +102,51 @@ window.addEventListener("storage", event => {
     updateMapMarkers();
   }
 });
+
+
+/* =========================================
+   NORA — Search and Map Connection
+========================================= */
+
+// Connect to the existing search bar
+const mapSearchInput = document.getElementById("location-search");
+
+// Find a building and focus the map on it
+function focusMapOnBuilding(searchTerm) {
+  const search = searchTerm.toLowerCase().trim();
+
+  // Return to campus overview when search is empty
+  if (search === "") {
+    campusMap.setView([51.064, -114.089], 16);
+    campusMap.closePopup();
+    return;
+  }
+
+  // Find a matching building
+  const matchingLocation = mapLocations.find(location =>
+    location.name.toLowerCase().includes(search)
+  );
+
+  if (!matchingLocation) {
+    return;
+  }
+
+  // Move the map to the selected building
+  campusMap.setView(matchingLocation.coordinates, 18);
+
+  // Find its marker and open the popup
+  const markerIndex = mapLocations.indexOf(matchingLocation);
+  const matchingMarker = markers[markerIndex];
+
+  if (matchingMarker) {
+    matchingMarker.openPopup();
+  }
+}
+
+// Listen for searches
+if (mapSearchInput) {
+  mapSearchInput.addEventListener("input", () => {
+    focusMapOnBuilding(mapSearchInput.value);
+  });
+}
+
