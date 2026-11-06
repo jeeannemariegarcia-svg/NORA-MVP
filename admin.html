@@ -13,6 +13,11 @@
   >
 
   <link rel="stylesheet" href="style.css">
+  <style>
+  [hidden] {
+    display: none !important;
+  }
+</style>
 </head>
 
 <body>
@@ -25,8 +30,11 @@
       <a href="admin.html">Admin Dashboard</a>
     </nav>
   </header>
-
-  <section id="admin-dashboard">
+  
+<p id="auth-loading" role="status" aria-live="polite">
+  Verifying administrator access...
+</p>
+  <section id="admin-dashboard" hidden>
 
     <h2>Inventory Management Dashboard</h2>
 
