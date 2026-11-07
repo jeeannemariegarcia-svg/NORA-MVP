@@ -13,6 +13,11 @@
   >
 
   <link rel="stylesheet" href="style.css">
+  <style>
+  [hidden] {
+    display: none !important;
+  }
+</style>
 </head>
 
 <body>
@@ -23,10 +28,16 @@
     <nav>
       <a href="index.html">Student Website</a>
       <a href="admin.html">Admin Dashboard</a>
+      <button id="logout-button" type="button" class="button" hidden>
+  Log Out
+</button>
     </nav>
   </header>
-
-  <section id="admin-dashboard">
+  
+<p id="auth-loading" role="status" aria-live="polite">
+  Verifying administrator access...
+</p>
+  <section id="admin-dashboard" hidden>
 
     <h2>Inventory Management Dashboard</h2>
 
@@ -73,9 +84,7 @@
     NORA © 2026 | Admin Prototype — Simulated Data
   </footer>
 
-  <script src="admin.js?v=5"></script>
-
-  <script src="admin.js?v=5"></script>
+  <script type="module" src="admin-auth.js"></script>
 
 </body>
 </html>
