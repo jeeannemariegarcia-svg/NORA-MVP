@@ -11,7 +11,12 @@ import {
 // STEP 1: Copy the exact firebaseConfig object
 // from your working auth.js file.
 const firebaseConfig = {
-  // Replace this entire object with your existing configuration.
+  apiKey: "AIzaSyCE92SwUbk3nFXB-fhmabxASdwsAd1OS9M",
+  authDomain: "nora-mvp.firebaseapp.com",
+  projectId: "nora-mvp",
+  storageBucket: "nora-mvp.firebasestorage.app",
+  messagingSenderId: "826981118486",
+  appId: "1:826981118486:web:5e3cda9f092f4ffb31bb37"
 };
 
 const app = initializeApp(firebaseConfig);
