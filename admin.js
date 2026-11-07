@@ -25,6 +25,21 @@ const activeBaskets = () => baskets.filter(basket => basket.active !== false);
 const restockHistory = readStoredArray("noraRestockHistory", []);
 const inventoryContainer = document.getElementById("admin-inventory");
 const historyContainer = document.getElementById("restock-history");
+const placementMap = L.map("admin-location-map").setView([51.064, -114.089], 16);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution: '&copy; OpenStreetMap contributors', maxZoom: 19
+}).addTo(placementMap);
+let selectedCoordinates = null;
+let selectionMarker = null;
+const selectionLabel = document.getElementById("selected-map-location");
+placementMap.on("click", event => {
+  selectedCoordinates = [event.latlng.lat, event.latlng.lng];
+  if (selectionMarker) placementMap.removeLayer(selectionMarker);
+  selectionMarker = L.marker(selectedCoordinates).addTo(placementMap);
+  selectionLabel.textContent = "Selected proposed position: " + selectedCoordinates.map(n => n.toFixed(6)).join(", ");
+});
+setTimeout(() => placementMap.invalidateSize(), 300);
+
 
 function saveInventory() {
   localStorage.setItem("noraBaskets", JSON.stringify(baskets));
@@ -226,12 +241,20 @@ addBasketForm.addEventListener("submit", event => {
     alert("This basket location already exists. Reactivate it instead if needed.");
     return;
   }
+  if (!selectedCoordinates) {
+    alert("Click the campus map to choose a proposed position first.");
+    return;
+  }
   const nextId = Math.max(0, ...baskets.map(b => Number(b.id) || 0)) + 1;
-  const basket = { id: nextId, name, stock: 0, capacity, threshold, active: true, products: "Pads and tampons" };
+  const basket = { id: nextId, name, stock: 0, capacity, threshold, active: true, products: "Pads and tampons", coordinates: [...selectedCoordinates] };
   baskets.push(basket);
   saveInventory();
   logChange(basket, 0, "Proposed basket added");
   addBasketForm.reset();
+  selectedCoordinates = null;
+  if (selectionMarker) placementMap.removeLayer(selectionMarker);
+  selectionMarker = null;
+  selectionLabel.textContent = "No position selected.";
   renderDashboard();
 });
 
