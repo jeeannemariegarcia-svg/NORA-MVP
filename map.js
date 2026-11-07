@@ -90,7 +90,7 @@ function updateMapMarkers() {
   markers.clear();
 
   const dynamicLocations = inventory.filter(b => Array.isArray(b.coordinates) && b.coordinates.length === 2 && b.coordinates.every(n => typeof n === "number" && Number.isFinite(n)) && !mapLocations.some(loc => loc.id === b.id)).map(b => ({id:b.id,name:b.name,coordinates:b.coordinates}));
-  const visibleLocations = [...mapLocations, ...dynamicLocations];
+  const visibleLocations = [...mapLocations.map(loc => { const b = inventory.find(item => item.id === loc.id); return b && Array.isArray(b.coordinates) && b.coordinates.length === 2 && b.coordinates.every(n => Number.isFinite(n)) ? {...loc, coordinates:b.coordinates} : loc; }), ...dynamicLocations];
   // Create updated markers
   visibleLocations.forEach(location => {
     const basket = inventory.find(
@@ -167,7 +167,7 @@ function focusMapOnBuilding(searchTerm) {
   // Find matching building
   const inventory = getMapInventory();
   const dynamicLocations = inventory.filter(b => Array.isArray(b.coordinates) && b.coordinates.length === 2 && b.coordinates.every(n => typeof n === "number" && Number.isFinite(n))).map(b => ({id:b.id,name:b.name,coordinates:b.coordinates}));
-  const matchingLocation = [...mapLocations, ...dynamicLocations].find(location =>
+  const matchingLocation = [...mapLocations.map(loc => { const b = inventory.find(item => item.id === loc.id); return b && Array.isArray(b.coordinates) && b.coordinates.length === 2 && b.coordinates.every(n => Number.isFinite(n)) ? {...loc, coordinates:b.coordinates} : loc; }), ...dynamicLocations].find(location =>
     markers.has(location.id) && location.name.toLowerCase().includes(search)
   );
 
