@@ -34,7 +34,7 @@ const mapLocations = [
 ];
 
 // Store map markers
-const markers = [];
+const markers = new Map();
 
 // Read inventory from Admin Dashboard
 function getMapInventory() {
@@ -49,9 +49,9 @@ function getMapInventory() {
 }
 
 // Determine stock status
-function getMapStatus(stock) {
+function getMapStatus(stock, threshold = 10) {
   if (stock === 0) return "Out of stock";
-  if (stock <= 10) return "Low stock";
+  if (stock <= threshold) return "Low stock";
   return "Available";
 }
 
@@ -63,7 +63,7 @@ function getMarkerStatus(basket) {
     return "empty";
   }
 
-  if (basket.stock <= 10) {
+  if (basket.stock <= (Number.isInteger(basket.threshold) ? basket.threshold : 10)) {
     return "low";
   }
 
@@ -86,11 +86,8 @@ function updateMapMarkers() {
   const inventory = getMapInventory();
 
   // Remove old markers
-  markers.forEach(marker => {
-    campusMap.removeLayer(marker);
-  });
-
-  markers.length = 0;
+  markers.forEach(marker => campusMap.removeLayer(marker));
+  markers.clear();
 
   // Create updated markers
   mapLocations.forEach(location => {
@@ -98,8 +95,11 @@ function updateMapMarkers() {
       item => item.id === location.id
     );
 
+    // Never show a deactivated basket as an available campus location.
+    if (basket && basket.active === false) return;
+
     const status = basket
-      ? getMapStatus(basket.stock)
+      ? getMapStatus(basket.stock, Number.isInteger(basket.threshold) ? basket.threshold : 10)
       : "No inventory data";
 
     const quantity = basket
@@ -126,7 +126,7 @@ function updateMapMarkers() {
       </div>
     `);
 
-    markers.push(marker);
+    markers.set(location.id, marker);
   });
 }
 
@@ -164,7 +164,7 @@ function focusMapOnBuilding(searchTerm) {
 
   // Find matching building
   const matchingLocation = mapLocations.find(location =>
-    location.name.toLowerCase().includes(search)
+    markers.has(location.id) && location.name.toLowerCase().includes(search)
   );
 
   if (!matchingLocation) {
@@ -175,8 +175,7 @@ function focusMapOnBuilding(searchTerm) {
   campusMap.setView(matchingLocation.coordinates, 18);
 
   // Open its inventory popup
-  const markerIndex = mapLocations.indexOf(matchingLocation);
-  const matchingMarker = markers[markerIndex];
+  const matchingMarker = markers.get(matchingLocation.id);
 
   if (matchingMarker) {
     matchingMarker.openPopup();
