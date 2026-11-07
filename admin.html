@@ -68,11 +68,24 @@
 
     </div>
 
+    <h2>Basket Management</h2>
+    <p>Add proposed locations or adjust capacity and low-stock thresholds. New locations appear in the student list but require verified coordinates before they can appear on the map.</p>
+    <form id="add-basket-form" class="card">
+      <label for="new-basket-name">Location name</label>
+      <input id="new-basket-name" type="text" maxlength="100" required placeholder="e.g., Proposed pilot location">
+      <label for="new-basket-capacity">Basket capacity</label>
+      <input id="new-basket-capacity" type="number" min="1" step="1" value="50" required>
+      <label for="new-basket-threshold">Low-stock threshold</label>
+      <input id="new-basket-threshold" type="number" min="0" step="1" value="10" required>
+      <button class="button" type="submit">Add Proposed Basket</button>
+    </form>
     <h2>Basket Inventory</h2>
 
     <div id="admin-inventory" class="cards"></div>
 
-    <h2>Restocking Activity</h2>
+    <h2>Inactive Baskets</h2>
+    <div id="inactive-baskets" class="card"></div>
+    <h2>Inventory Activity</h2>
 
     <div id="restock-history" class="card">
       <p>No restocking activities recorded yet.</p>
