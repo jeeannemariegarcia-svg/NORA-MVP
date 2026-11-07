@@ -17,6 +17,11 @@ function readStoredArray(key, fallback) {
 }
 
 const baskets = readStoredArray("noraBaskets", defaultBaskets);
+baskets.forEach(basket => {
+  if (!Number.isInteger(basket.threshold) || basket.threshold < 0) basket.threshold = 10;
+  if (typeof basket.active !== "boolean") basket.active = true;
+});
+const activeBaskets = () => baskets.filter(basket => basket.active !== false);
 const restockHistory = readStoredArray("noraRestockHistory", []);
 const inventoryContainer = document.getElementById("admin-inventory");
 const historyContainer = document.getElementById("restock-history");
@@ -31,7 +36,7 @@ function saveHistory() {
 
 function getStatus(basket) {
   if (basket.stock === 0) return "Out of stock";
-  if (basket.stock <= 10) return "Low stock";
+  if (basket.stock <= basket.threshold) return "Low stock";
   return "Available";
 }
 
@@ -60,11 +65,11 @@ function changeStock(basket, nextStock, action) {
 }
 
 function updateDashboard() {
-  document.getElementById("total-baskets").textContent = baskets.length;
+  document.getElementById("total-baskets").textContent = activeBaskets().length;
   document.getElementById("total-products").textContent =
-    baskets.reduce((total, basket) => total + basket.stock, 0);
+    activeBaskets().reduce((total, basket) => total + basket.stock, 0);
   document.getElementById("low-stock-count").textContent =
-    baskets.filter(basket => basket.stock <= 10).length;
+    activeBaskets().filter(basket => basket.stock <= basket.threshold).length;
 }
 
 function makeButton(text, onClick) {
@@ -91,7 +96,7 @@ function displayInventory() {
 
     const status = document.createElement("p");
     status.textContent = `Status: ${getStatus(basket)}`;
-    status.className = basket.stock <= 10 ? "status-low" : "status-available";
+    status.className = basket.stock <= basket.threshold ? "status-low" : "status-available";
 
     const restockButton = makeButton("Simulate Restock", () => {
       changeStock(basket, basket.capacity, "Simulated restock");
@@ -134,7 +139,55 @@ function displayInventory() {
     adjustmentRow.style.marginTop = "8px";
     adjustmentRow.append(adjustmentInput, saveButton);
 
-    card.append(heading, quantity, status, controls, adjustmentLabel, adjustmentRow);
+    const settings = document.createElement("div");
+    settings.style.marginTop = "18px";
+    const settingsHeading = document.createElement("h4");
+    settingsHeading.textContent = "Basket settings";
+    const capacityLabel = document.createElement("label");
+    capacityLabel.textContent = "Capacity ";
+    const capacityInput = document.createElement("input");
+    capacityInput.type = "number";
+    capacityInput.min = "1";
+    capacityInput.step = "1";
+    capacityInput.value = basket.capacity;
+    capacityInput.style.width = "85px";
+    capacityInput.setAttribute("aria-label", "Capacity for " + basket.name);
+    capacityLabel.append(capacityInput);
+    const thresholdLabel = document.createElement("label");
+    thresholdLabel.textContent = " Low-stock alert at ";
+    const thresholdInput = document.createElement("input");
+    thresholdInput.type = "number";
+    thresholdInput.min = "0";
+    thresholdInput.step = "1";
+    thresholdInput.value = basket.threshold;
+    thresholdInput.style.width = "85px";
+    thresholdInput.setAttribute("aria-label", "Low-stock threshold for " + basket.name);
+    thresholdLabel.append(thresholdInput);
+    const saveSettings = makeButton("Save Basket Settings", () => {
+      const capacity = Number(capacityInput.value);
+      const threshold = Number(thresholdInput.value);
+      if (!capacityInput.value.trim() || !thresholdInput.value.trim() ||
+          !Number.isInteger(capacity) || capacity < 1 ||
+          !Number.isInteger(threshold) || threshold < 0 || threshold > capacity ||
+          capacity < basket.stock) {
+        alert("Capacity must be a positive whole number at least as large as current stock. Threshold must be a whole number from 0 to capacity.");
+        return;
+      }
+      basket.capacity = capacity;
+      basket.threshold = threshold;
+      saveInventory();
+      logChange(basket, 0, "Basket settings updated");
+      renderDashboard();
+    });
+    const deactivateButton = makeButton("Deactivate Basket", () => {
+      if (!confirm("Deactivate " + basket.name + "? Its inventory and history will be preserved.")) return;
+      basket.active = false;
+      saveInventory();
+      logChange(basket, 0, "Basket deactivated");
+      renderDashboard();
+    });
+    settings.append(settingsHeading, capacityLabel, thresholdLabel, document.createElement("p"), saveSettings, document.createTextNode(" "), deactivateButton);
+    card.append(heading, quantity, status, controls, adjustmentLabel, adjustmentRow, settings);
     inventoryContainer.appendChild(card);
   });
 }
@@ -152,6 +205,54 @@ function displayHistory() {
     const sign = quantity > 0 ? "+" : "";
     entry.textContent = `${record.time} — ${record.location}: ${sign}${quantity} products (${record.action || "Restock"})`;
     historyContainer.appendChild(entry);
+  });
+}
+
+const addBasketForm = document.getElementById("add-basket-form");
+addBasketForm.addEventListener("submit", event => {
+  event.preventDefault();
+  const name = document.getElementById("new-basket-name").value.trim();
+  const capacityValue = document.getElementById("new-basket-capacity").value;
+  const thresholdValue = document.getElementById("new-basket-threshold").value;
+  const capacity = Number(capacityValue);
+  const threshold = Number(thresholdValue);
+  if (!name || !capacityValue || !thresholdValue ||
+      !Number.isInteger(capacity) || capacity < 1 ||
+      !Number.isInteger(threshold) || threshold < 0 || threshold > capacity) {
+    alert("Enter a location name, positive whole-number capacity, and threshold between 0 and capacity.");
+    return;
+  }
+  if (baskets.some(b => b.name.toLowerCase() === name.toLowerCase())) {
+    alert("This basket location already exists. Reactivate it instead if needed.");
+    return;
+  }
+  const nextId = Math.max(0, ...baskets.map(b => Number(b.id) || 0)) + 1;
+  const basket = { id: nextId, name, stock: 0, capacity, threshold, active: true, products: "Pads and tampons" };
+  baskets.push(basket);
+  saveInventory();
+  logChange(basket, 0, "Proposed basket added");
+  addBasketForm.reset();
+  renderDashboard();
+});
+
+function displayInactiveBaskets() {
+  const container = document.getElementById("inactive-baskets");
+  container.replaceChildren();
+  const inactive = baskets.filter(b => b.active === false);
+  if (!inactive.length) {
+    container.textContent = "No inactive baskets.";
+    return;
+  }
+  inactive.forEach(basket => {
+    const line = document.createElement("p");
+    line.append(document.createTextNode(basket.name + " — "));
+    line.append(makeButton("Reactivate", () => {
+      basket.active = true;
+      saveInventory();
+      logChange(basket, 0, "Basket reactivated");
+      renderDashboard();
+    }));
+    container.append(line);
   });
 }
 
