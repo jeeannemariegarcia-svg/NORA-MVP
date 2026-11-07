@@ -260,6 +260,7 @@ function renderDashboard() {
   updateDashboard();
   displayInventory();
   displayHistory();
+  displayInactiveBaskets();
 }
 
 saveInventory();
