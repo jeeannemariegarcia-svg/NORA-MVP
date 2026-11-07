@@ -35,7 +35,7 @@ function getBaskets() {
       const parsed = JSON.parse(saved);
 
       if (Array.isArray(parsed)) {
-        return parsed;
+        return parsed.filter(basket => basket.active !== false);
       }
     } catch (error) {
       console.error("Unable to read saved NORA inventory:", error);
@@ -46,12 +46,12 @@ function getBaskets() {
 }
 
 // Calculate availability automatically
-function getStockStatus(stock) {
+function getStockStatus(stock, threshold = 10) {
   if (stock === 0) {
     return "Out of stock";
   }
 
-  if (stock <= 10) {
+  if (stock <= threshold) {
     return "Low stock";
   }
 
@@ -85,7 +85,7 @@ function displayLocations(searchTerm = "") {
       basket.products || "Pads and tampons";
 
     // Calculate current stock status
-    const currentStatus = getStockStatus(basket.stock);
+    const currentStatus = getStockStatus(basket.stock, Number.isInteger(basket.threshold) ? basket.threshold : 10);
 
     const status = document.createElement("p");
     status.textContent = "Status: " + currentStatus;
