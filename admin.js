@@ -84,7 +84,7 @@ function makeButton(text, onClick) {
 function displayInventory() {
   inventoryContainer.replaceChildren();
 
-  baskets.forEach(basket => {
+  activeBaskets().forEach(basket => {
     const card = document.createElement("div");
     card.className = "card";
 
