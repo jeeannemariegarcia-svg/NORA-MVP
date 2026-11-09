@@ -105,7 +105,7 @@
     const allocatedTotal = rows.reduce((n,r) => n+r.allocated,0);
     const shortage = requestedTotal - allocatedTotal;
     const alerts = rows.filter(r=>r.stock<=r.threshold);
-    const reserveReorderPoint = settings.dailyUsage * Math.max(1,rows.length) * (settings.leadDays+settings.safetyDays);
+    const reserveReorderPoint = rows.reduce((sum,row) => sum + row.usage,0) * (settings.leadDays+settings.safetyDays);
     els.count.textContent = String(rows.length);
     els.remaining.textContent = total+" (Pads: "+pads+" · Tampons: "+tampons+")";
     els.alerts.textContent = String(alerts.length);
