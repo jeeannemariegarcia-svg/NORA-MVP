@@ -176,6 +176,7 @@
     catch { window.prompt("Copy this simulated plan:",lastPlan); }
   });
   document.addEventListener("nora-inventory-updated",render);
+  document.addEventListener("nora-planning-updated",render);
   document.addEventListener("nora-procurement-refresh",render);
   window.addEventListener("storage",event=>{
     if(["noraBaskets","noraBasketDemandRates","noraSupplySettings"].includes(event.key))render();
