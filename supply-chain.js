@@ -20,7 +20,7 @@
     refill: document.getElementById("sc-refill"),
     list: document.getElementById("sc-list"),
     plan: document.getElementById("sc-plan"),
-    reserve: document.getElementById("sc-reserve"),
+    reserve: document.getElementById("sc-reserve-display"),
     cost: document.getElementById("sc-cost"),
     warning: document.getElementById("sc-warning")
   };
