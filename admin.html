@@ -114,12 +114,12 @@
         <p><strong>Central reserve:</strong> <span id="sc-reserve-display">250 units</span></p>
         <p id="sc-warning" role="status"></p>
       </div>
-      <h3>Inventory Health</h3>
+      <h3>Inventory Health &amp; Demand Assumptions</h3>
       <div id="sc-list" class="cards"></div>
       <h3>Restocking Plan</h3>
-      <p>Suggested refill quantity = basket capacity − estimated remaining stock. Product cost excludes labour, transport and storage.</p>
+      <p>Refill proposals are based on estimated daily demand, supplier lead time, safety days and basket alerts. Limited central reserve is allocated to the highest-priority baskets first. Planning does not change inventory or place orders. Product cost excludes labour, transport and storage.</p>
       <div id="sc-plan" class="cards"></div>
-      <div class="card"><strong>Total estimated product cost: <span id="sc-cost">$0.00</span></strong><p>Recommendations are not actual purchase orders or inventory movements.</p></div>
+      <div class="card"><p><strong>Allocated from reserve: <span id="sc-allocated">0 / 0 units</span></strong></p><p><strong>Unfilled demand: <span id="sc-shortage">0 units</span></strong></p><p><strong>Total estimated product cost: <span id="sc-cost">$0.00</span></strong></p><p>Recommendations are not actual purchase orders or inventory movements. Product category allocations are illustrative.</p></div>
       <button class="button" type="button" id="sc-refresh">Refresh Supply Chain Dashboard</button>
     </section>
 
