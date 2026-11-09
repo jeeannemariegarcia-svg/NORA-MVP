@@ -41,7 +41,7 @@ onAuthStateChanged(auth, async (user) => {
   if (!dashboardInitialized) {
     try {
       await import("./admin.js?v=11");
-      await import("./supply-chain.js?v=3");
+      await import("./supply-chain.js?v=4");
       dashboardInitialized = true;
     } catch (error) {
       console.error("Dashboard failed to load:", error);
