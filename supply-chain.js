@@ -48,6 +48,7 @@
   }
   function saveRates() {
     localStorage.setItem("noraBasketDemandRates", JSON.stringify(rates));
+    document.dispatchEvent(new Event("nora-planning-updated"));
   }
   ["unitCost","reserve","dailyUsage","leadDays","safetyDays"].forEach(key => {
     const input = document.getElementById("sc-" + key);
@@ -62,6 +63,7 @@
       }
       settings[key] = n;
       localStorage.setItem("noraSupplySettings", JSON.stringify(settings));
+      document.dispatchEvent(new Event("nora-planning-updated"));
       render();
     });
   });
