@@ -204,7 +204,7 @@ function simulateReserveRestock(basket) {
   try {
     // Both values are stored in the same browser, but localStorage is not transactional.
     localStorage.setItem("noraBaskets",JSON.stringify(nextBaskets));
-    window.NoraReserve.write(reserve.reservePads-addPads,reserve.reserveTampons-addTampons,reserve.reserveMixEstimated);
+    window.NoraReserve.write(reserve.reservePads-addPads,reserve.reserveTampons-addTampons);
   }catch(error){
     try {
       if(basketsBefore===null)localStorage.removeItem("noraBaskets");
