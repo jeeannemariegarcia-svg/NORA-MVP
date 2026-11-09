@@ -468,3 +468,22 @@ footer {
 .nora-procurement .pr-export { border:0; cursor:pointer; font-size:13px; padding:11px 16px; }
 .nora-procurement input:focus-visible,.nora-procurement select:focus-visible,
 .nora-procurement button:focus-visible {outline:2px solid #7050a2;outline-offset:2px;}
+
+/* Procurement directory enhancements */
+.nora-procurement .pr-heading-row {
+  display:flex; align-items:center; justify-content:space-between;
+  flex-wrap:wrap; gap:10px; margin:20px 0 10px;
+}
+.nora-procurement .pr-heading-row h4 { margin:0; }
+.nora-procurement .pr-secondary-btn {
+  padding:9px 13px; font-size:12px; border:1px solid #bba6d2;
+  border-radius:5px; background:#fff; color:#63488a; cursor:pointer;
+}
+.nora-procurement .pr-status-select {
+  border:1px solid #cbbddc; border-radius:5px; background:#fff;
+  min-height:36px; font:inherit; padding:6px; color:#342644;
+}
+.nora-procurement .sc-table { min-width:850px; }
+.nora-procurement .pr-small-btn:disabled {
+  background:#efebf5; color:#6c597a; cursor:default;
+}
