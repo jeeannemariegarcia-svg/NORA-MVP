@@ -138,12 +138,14 @@
         <p>Adjust these estimates for different pilot scenarios. Changes stay in this browser.</p>
         <div style="display:flex;flex-wrap:wrap;gap:14px">
           <label>Unit cost (CAD)<input id="sc-unitCost" type="number" min="0" step="0.01" style="display:block;width:120px"></label>
-          <label>Central reserve (units)<input id="sc-reserve" type="number" min="0" step="1" style="display:block;width:120px"></label>
+          <label>Reserve pads (units)<input id="sc-reservePads" type="number" min="0" step="1" style="display:block;width:120px"></label>
+          <label>Reserve tampons (units)<input id="sc-reserveTampons" type="number" min="0" step="1" style="display:block;width:120px"></label>
           <label>Estimated daily usage (units)<input id="sc-dailyUsage" type="number" min="0" step="1" style="display:block;width:120px"></label>
           <label>Supplier lead time (days)<input id="sc-leadDays" type="number" min="0" step="1" style="display:block;width:120px"></label>
           <label>Safety stock coverage (days)<input id="sc-safetyDays" type="number" min="0" step="1" style="display:block;width:120px"></label>
         </div>
         <p><strong>Central reserve:</strong> <span id="sc-reserve-display">250 units</span></p>
+        <p id="sc-reserve-note" class="pr-note">Older total-only reserves are divided into estimated pad and tampon amounts until verified.</p>
         <p id="sc-warning" role="status"></p>
       </div>
       <h3>Inventory Health &amp; Demand Assumptions</h3>
