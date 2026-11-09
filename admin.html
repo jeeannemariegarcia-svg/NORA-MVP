@@ -163,6 +163,39 @@
       </div>
       <div class="card"><p><strong>Allocated from reserve: <span id="sc-allocated">0 / 0 units</span></strong></p><p><strong>Unfilled demand: <span id="sc-shortage">0 units</span></strong></p><p><strong>Total estimated product cost: <span id="sc-cost">$0.00</span></strong></p><p>Recommendations are not actual purchase orders or inventory movements. Product category allocations are illustrative.</p></div>
       <button class="button" type="button" id="sc-refresh">Refresh Supply Chain Dashboard</button>
+      <section id="procurement-dashboard" class="nora-procurement" aria-labelledby="proc-heading">
+        <div class="pr-heading">
+          <div><h3 id="proc-heading">Procurement Planning</h3>
+          <p>Illustrative supplier quotes, order quantities, and budget. No live supplier connections or purchases.</p></div>
+        </div>
+        <h4>Supplier Assumptions</h4>
+        <div class="sc-table-wrap" role="region" tabindex="0" aria-label="Supplier scenarios table">
+          <table class="sc-table">
+            <thead><tr><th scope="col">Supplier scenario</th><th scope="col">Unit cost (CAD)</th><th scope="col">Lead time (days)</th><th scope="col">Minimum order</th><th scope="col">Delivery fee (CAD)</th><th scope="col">Action</th></tr></thead>
+            <tbody id="pr-suppliers"></tbody>
+          </table>
+        </div>
+        <div class="pr-assumptions">
+          <label>Estimated pad share (%) <input id="pr-pad-share" type="number" min="0" max="100" step="1" value="50"></label>
+          <label>Use supplier scenario <select id="pr-selected-supplier"></select></label>
+        </div>
+        <p class="pr-note">Central reserve is currently tracked as a combined total, not separate pad and tampon stock. Product mix and supplier quotes are scenario assumptions, not verified inventory or quotations.</p>
+        <h4>Purchase Recommendation</h4>
+        <div class="sc-table-wrap" role="region" tabindex="0" aria-label="Proposed procurement quantities">
+          <table class="sc-table">
+            <thead><tr><th scope="col">Product</th><th scope="col">Suggested units</th><th scope="col">Order units (MOQ)</th><th scope="col">Unit price</th><th scope="col">Est. product cost</th></tr></thead>
+            <tbody id="pr-recommendations"></tbody>
+          </table>
+        </div>
+        <div class="pr-summary">
+          <div><span>Projected purchase</span><strong id="pr-purchase-total">0 units</strong></div>
+          <div><span>Product subtotal</span><strong id="pr-subtotal">$0.00</strong></div>
+          <div><span>Delivery assumption</span><strong id="pr-delivery">$0.00</strong></div>
+          <div><span>Estimated total</span><strong id="pr-grand-total">$0.00</strong></div>
+        </div>
+        <p id="pr-rationale" class="pr-note" role="status"></p>
+        <button type="button" class="button pr-export" id="pr-copy-plan">Copy Purchase Plan</button>
+      </section>
     </div>
     </section>
 
