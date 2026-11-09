@@ -122,16 +122,19 @@
       const target=Math.min(cap,Math.max(threshold+1,coverage));
       if(stock<=threshold || (demand>0 && stock<coverage))refillNeed+=Math.max(0,target-stock);
     });
-    // Approximate refill requirement plus a central-stock buffer for the supplier
-    // horizon. This deliberately stays a scenario, not an optimized forecast.
-    const suggested=Math.max(0,refillNeed+dailyTotal*horizon-supply.reserve);
+    // Basket refill targets already cover lead time plus safety days.
+    // Add ONLY a separate central safety buffer, not those same lead-time
+    // units again. This is a snapshot estimate without in-transit orders.
+    const safetyReserveTarget=dailyTotal*supply.safetyDays;
+    const grossRequirement=refillNeed+safetyReserveTarget;
+    const suggested=Math.max(0,grossRequirement-supply.reserve);
     const pads=Math.round(suggested*padShare/100);
     const tampons=suggested-pads;
     const round=n=>n===0?0:Math.ceil(n/supplier.moq)*supplier.moq;
     const padOrder=round(pads),tamponOrder=round(tampons);
     const subtotal=padOrder*supplier.padCost+tamponOrder*supplier.tamponCost;
     const delivery=padOrder+tamponOrder>0?supplier.deliveryFee:0;
-    return {supplier,horizon,baskets:baskets.length,dailyTotal,reserve:supply.reserve,refillNeed,suggested,pads,tampons,padOrder,tamponOrder,subtotal,delivery,total:subtotal+delivery};
+    return {supplier,horizon,baskets:baskets.length,dailyTotal,reserve:supply.reserve,refillNeed,safetyReserveTarget,grossRequirement,suggested,pads,tampons,padOrder,tamponOrder,subtotal,delivery,total:subtotal+delivery};
   }
   let lastPlan="";
   function render() {
@@ -182,14 +185,20 @@
     document.getElementById("pr-grand-total").textContent=money(chosen?.total||0);
     document.getElementById("pr-rationale").textContent=chosen?
       "Scenario: "+chosen.baskets+" active baskets · "+chosen.dailyTotal+" units/day estimated demand · "+
-      chosen.horizon+" days lead + safety coverage · "+chosen.refillNeed+" units for indicated basket refills · "+
-      chosen.reserve+" assumed central reserve units. Suggested net requirement: "+chosen.suggested+
-      " units before MOQ rounding. Model may double-count near-term demand; verify assumptions before using in the business case.":
+      chosen.horizon+" days lead + safety coverage in basket targets · "+chosen.refillNeed+
+      " units for indicated basket refills + "+chosen.safetyReserveTarget+
+      " units central safety buffer − "+chosen.reserve+
+      " assumed central reserve = "+chosen.suggested+
+      " units to purchase before MOQ rounding. This is a planning snapshot, not a purchase order.":
       "No active supplier selected. All quotes and purchasing quantities are simulated.";
     lastPlan=chosen?[
       "NORA — Simulated Procurement Plan","Supplier: "+chosen.supplier.name,
       "Lead time: "+chosen.supplier.leadDays+" days; MOQ: "+chosen.supplier.moq+" per product",
       "Estimated demand: "+chosen.dailyTotal+" units/day; central reserve: "+chosen.reserve+" units",
+      "Required basket refills: "+chosen.refillNeed+" units",
+      "Central safety buffer: "+chosen.safetyReserveTarget+" units",
+      "Gross requirement: "+chosen.grossRequirement+" units",
+      "Less available reserve: "+chosen.reserve+" units",
       "Suggested requirement before MOQ: "+chosen.suggested+" units",
       "Pads: "+chosen.padOrder+" units at "+money(chosen.supplier.padCost),
       "Tampons: "+chosen.tamponOrder+" units at "+money(chosen.supplier.tamponCost),
