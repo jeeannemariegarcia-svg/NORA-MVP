@@ -57,12 +57,14 @@
   function render() {
     const baskets = readBaskets();
     const total = baskets.reduce((sum,b) => sum + Math.max(0,Number(b.stock)||0),0);
+    const totalPads = baskets.reduce((sum,b) => sum + (Number(b.pads)||0),0);
+    const totalTampons = baskets.reduce((sum,b) => sum + (Number(b.tampons)||0),0);
     const alerts = baskets.filter(b => Number(b.stock)<=Number(b.threshold ?? 10));
     const refill = baskets.reduce((sum,b) => sum + Math.max(0,(Number(b.capacity)||0)-(Number(b.stock)||0)),0);
     const reorderPoint = settings.dailyUsage * (settings.leadDays + settings.safetyDays);
     const reorder = settings.reserve <= reorderPoint;
     els.count.textContent = String(baskets.length);
-    els.remaining.textContent = String(total);
+    els.remaining.textContent = String(total) + " (Pads: " + totalPads + " · Tampons: " + totalTampons + ")";
     els.alerts.textContent = String(alerts.length);
     els.refill.textContent = money(refill*settings.unitCost);
     els.reserve.textContent = settings.reserve + " units";
@@ -83,8 +85,13 @@
       const threshold = Math.max(0,Number(b.threshold ?? 10)||0);
       const needed = Math.max(0,capacity-stock);
       const priority = stock===0?"Out of stock":stock<=threshold?"Low stock":"Routine";
-      line(els.list,b.name,stock+" / "+capacity+" products · Alert threshold "+threshold,priority,priority!=="Routine");
-      line(els.plan,b.name,"Refill to full capacity: "+needed+" units · estimated product cost "+money(needed*settings.unitCost),needed>0?"Plan "+needed+" units":"Already full",priority!=="Routine");
+      const pads = Number.isInteger(b.pads) ? b.pads : 0;
+      const tampons = Number.isInteger(b.tampons) ? b.tampons : 0;
+      const categoryNote = b.categorySplitEstimated ? " · Category split estimated—verify" : "";
+      line(els.list,b.name,stock+" / "+capacity+" total · Pads: "+pads+" · Tampons: "+tampons+" · Alert threshold "+threshold+categoryNote,priority,priority!=="Routine");
+      const addPads = Math.ceil(needed / 2);
+      const addTampons = needed - addPads;
+      line(els.plan,b.name,"Suggested: +"+addPads+" pads, +"+addTampons+" tampons · "+needed+" units total · estimated product cost "+money(needed*settings.unitCost)+(b.categorySplitEstimated ? " · Verify current product mix first" : ""),needed>0?"Plan "+needed+" units":"Already full",priority!=="Routine");
     });
   }
   document.getElementById("sc-refresh").addEventListener("click",render);
