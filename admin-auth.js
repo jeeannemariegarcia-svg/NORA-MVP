@@ -40,7 +40,11 @@ onAuthStateChanged(auth, async (user) => {
   // STEP 3: Load inventory code only after login.
   if (!dashboardInitialized) {
     try {
-      await import("./admin.js?v=9");
+      await import("./reserve.js?v=2");
+      await import("./admin.js?v=18");
+      await import("./supply-chain.js?v=8");
+      await import("./procurement.js?v=6");
+      await import("./admin-tabs.js?v=2");
       dashboardInitialized = true;
     } catch (error) {
       console.error("Dashboard failed to load:", error);
@@ -52,6 +56,7 @@ onAuthStateChanged(auth, async (user) => {
   dashboard.hidden = false;
   logoutButton.hidden = false;
   loading.hidden = true;
+  document.dispatchEvent(new Event("nora-admin-ready"));
 
 }, (error) => {
   console.error("Authentication failed:", error);

@@ -12,7 +12,7 @@
     rel="stylesheet"
   >
 
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css?v=8">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <style>
   [hidden] {
@@ -50,7 +50,18 @@
 
     <p><strong>Prototype — Simulated Inventory Data</strong></p>
 
-    <div class="cards">
+    <nav class="admin-tab-nav" aria-label="Admin sections">
+      <div class="admin-tab-list" role="tablist" aria-label="NORA administration">
+        <button type="button" role="tab" id="tab-overview" aria-controls="panel-overview" aria-selected="true" tabindex="0" data-tab="overview">Overview</button>
+        <button type="button" role="tab" id="tab-basket-management" aria-controls="panel-basket-management" aria-selected="false" tabindex="-1" data-tab="basket-management">Basket Management</button>
+        <button type="button" role="tab" id="tab-supply-chain" aria-controls="panel-supply-chain" aria-selected="false" tabindex="-1" data-tab="supply-chain">Supply Chain</button>
+        <button type="button" role="tab" id="tab-activity" aria-controls="panel-activity" aria-selected="false" tabindex="-1" data-tab="activity">Activity</button>
+      </div>
+    </nav>
+
+    <section id="panel-overview" class="admin-tab-panel" role="tabpanel" aria-labelledby="tab-overview" tabindex="0">
+      <h2>Campus Overview</h2>
+      <div class="cards">
 
       <div class="card">
         <h3>Monitored Baskets</h3>
@@ -69,33 +80,149 @@
 
     </div>
 
-    <h2>Basket Management</h2>
-    <p>Add proposed locations or adjust capacity and low-stock thresholds. Click the campus map to select a proposed pin location. Pins are for demonstration only, not confirmed installations.</p>
-    <form id="add-basket-form" class="card">
-      <label for="new-basket-name">Location name</label>
-      <input id="new-basket-name" type="text" maxlength="100" required placeholder="e.g., Proposed pilot location">
-      <label for="new-basket-capacity">Basket capacity</label>
-      <input id="new-basket-capacity" type="number" min="1" step="1" value="50" required>
-      <label for="new-basket-threshold">Low-stock threshold</label>
-      <input id="new-basket-threshold" type="number" min="0" step="1" value="10" required>
-      <p>Click the map to select a proposed basket position:</p>
-      <div id="admin-location-map" style="height:350px;width:100%;margin:12px 0"></div>
-      <p id="selected-map-location" role="status">No position selected.</p>
-      <button id="save-map-move" type="button" class="button" hidden>Save Pin Position</button>
-      <button id="cancel-map-move" type="button" class="button" hidden>Cancel Move</button>
-      <button class="button" type="submit">Add Proposed Basket</button>
-    </form>
-    <h2>Basket Inventory</h2>
+    </section>
 
-    <div id="admin-inventory" class="cards"></div>
+    <section id="panel-basket-management" class="admin-tab-panel" role="tabpanel" aria-labelledby="tab-basket-management" tabindex="0" hidden>
+      <div class="bm-heading">
+        <div><h2>Basket Management</h2><p>Choose a proposed basket on the map or in the list to manage its inventory and location.</p></div>
+        <button id="toggle-add-basket" class="button" type="button" aria-expanded="false" aria-controls="add-basket-form">+ Add Proposed Basket</button>
+      </div>
+      <div class="bm-layout">
+        <div class="bm-map-panel">
+          <div class="bm-panel-heading"><h3>Campus Map</h3><span>Proposed placements</span></div>
+          <div id="admin-location-map"></div>
+          <p id="selected-map-location" role="status">Select a basket or open Add Proposed Basket to choose a map position.</p>
+          <div class="bm-map-actions">
+            <button id="save-map-move" type="button" class="button" hidden>Save Pin Position</button>
+            <button id="cancel-map-move" type="button" class="button bm-secondary" hidden>Cancel Move</button>
+          </div>
+        </div>
+        <aside class="bm-list-panel" aria-label="Basket locations">
+          <div class="bm-panel-heading"><h3>Basket Locations</h3><span id="basket-active-count">0 active</span></div>
+          <div id="basket-location-list" class="bm-list"></div>
+        </aside>
+      </div>
+      <form id="add-basket-form" class="bm-add-form" hidden>
+        <h3>Add Proposed Basket</h3>
+        <p>Enter details, then click the campus map above to choose a proposed position.</p>
+        <div class="bm-form-fields">
+          <label>Location name <input id="new-basket-name" type="text" maxlength="100" required placeholder="e.g., Proposed pilot location"></label>
+          <label>Basket capacity <input id="new-basket-capacity" type="number" min="1" step="1" value="50" required></label>
+          <label>Low-stock threshold <input id="new-basket-threshold" type="number" min="0" step="1" value="10" required></label>
+        </div>
+        <div class="bm-map-actions">
+          <button class="button" type="submit">Save Proposed Basket</button>
+          <button id="cancel-add-basket" class="button bm-secondary" type="button">Cancel</button>
+        </div>
+      </form>
+      <div class="bm-editor">
+        <h3 id="basket-editor-title">Selected Basket</h3>
+        <p id="basket-editor-hint">Select a basket from the map or list to edit it.</p>
+        <div id="admin-inventory"></div>
+      </div>
+      <details class="bm-inactive"><summary>Inactive Baskets</summary><div id="inactive-baskets" class="card"></div></details>
+    </section>
 
-    <h2>Inactive Baskets</h2>
-    <div id="inactive-baskets" class="card"></div>
+    <section id="panel-supply-chain" class="admin-tab-panel" role="tabpanel" aria-labelledby="tab-supply-chain" tabindex="0" hidden>
+    <div id="supply-chain-dashboard" aria-labelledby="sc-title">
+      <h2 id="sc-title">Supply Chain Operations — Planning Prototype</h2>
+      <p><strong>Simulated planning only.</strong> Stock is read from this browser's NORA basket inventory. Supply reserve, consumption, lead times and costs are illustrative assumptions, not observed SAIT data.</p>
+      <div class="cards">
+        <div class="card"><h3>Active Baskets</h3><strong id="sc-baskets">0</strong></div>
+        <div class="card"><h3>Products Remaining</h3><strong id="sc-stock">0</strong></div>
+        <div class="card"><h3>Restock Alerts</h3><strong id="sc-alerts">0</strong></div>
+        <div class="card"><h3>Cost to Refill All</h3><strong id="sc-refill">$0.00</strong></div>
+      </div>
+      <h3>Planning Assumptions</h3>
+      <div class="card">
+        <p>Adjust these estimates for different pilot scenarios. Changes stay in this browser.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:14px">
+          <label>Unit cost (CAD)<input id="sc-unitCost" type="number" min="0" step="0.01" style="display:block;width:120px"></label>
+          <label>Reserve pads (units)<input id="sc-reservePads" type="number" min="0" step="1" style="display:block;width:120px"></label>
+          <label>Reserve tampons (units)<input id="sc-reserveTampons" type="number" min="0" step="1" style="display:block;width:120px"></label>
+          <label>Estimated daily usage (units)<input id="sc-dailyUsage" type="number" min="0" step="1" style="display:block;width:120px"></label>
+          <label>Supplier lead time (days)<input id="sc-leadDays" type="number" min="0" step="1" style="display:block;width:120px"></label>
+          <label>Safety stock coverage (days)<input id="sc-safetyDays" type="number" min="0" step="1" style="display:block;width:120px"></label>
+        </div>
+        <p><strong>Central reserve:</strong> <span id="sc-reserve-display">250 units</span></p>
+        <p id="sc-reserve-note" class="pr-note">Older total-only reserves are divided into estimated pad and tampon amounts until verified.</p>
+        <p id="sc-warning" role="status"></p>
+      </div>
+      <h3>Inventory Health &amp; Demand Assumptions</h3>
+      <div class="sc-table-wrap" tabindex="0" role="region" aria-label="Inventory and demand table">
+        <table class="sc-table">
+          <thead><tr><th scope="col">Location</th><th scope="col">Stock / Capacity</th><th scope="col">Pads</th><th scope="col">Tampons</th><th scope="col">Alert at</th><th scope="col">Daily demand</th><th scope="col">Days left</th><th scope="col">Status</th></tr></thead>
+          <tbody id="sc-list"></tbody>
+        </table>
+      </div>
+      <h3>Restocking Plan</h3>
+      <p>Refill proposals are based on estimated daily demand, supplier lead time, safety days and basket alerts. Limited combined central reserve is allocated in this planning table. Actual simulated transfers are constrained by pad and tampon balances. Planning does not change inventory or place orders. Product cost excludes labour, transport and storage.</p>
+      <div class="sc-table-wrap" tabindex="0" role="region" aria-label="Restocking plan table">
+        <table class="sc-table">
+          <thead><tr><th scope="col">Priority</th><th scope="col">Location</th><th scope="col">Current</th><th scope="col">Target</th><th scope="col">Requested</th><th scope="col">Allocated</th><th scope="col">Status</th><th scope="col">Est. cost</th></tr></thead>
+          <tbody id="sc-plan"></tbody>
+        </table>
+      </div>
+      <div class="card"><p><strong>Allocated from reserve: <span id="sc-allocated">0 / 0 units</span></strong></p><p><strong>Unfilled demand: <span id="sc-shortage">0 units</span></strong></p><p><strong>Total estimated product cost: <span id="sc-cost">$0.00</span></strong></p><p>Recommendations are not actual purchase orders or inventory movements. Product category allocations are illustrative.</p></div>
+      <button class="button" type="button" id="sc-refresh">Refresh Supply Chain Dashboard</button>
+      <section id="procurement-dashboard" class="nora-procurement" aria-labelledby="proc-heading">
+        <div class="pr-heading">
+          <div><h3 id="proc-heading">Procurement Planning</h3>
+          <p>Illustrative supplier quotes, order quantities, and budget. No live supplier connections or purchases.</p></div>
+        </div>
+        <div class="pr-heading-row"><h4>Supplier Directory</h4><button id="pr-add-supplier" type="button" class="button pr-secondary-btn">+ Add Supplier Scenario</button></div>
+        <div class="sc-table-wrap" role="region" tabindex="0" aria-label="Supplier scenarios table">
+          <table class="sc-table">
+            <thead><tr><th scope="col">Supplier</th><th scope="col">Pad cost (CAD)</th><th scope="col">Tampon cost (CAD)</th><th scope="col">Lead time</th><th scope="col">MOQ / product</th><th scope="col">Delivery fee</th><th scope="col">Status</th><th scope="col">Action</th></tr></thead>
+            <tbody id="pr-suppliers"></tbody>
+          </table>
+        </div>
+        <div class="pr-assumptions">
+          <label>Estimated pad share (%) <input id="pr-pad-share" type="number" min="0" max="100" step="1" value="50"></label>
+          <label>Plan with active supplier <select id="pr-selected-supplier"></select></label>
+        </div>
+        <p class="pr-note">Central reserve now tracks pads and tampons separately. Older combined totals are migrated into an estimated 50/50 split; verify category counts before treating them as accurate. Product mix, demand and supplier quotes remain scenario assumptions.</p>
+        <h4>Supplier Cost Comparison</h4>
+        <p class="pr-note">For each active supplier, compare the quantity and total cost required under that supplier's lead time and minimum order assumptions. Longer lead times may increase the quantity needed.</p>
+        <div class="sc-table-wrap" role="region" tabindex="0" aria-label="Supplier cost comparison">
+          <table class="sc-table">
+            <thead><tr><th scope="col">Supplier</th><th scope="col">Lead time</th><th scope="col">Pads to order</th><th scope="col">Tampons to order</th><th scope="col">Product cost</th><th scope="col">Delivery</th><th scope="col">Total estimate</th><th scope="col">Action</th></tr></thead>
+            <tbody id="pr-comparison"></tbody>
+          </table>
+        </div>
+        <h4>Purchase Recommendation</h4>
+        <p class="pr-note">Formula: split basket refill needs and the central safety buffer into estimated pad and tampon demand, subtract each category's reserve, and add the two shortfalls. Minimum order quantities apply afterward.</p>
+        <div class="pr-calculation" aria-label="Procurement quantity calculation">
+          <div><span>Basket refill need</span><strong id="pr-refill-need">0 units</strong></div>
+          <div><span>Central safety buffer</span><strong id="pr-safety-buffer">0 units</strong></div>
+          <div><span>Less central reserve</span><strong id="pr-reserve-offset">0 units</strong></div>
+          <div><span>Net units needed</span><strong id="pr-net-requirement">0 units</strong></div>
+        </div>
+        <div class="sc-table-wrap" role="region" tabindex="0" aria-label="Proposed procurement quantities">
+          <table class="sc-table">
+            <thead><tr><th scope="col">Product</th><th scope="col">Suggested units</th><th scope="col">Order units (MOQ)</th><th scope="col">Unit price</th><th scope="col">Est. product cost</th></tr></thead>
+            <tbody id="pr-recommendations"></tbody>
+          </table>
+        </div>
+        <div class="pr-summary">
+          <div><span>Projected purchase</span><strong id="pr-purchase-total">0 units</strong></div>
+          <div><span>Product subtotal</span><strong id="pr-subtotal">$0.00</strong></div>
+          <div><span>Delivery assumption</span><strong id="pr-delivery">$0.00</strong></div>
+          <div><span>Estimated total</span><strong id="pr-grand-total">$0.00</strong></div>
+        </div>
+        <p id="pr-rationale" class="pr-note" role="status"></p>
+        <button type="button" class="button pr-export" id="pr-copy-plan">Copy Purchase Plan</button>
+      </section>
+    </div>
+    </section>
+
+    <section id="panel-activity" class="admin-tab-panel" role="tabpanel" aria-labelledby="tab-activity" tabindex="0" hidden>
     <h2>Inventory Activity</h2>
 
     <div id="restock-history" class="card">
       <p>No restocking activities recorded yet.</p>
     </div>
+    </section>
 
   </section>
 
