@@ -20,6 +20,16 @@ const baskets = readStoredArray("noraBaskets", defaultBaskets);
 baskets.forEach(basket => {
   if (!Number.isInteger(basket.threshold) || basket.threshold < 0) basket.threshold = 10;
   if (typeof basket.active !== "boolean") basket.active = true;
+  // Existing records only tracked total units. Preserve their total and mark the
+  // initial category allocation as an estimate until an admin verifies the split.
+  const validSplit = Number.isInteger(basket.pads) && basket.pads >= 0 &&
+    Number.isInteger(basket.tampons) && basket.tampons >= 0 &&
+    basket.pads + basket.tampons === basket.stock;
+  if (!validSplit) {
+    basket.pads = Math.floor(Math.max(0, Number(basket.stock) || 0) / 2);
+    basket.tampons = Math.max(0, Number(basket.stock) || 0) - basket.pads;
+    basket.categorySplitEstimated = true;
+  }
 });
 const activeBaskets = () => baskets.filter(basket => basket.active !== false);
 const restockHistory = readStoredArray("noraRestockHistory", []);
@@ -68,15 +78,19 @@ function logChange(basket, change, action) {
   saveHistory();
 }
 
-function changeStock(basket, nextStock, action) {
-  const validStock = Number(nextStock);
-  if (!Number.isInteger(validStock) || validStock < 0 || validStock > basket.capacity) {
-    alert("Enter a whole number between 0 and " + basket.capacity + ".");
+function changeProducts(basket, pads, tampons, action) {
+  if (!Number.isInteger(pads) || !Number.isInteger(tampons) ||
+      pads < 0 || tampons < 0 || pads + tampons > basket.capacity) {
+    alert("Pads and tampons must be non-negative whole numbers within basket capacity (" + basket.capacity + ").");
     return;
   }
-  const change = validStock - basket.stock;
-  if (change === 0) return;
-  basket.stock = validStock;
+  const nextStock = pads + tampons;
+  if (basket.pads === pads && basket.tampons === tampons && !basket.categorySplitEstimated) return;
+  const change = nextStock - basket.stock;
+  basket.pads = pads;
+  basket.tampons = tampons;
+  basket.stock = nextStock;
+  basket.categorySplitEstimated = false;
   saveInventory();
   logChange(basket, change, action);
   renderDashboard();
@@ -110,18 +124,25 @@ function displayInventory() {
     heading.textContent = basket.name;
 
     const quantity = document.createElement("p");
-    quantity.textContent = `Estimated Stock: ${basket.stock} / ${basket.capacity}`;
+    quantity.textContent = `Estimated Stock: ${basket.stock} / ${basket.capacity} (Pads: ${basket.pads}, Tampons: ${basket.tampons})`; 
+    if (basket.categorySplitEstimated) {
+      const note = document.createElement("p");
+      note.textContent = "Category breakdown is estimated from older total-only data. Verify pads and tampons before relying on these values.";
+      note.className = "status-low";
+      card.append(note);
+    }
 
     const status = document.createElement("p");
     status.textContent = `Status: ${getStatus(basket)}`;
     status.className = basket.stock <= basket.threshold ? "status-low" : "status-available";
 
     const restockButton = makeButton("Simulate Restock", () => {
-      changeStock(basket, basket.capacity, "Simulated restock");
+      changeProducts(basket, basket.pads + Math.ceil((basket.capacity - basket.stock) / 2), basket.tampons + Math.floor((basket.capacity - basket.stock) / 2), "Simulated restock");
     });
 
     const lowStockButton = makeButton("Simulate Low Stock", () => {
-      changeStock(basket, Math.min(8, basket.capacity), "Simulated low stock");
+      const low = Math.min(8, basket.capacity);
+      changeProducts(basket, Math.ceil(low / 2), Math.floor(low / 2), "Simulated low stock");
     });
 
     const controls = document.createElement("div");
@@ -130,32 +151,41 @@ function displayInventory() {
     controls.style.gap = "10px";
     controls.append(restockButton, lowStockButton);
 
-    const adjustmentLabel = document.createElement("label");
-    adjustmentLabel.textContent = "Set estimated stock quantity";
-    adjustmentLabel.style.display = "block";
+    const adjustmentLabel = document.createElement("p");
+    adjustmentLabel.textContent = "Set estimated inventory by product type:";
     adjustmentLabel.style.marginTop = "16px";
-
-    const adjustmentInput = document.createElement("input");
-    adjustmentInput.type = "number";
-    adjustmentInput.min = "0";
-    adjustmentInput.max = String(basket.capacity);
-    adjustmentInput.step = "1";
-    adjustmentInput.value = String(basket.stock);
-    adjustmentInput.setAttribute("aria-label", "Estimated stock for " + basket.name);
-    adjustmentInput.style.maxWidth = "100px";
-    adjustmentInput.style.marginRight = "10px";
-
-    const saveButton = makeButton("Save Quantity", () => {
-      if (adjustmentInput.value.trim() === "") {
-        alert("Please enter a quantity.");
+    const padsLabel = document.createElement("label");
+    padsLabel.textContent = "Pads ";
+    const padsInput = document.createElement("input");
+    padsInput.type = "number";
+    padsInput.min = "0";
+    padsInput.step = "1";
+    padsInput.value = String(basket.pads);
+    padsInput.style.width = "85px";
+    padsInput.setAttribute("aria-label", "Pads for " + basket.name);
+    padsLabel.append(padsInput);
+    const tamponsLabel = document.createElement("label");
+    tamponsLabel.textContent = " Tampons ";
+    const tamponsInput = document.createElement("input");
+    tamponsInput.type = "number";
+    tamponsInput.min = "0";
+    tamponsInput.step = "1";
+    tamponsInput.value = String(basket.tampons);
+    tamponsInput.style.width = "85px";
+    tamponsInput.setAttribute("aria-label", "Tampons for " + basket.name);
+    tamponsLabel.append(tamponsInput);
+    const saveButton = makeButton("Save Product Quantities", () => {
+      if (!padsInput.value.trim() || !tamponsInput.value.trim()) {
+        alert("Please enter both product quantities.");
         return;
       }
-      changeStock(basket, Number(adjustmentInput.value), "Manual adjustment");
+      changeProducts(basket, Number(padsInput.value), Number(tamponsInput.value), "Product quantities updated");
     });
-
     const adjustmentRow = document.createElement("div");
-    adjustmentRow.style.marginTop = "8px";
-    adjustmentRow.append(adjustmentInput, saveButton);
+    adjustmentRow.style.display = "flex";
+    adjustmentRow.style.flexWrap = "wrap";
+    adjustmentRow.style.gap = "10px";
+    adjustmentRow.append(padsLabel, tamponsLabel, saveButton);
 
     const settings = document.createElement("div");
     settings.style.marginTop = "18px";
@@ -287,7 +317,7 @@ addBasketForm.addEventListener("submit", event => {
     return;
   }
   const nextId = Math.max(0, ...baskets.map(b => Number(b.id) || 0)) + 1;
-  const basket = { id: nextId, name, stock: 0, capacity, threshold, active: true, products: "Pads and tampons", coordinates: [...selectedCoordinates] };
+  const basket = { id: nextId, name, stock: 0, pads: 0, tampons: 0, categorySplitEstimated: false, capacity, threshold, active: true, products: "Pads and tampons", coordinates: [...selectedCoordinates] };
   baskets.push(basket);
   saveInventory();
   logChange(basket, 0, "Proposed basket added");
