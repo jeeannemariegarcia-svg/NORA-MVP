@@ -522,5 +522,9 @@ function renderDashboard() {
   displayInactiveBaskets();
 }
 
+document.addEventListener("nora-planning-updated", () => {
+  // Reflect reserve edits made in Supply Chain on the selected basket card.
+  displayInventory();
+});
 saveInventory();
 renderDashboard();
