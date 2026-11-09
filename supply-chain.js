@@ -206,5 +206,15 @@
   document.getElementById("sc-refresh").addEventListener("click",render);
   window.addEventListener("storage",e => {if(["noraBaskets","noraSupplySettings","noraBasketDemandRates"].includes(e.key)){settings=loadSettings();render();}});
   document.addEventListener("nora-inventory-updated",render);
+  // A basket restock updates central reserve in another module in this tab.
+  // Reload the shared setting instead of displaying a stale cached quantity.
+  document.addEventListener("nora-planning-updated", () => {
+    settings = loadSettings();
+    ["unitCost","reserve","dailyUsage","leadDays","safetyDays"].forEach(key => {
+      const field = document.getElementById("sc-" + key);
+      if (field && document.activeElement !== field) field.value = settings[key];
+    });
+    render();
+  });
   render();
 })();
