@@ -338,3 +338,37 @@ footer {
   #admin-inventory .nora-basket-card { padding: 16px; }
   .nora-basket-card .basket-input-row .basket-btn-primary { width: 100%; }
 }
+
+/* Admin workspace navigation */
+#admin-dashboard > .admin-tab-panel { padding: 20px 0 12px; min-height: 310px; }
+#admin-dashboard > .admin-tab-panel[hidden] { display: none !important; }
+#admin-dashboard > .admin-tab-panel h2:first-child { margin-top: 4px; }
+.admin-tab-nav {
+  margin-top: 28px;
+  border-bottom: 1px solid #ddd4e8;
+  position: sticky;
+  top: 0;
+  z-index: 400;
+  background: #faf9fd;
+  padding: 5px 0 0;
+}
+.admin-tab-list { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: thin; }
+.admin-tab-list [role="tab"] {
+  flex: 0 0 auto; padding: 12px 16px;
+  border: 0; border-bottom: 3px solid transparent;
+  background: transparent; color: #62596e; cursor: pointer;
+  font: 600 14px/1.3 Arial, sans-serif; white-space: nowrap;
+  border-radius: 5px 5px 0 0;
+}
+.admin-tab-list [role="tab"]:hover { background: #f0ebf7; color: #60418b; }
+.admin-tab-list [role="tab"][aria-selected="true"] {
+  border-bottom-color: #7050a2; color: #59378d; background: #f1ecf8;
+}
+.admin-tab-list [role="tab"]:focus-visible { outline: 2px solid #7050a2; outline-offset: -3px; }
+#panel-basket-setup #add-basket-form { max-width: 900px; }
+#panel-basket-setup #add-basket-form > label { display: block; margin: 12px 0 5px; font-weight: 600; font-size: 13px; }
+#panel-basket-setup #add-basket-form > input { width: 100%; max-width: 350px; padding: 9px; border: 1px solid #cfc2df; border-radius: 5px; }
+@media(max-width: 600px) {
+  #admin-dashboard > .admin-tab-panel { padding-top: 16px; }
+  .admin-tab-list [role="tab"] { padding: 11px 12px; font-size: 13px; }
+}
