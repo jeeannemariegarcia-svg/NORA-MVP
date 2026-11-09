@@ -372,3 +372,52 @@ footer {
   #admin-dashboard > .admin-tab-panel { padding-top: 16px; }
   .admin-tab-list [role="tab"] { padding: 11px 12px; font-size: 13px; }
 }
+
+/* Unified Basket Management workspace */
+#panel-basket-management .bm-heading { display:flex; justify-content:space-between; align-items:center; gap:18px; flex-wrap:wrap; margin-bottom:18px; }
+#panel-basket-management .bm-heading h2 { margin:0 0 6px; }
+#panel-basket-management .bm-heading p { margin:0; color:#685f73; line-height:1.5; }
+#panel-basket-management .bm-layout { display:grid; grid-template-columns:minmax(0, 1.65fr) minmax(250px, 1fr); gap:16px; align-items:stretch; }
+#panel-basket-management .bm-map-panel,
+#panel-basket-management .bm-list-panel,
+#panel-basket-management .bm-add-form {
+  min-width:0; border:1px solid #ded6e7; border-radius:8px; background:#fff;
+  padding:16px; box-shadow:0 2px 8px #25173809;
+}
+#panel-basket-management .bm-panel-heading { display:flex; justify-content:space-between; gap:10px; align-items:baseline; margin-bottom:12px; flex-wrap:wrap; }
+#panel-basket-management .bm-panel-heading h3 { font-size:16px; margin:0; }
+#panel-basket-management .bm-panel-heading span { font-size:12px; color:#71677b; }
+#panel-basket-management #admin-location-map { height:370px; width:100%; border-radius:6px; background:#eeebf3; }
+#panel-basket-management #selected-map-location { margin:12px 0 0; color:#5e526c; font-size:13px; }
+#panel-basket-management .bm-map-actions { display:flex; gap:9px; flex-wrap:wrap; margin-top:12px; }
+#panel-basket-management .bm-map-actions .button,
+#panel-basket-management #toggle-add-basket { border:1px solid transparent; border-radius:5px; cursor:pointer; font-size:13px; padding:10px 14px; }
+#panel-basket-management .bm-secondary { background:#f0edf5; color:#554169; border-color:#ddd2e8 !important; }
+#panel-basket-management .bm-list { display:flex; flex-direction:column; gap:8px; max-height:420px; overflow-y:auto; }
+#panel-basket-management .bm-list-item {
+  text-align:left; background:#faf9fc; color:#332641; border:1px solid #e8e1ee;
+  border-radius:6px; padding:13px; cursor:pointer; display:flex; flex-direction:column; gap:5px; font:inherit;
+}
+#panel-basket-management .bm-list-item strong { font-size:14px; }
+#panel-basket-management .bm-list-item span { font-size:12px; color:#6b6176; }
+#panel-basket-management .bm-list-item:hover { background:#f5f0fa; }
+#panel-basket-management .bm-list-item.is-selected { background:#f1eafa; border-color:#8062aa; box-shadow:inset 3px 0 #7651aa; }
+#panel-basket-management .bm-list-item:focus-visible { outline:2px solid #7050a2; outline-offset:2px; }
+#panel-basket-management .bm-add-form { margin-top:16px; }
+#panel-basket-management .bm-add-form h3 { margin:0 0 8px; }
+#panel-basket-management .bm-add-form p { color:#665b70; font-size:13px; }
+#panel-basket-management .bm-form-fields { display:flex; flex-wrap:wrap; gap:14px; }
+#panel-basket-management .bm-form-fields label { display:flex; flex-direction:column; gap:6px; font-size:13px; font-weight:600; color:#4f425e; }
+#panel-basket-management .bm-form-fields input { min-width:120px; max-width:240px; padding:9px; border:1px solid #cbbddc; border-radius:5px; font:inherit; }
+#panel-basket-management .bm-editor { margin-top:20px; }
+#panel-basket-management .bm-editor > h3 { margin:0 0 12px; }
+#panel-basket-management #admin-inventory { display:block; max-width:780px; margin:0; }
+#panel-basket-management #admin-inventory .nora-basket-card { width:100%; }
+#panel-basket-management .bm-inactive { margin-top:20px; border-top:1px solid #e4ddeb; padding-top:14px; }
+#panel-basket-management .bm-inactive summary { cursor:pointer; font-weight:600; color:#5e4976; }
+#panel-basket-management .bm-inactive #inactive-baskets { margin-top:12px; }
+@media (max-width:800px) {
+  #panel-basket-management .bm-layout { grid-template-columns:minmax(0,1fr); }
+  #panel-basket-management .bm-list { max-height:260px; }
+  #panel-basket-management #admin-location-map { height:320px; }
+}
