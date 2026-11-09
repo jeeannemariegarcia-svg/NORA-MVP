@@ -45,6 +45,7 @@ setTimeout(() => placementMap.invalidateSize(), 300);
 
 function saveInventory() {
   localStorage.setItem("noraBaskets", JSON.stringify(baskets));
+  document.dispatchEvent(new Event("nora-inventory-updated"));
 }
 
 function saveHistory() {
