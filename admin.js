@@ -42,9 +42,90 @@ L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
 let selectedCoordinates = null;
 let selectionMarker = null;
 let movingBasket = null;
+const basketList = document.getElementById("basket-location-list");
+const editorTitle = document.getElementById("basket-editor-title");
+const editorHint = document.getElementById("basket-editor-hint");
+const addFormToggle = document.getElementById("toggle-add-basket");
+const addFormCancel = document.getElementById("cancel-add-basket");
+let selectedBasketId = activeBaskets()[0]?.id ?? null;
+const basketPins = new Map();
+const defaultCoordinates = {
+  1: [51.064, -114.089],
+  2: [51.0645, -114.0875]
+};
+function coordinatesFor(basket) {
+  const coords = basket.coordinates ?? defaultCoordinates[basket.id];
+  return Array.isArray(coords) && coords.length === 2 &&
+    coords.every(n => typeof n === "number" && Number.isFinite(n)) ? coords : null;
+}
+function selectBasket(basket, pan = true) {
+  selectedBasketId = basket.id;
+  displayInventory();
+  renderBasketList();
+  updateBasketPins();
+  const coords = coordinatesFor(basket);
+  if (pan && coords) placementMap.setView(coords, Math.max(placementMap.getZoom(), 17));
+}
+function updateBasketPins() {
+  basketPins.forEach(pin => placementMap.removeLayer(pin));
+  basketPins.clear();
+  activeBaskets().forEach(basket => {
+    const coords = coordinatesFor(basket);
+    if (!coords) return;
+    const pin = L.circleMarker(coords, {
+      radius: basket.id === selectedBasketId ? 12 : 9,
+      color: basket.id === selectedBasketId ? "#302046" : "#fff",
+      weight: basket.id === selectedBasketId ? 3 : 2,
+      fillColor: basket.stock === 0 ? "#cf4356" : basket.stock <= basket.threshold ? "#e3a238" : "#7651aa",
+      fillOpacity: 1
+    }).addTo(placementMap);
+    pin.bindTooltip(basket.name);
+    pin.on("click", e => {
+      L.DomEvent.stopPropagation(e);
+      selectBasket(basket);
+    });
+    basketPins.set(basket.id, pin);
+  });
+}
+function renderBasketList() {
+  basketList.replaceChildren();
+  document.getElementById("basket-active-count").textContent = activeBaskets().length + " active";
+  activeBaskets().forEach(basket => {
+    const item = document.createElement("button");
+    item.type = "button";
+    item.className = "bm-list-item" + (basket.id === selectedBasketId ? " is-selected" : "");
+    item.setAttribute("aria-pressed", String(basket.id === selectedBasketId));
+    const name = document.createElement("strong");
+    name.textContent = basket.name;
+    const summary = document.createElement("span");
+    summary.textContent = basket.stock + " / " + basket.capacity + " units · " + getStatus(basket);
+    item.append(name, summary);
+    item.addEventListener("click", () => selectBasket(basket));
+    basketList.append(item);
+  });
+  if (!activeBaskets().length) basketList.textContent = "No active baskets.";
+}
+function setAddFormVisible(visible) {
+  addBasketForm.hidden = !visible;
+  addFormToggle.setAttribute("aria-expanded", String(visible));
+  addFormToggle.textContent = visible ? "Close Add Basket" : "+ Add Proposed Basket";
+  if (visible) {
+    endMove();
+    addBasketForm.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  } else {
+    addBasketForm.reset();
+    if (selectionMarker) placementMap.removeLayer(selectionMarker);
+    selectionMarker = null;
+    selectedCoordinates = null;
+    selectionLabel.textContent = "Select a basket or open Add Proposed Basket to choose a map position.";
+  }
+}
+addFormToggle.addEventListener("click", () => setAddFormVisible(addBasketForm.hidden));
+addFormCancel.addEventListener("click", () => setAddFormVisible(false));
 const cancelMoveButton = document.getElementById("cancel-map-move");
 const selectionLabel = document.getElementById("selected-map-location");
 placementMap.on("click", event => {
+  if (!movingBasket && addBasketForm.hidden) return;
   selectedCoordinates = [event.latlng.lat, event.latlng.lng];
   if (selectionMarker) placementMap.removeLayer(selectionMarker);
   selectionMarker = L.marker(selectedCoordinates).addTo(placementMap);
@@ -121,6 +202,7 @@ function displayInventory() {
 
   activeBaskets().forEach(basket => {
     const card = document.createElement("div");
+    if (basket.id !== selectedBasketId) return;
     card.className = "card nora-basket-card";
 
     const heading = document.createElement("h3");
@@ -240,12 +322,14 @@ function displayInventory() {
     const deactivateButton = makeButton("Deactivate Basket", () => {
       if (!confirm("Deactivate " + basket.name + "? Its inventory and history will be preserved.")) return;
       basket.active = false;
+      if (selectedBasketId === basket.id) selectedBasketId = activeBaskets()[0]?.id ?? null;
       saveInventory();
       logChange(basket, 0, "Basket deactivated");
       renderDashboard();
     });
     const moveButton = makeButton("Move Map Pin", () => {
-      if (window.NoraAdminTabs) window.NoraAdminTabs.show("basket-setup");
+      if (window.NoraAdminTabs) window.NoraAdminTabs.show("basket-management");
+      setAddFormVisible(false);
       movingBasket = basket;
       selectedCoordinates = null;
       if (selectionMarker) placementMap.removeLayer(selectionMarker);
@@ -272,6 +356,10 @@ function displayInventory() {
     card.append(cardTop, controls, adjustmentLabel, adjustmentRow, settings);
     inventoryContainer.appendChild(card);
   });
+  const selected = activeBaskets().find(b => b.id === selectedBasketId);
+  editorTitle.textContent = selected ? "Editing: " + selected.name : "Selected Basket";
+  editorHint.hidden = Boolean(selected);
+  if (!selected) editorHint.textContent = "Select a basket from the map or list to edit it.";
 }
 
 function displayHistory() {
@@ -297,7 +385,7 @@ function endMove() {
   selectionMarker = null;
   document.getElementById("save-map-move").hidden = true;
   document.getElementById("cancel-map-move").hidden = true;
-  selectionLabel.textContent = "No position selected.";
+  selectionLabel.textContent = "Select a basket or open Add Proposed Basket to choose a map position.";
 }
 document.getElementById("cancel-map-move").addEventListener("click", endMove);
 document.getElementById("save-map-move").addEventListener("click", () => {
@@ -340,13 +428,10 @@ addBasketForm.addEventListener("submit", event => {
   const nextId = Math.max(0, ...baskets.map(b => Number(b.id) || 0)) + 1;
   const basket = { id: nextId, name, stock: 0, pads: 0, tampons: 0, categorySplitEstimated: false, capacity, threshold, active: true, products: "Pads and tampons", coordinates: [...selectedCoordinates] };
   baskets.push(basket);
+  selectedBasketId = basket.id;
   saveInventory();
   logChange(basket, 0, "Proposed basket added");
-  addBasketForm.reset();
-  selectedCoordinates = null;
-  if (selectionMarker) placementMap.removeLayer(selectionMarker);
-  selectionMarker = null;
-  selectionLabel.textContent = "No position selected.";
+  setAddFormVisible(false);
   renderDashboard();
 });
 
@@ -363,6 +448,7 @@ function displayInactiveBaskets() {
     line.append(document.createTextNode(basket.name + " — "));
     line.append(makeButton("Reactivate", () => {
       basket.active = true;
+      selectedBasketId = basket.id;
       saveInventory();
       logChange(basket, 0, "Basket reactivated");
       renderDashboard();
@@ -374,6 +460,8 @@ function displayInactiveBaskets() {
 function renderDashboard() {
   updateDashboard();
   displayInventory();
+  renderBasketList();
+  updateBasketPins();
   displayHistory();
   displayInactiveBaskets();
 }
