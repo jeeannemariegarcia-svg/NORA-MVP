@@ -91,6 +91,38 @@
 
     <h2>Inactive Baskets</h2>
     <div id="inactive-baskets" class="card"></div>
+
+    <section id="supply-chain-dashboard" aria-labelledby="sc-title">
+      <h2 id="sc-title">Supply Chain Operations — Planning Prototype</h2>
+      <p><strong>Simulated planning only.</strong> Stock is read from this browser's NORA basket inventory. Supply reserve, consumption, lead times and costs are illustrative assumptions, not observed SAIT data.</p>
+      <div class="cards">
+        <div class="card"><h3>Active Baskets</h3><strong id="sc-baskets">0</strong></div>
+        <div class="card"><h3>Products Remaining</h3><strong id="sc-stock">0</strong></div>
+        <div class="card"><h3>Restock Alerts</h3><strong id="sc-alerts">0</strong></div>
+        <div class="card"><h3>Cost to Refill All</h3><strong id="sc-refill">$0.00</strong></div>
+      </div>
+      <h3>Planning Assumptions</h3>
+      <div class="card">
+        <p>Adjust these estimates for different pilot scenarios. Changes stay in this browser.</p>
+        <div style="display:flex;flex-wrap:wrap;gap:14px">
+          <label>Unit cost (CAD)<input id="sc-unitCost" type="number" min="0" step="0.01" style="display:block;width:120px"></label>
+          <label>Central reserve (units)<input id="sc-reserve" type="number" min="0" step="1" style="display:block;width:120px"></label>
+          <label>Estimated daily usage (units)<input id="sc-dailyUsage" type="number" min="0" step="1" style="display:block;width:120px"></label>
+          <label>Supplier lead time (days)<input id="sc-leadDays" type="number" min="0" step="1" style="display:block;width:120px"></label>
+          <label>Safety stock coverage (days)<input id="sc-safetyDays" type="number" min="0" step="1" style="display:block;width:120px"></label>
+        </div>
+        <p><strong>Central reserve:</strong> <span id="sc-reserve-display">250 units</span></p>
+        <p id="sc-warning" role="status"></p>
+      </div>
+      <h3>Inventory Health</h3>
+      <div id="sc-list" class="cards"></div>
+      <h3>Restocking Plan</h3>
+      <p>Suggested refill quantity = basket capacity − estimated remaining stock. Product cost excludes labour, transport and storage.</p>
+      <div id="sc-plan" class="cards"></div>
+      <div class="card"><strong>Total estimated product cost: <span id="sc-cost">$0.00</span></strong><p>Recommendations are not actual purchase orders or inventory movements.</p></div>
+      <button class="button" type="button" id="sc-refresh">Refresh Supply Chain Dashboard</button>
+    </section>
+
     <h2>Inventory Activity</h2>
 
     <div id="restock-history" class="card">
