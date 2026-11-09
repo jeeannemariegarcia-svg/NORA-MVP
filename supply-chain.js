@@ -83,7 +83,7 @@
       const pads=key==="reservePads"?n:current.reservePads;
       const tampons=key==="reserveTampons"?n:current.reserveTampons;
       try {
-        window.NoraReserve.write(pads,tampons,false);
+        window.NoraReserve.write(pads,tampons,{verifiedField:key});
       } catch(error) {
         alert("Unable to save central reserve. "+error.message);
         input.value=current[key];
@@ -137,14 +137,14 @@
     els.alerts.textContent = String(alerts.length);
     els.refill.textContent = money(allocatedTotal*settings.unitCost);
     els.reserve.textContent = reserveState.reserve+" units (Pads: "+reserveState.reservePads+" · Tampons: "+reserveState.reserveTampons+")";
-    els.reserveNote.textContent = reserveState.reserveMixEstimated ? "Category split estimated from older total-only reserve records. Verify pad and tampon counts before operational use." : "Pad and tampon quantities are entered scenario values; not verified physical stock.";
+    els.reserveNote.textContent = reserveState.reserveMixEstimated ? "Estimated reserve categories: verify both the pad count and the tampon count separately to clear this estimate flag." : "Both category quantities were entered in this browser; they are not verified physical stock.";
     els.cost.textContent = money(allocatedTotal*settings.unitCost);
     els.allocated.textContent = allocatedTotal+" / "+requestedTotal+" units";
     els.shortage.textContent = shortage+" units";
     const reorderAlert = reserveState.reserve <= reserveReorderPoint
       ? "Reserve reorder alert: stock is at or below the estimated reorder point ("+reserveReorderPoint+" units). "
       : "Reserve reorder point: "+reserveReorderPoint+" units. ";
-    els.warning.textContent = reorderAlert+(shortage>0?"Current reserve cannot cover the full recommended refill plan.":"Current reserve covers the proposed refill plan.");
+    els.warning.textContent = reorderAlert+(shortage>0?"Combined reserve cannot cover the full recommended refill plan.":"Combined reserve covers the proposed refill plan.")+" Category-specific stock is checked when a basket is actually restocked.";
     els.list.replaceChildren();
     els.plan.replaceChildren();
     if (!rows.length) {
