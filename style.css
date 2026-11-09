@@ -257,3 +257,84 @@ footer {
   white-space: normal;
   font-size: 11px;
 }
+
+/* NORA admin — basket management workspace */
+#admin-inventory {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 390px), 1fr));
+  gap: 16px;
+  align-items: start;
+}
+#admin-inventory .nora-basket-card {
+  min-width: 0;
+  padding: 20px;
+  border-radius: 7px;
+  border: 1px solid #ddd5e7;
+  border-left: 3px solid #7651aa;
+  box-shadow: 0 2px 8px #2517380a;
+}
+.nora-basket-card .basket-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid #e9e4ef;
+}
+.nora-basket-card .basket-top h3 { margin: 0 0 6px; font-size: 17px; line-height: 1.3; }
+.nora-basket-card .basket-quantity { margin: 0; color: #615969; font-size: 13px; line-height: 1.5; }
+.nora-basket-card .basket-status { 
+  display: inline-block; padding: 5px 10px; border-radius: 5px;
+  font-size: 12px; font-weight: 700; white-space: nowrap;
+}
+.nora-basket-card .basket-ok { background: #e8f5ed; color: #1b6c41; }
+.nora-basket-card .basket-low { background: #fff0d6; color: #925700; }
+.nora-basket-card .basket-empty { background: #fde7ea; color: #a4263b; }
+.nora-basket-card .basket-simulation-actions,
+.nora-basket-card .basket-footer-actions {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 8px;
+}
+.nora-basket-card .basket-simulation-actions { margin: 14px 0 8px; }
+.nora-basket-card .basket-section-heading {
+  margin: 14px 0 8px; font-size: 13px; font-weight: 700; color: #40334f;
+}
+.nora-basket-card .basket-input-row,
+.nora-basket-card .basket-settings-inputs {
+  display: flex; flex-wrap: wrap; gap: 10px 14px; align-items: end;
+}
+.nora-basket-card .basket-input-row label,
+.nora-basket-card .basket-settings-inputs label {
+  display: flex; flex-direction: column; gap: 5px;
+  font-size: 12px; font-weight: 600; color: #5e5369;
+}
+.nora-basket-card .basket-number-input {
+  width: 95px; min-height: 36px; padding: 7px 9px;
+  border: 1px solid #c8bed2; border-radius: 5px;
+  background: #fff; color: #29253b; font-size: 14px;
+}
+.nora-basket-card .basket-number-input:focus-visible,
+.nora-basket-card .basket-btn:focus-visible { outline: 2px solid #7651aa; outline-offset: 2px; }
+.nora-basket-card .basket-settings {
+  margin-top: 18px; padding-top: 14px; border-top: 1px solid #e9e4ef;
+}
+.nora-basket-card .basket-settings h4 {
+  margin: 0 0 12px; font-size: 14px; color: #352644;
+}
+.nora-basket-card .basket-footer-actions { margin-top: 14px; }
+.nora-basket-card .basket-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 36px; width: auto; padding: 8px 12px;
+  border: 1px solid transparent; border-radius: 5px;
+  font: 600 12px/1.3 Arial, sans-serif; white-space: normal;
+  text-align: center; cursor: pointer;
+}
+.nora-basket-card .basket-btn-primary { background: #7050a2; color: #fff; }
+.nora-basket-card .basket-btn-neutral { background: #f0edf5; border-color: #e1d9eb; color: #4a3b60; }
+.nora-basket-card .basket-btn-outline { background: #fff; border-color: #9275b6; color: #63468a; }
+.nora-basket-card .basket-btn-danger { background: #fff; border-color: #e4bbc1; color: #a13145; }
+.nora-basket-card .basket-btn:hover { filter: brightness(.95); }
+@media (max-width: 520px) {
+  #admin-inventory .nora-basket-card { padding: 16px; }
+  .nora-basket-card .basket-input-row .basket-btn-primary { width: 100%; }
+}
