@@ -181,3 +181,79 @@ footer {
   background: #D94A57;
 }
 
+
+/* NORA Supply Chain — compact, scannable tables */
+#supply-chain-dashboard .sc-table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  margin: 16px 0 24px;
+  background: #fff;
+  border: 1px solid #e8e1ef;
+  border-radius: 12px;
+  box-shadow: 0 2px 10px #00000008;
+}
+#supply-chain-dashboard .sc-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 820px;
+  font-size: 14px;
+  line-height: 1.4;
+}
+#supply-chain-dashboard .sc-table th {
+  text-align: left;
+  background: #f3eff8;
+  color: #4a3564;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+#supply-chain-dashboard .sc-table th,
+#supply-chain-dashboard .sc-table td {
+  padding: 12px 13px;
+  border-bottom: 1px solid #eeeaf2;
+  vertical-align: middle;
+}
+#supply-chain-dashboard .sc-table tbody tr:last-child td { border-bottom: 0; }
+#supply-chain-dashboard .sc-table tbody tr:nth-child(even) { background: #fcfbfe; }
+#supply-chain-dashboard .sc-table tbody tr:hover { background: #f8f3fc; }
+#supply-chain-dashboard .sc-location {
+  min-width: 175px;
+  font-weight: 600;
+  color: #30213d;
+}
+#supply-chain-dashboard .sc-number {
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+#supply-chain-dashboard .sc-demand-input {
+  width: 70px;
+  padding: 7px 8px;
+  font: inherit;
+  border: 1px solid #c7b9d6;
+  border-radius: 6px;
+  background: #fff;
+  color: #29253b;
+}
+#supply-chain-dashboard .sc-demand-input:focus-visible {
+  outline: 2px solid #7050a2;
+  outline-offset: 2px;
+}
+#supply-chain-dashboard .sc-pill {
+  display: inline-block;
+  padding: 4px 9px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+#supply-chain-dashboard .sc-ok { background: #e8f5ed; color: #236b40; }
+#supply-chain-dashboard .sc-low { background: #fff2d8; color: #925700; }
+#supply-chain-dashboard .sc-empty { background: #fde8e8; color: #a02833; }
+#supply-chain-dashboard .sc-neutral { background: #eeeaf2; color: #665a71; }
+#supply-chain-dashboard .sc-note {
+  display: block;
+  margin-top: 3px;
+  color: #925700;
+  white-space: normal;
+  font-size: 11px;
+}
