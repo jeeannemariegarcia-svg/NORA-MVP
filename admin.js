@@ -118,13 +118,20 @@ function displayInventory() {
 
   activeBaskets().forEach(basket => {
     const card = document.createElement("div");
-    card.className = "card";
+    card.className = "card nora-basket-card";
 
     const heading = document.createElement("h3");
     heading.textContent = basket.name;
 
+    const cardTop = document.createElement("div");
+    cardTop.className = "basket-top";
+    const headingWrap = document.createElement("div");
+    headingWrap.append(heading);
+
     const quantity = document.createElement("p");
     quantity.textContent = `Estimated Stock: ${basket.stock} / ${basket.capacity} (Pads: ${basket.pads}, Tampons: ${basket.tampons})`; 
+    quantity.className = "basket-quantity";
+    headingWrap.append(quantity);
     if (basket.categorySplitEstimated) {
       const note = document.createElement("p");
       note.textContent = "Category breakdown is estimated from older total-only data. Verify pads and tampons before relying on these values.";
@@ -133,8 +140,9 @@ function displayInventory() {
     }
 
     const status = document.createElement("p");
-    status.textContent = `Status: ${getStatus(basket)}`;
-    status.className = basket.stock <= basket.threshold ? "status-low" : "status-available";
+    status.textContent = getStatus(basket);
+    status.className = "basket-status " + (basket.stock === 0 ? "basket-empty" : basket.stock <= basket.threshold ? "basket-low" : "basket-ok");
+    cardTop.append(headingWrap, status);
 
     const restockButton = makeButton("Simulate Restock", () => {
       changeProducts(basket, basket.pads + Math.ceil((basket.capacity - basket.stock) / 2), basket.tampons + Math.floor((basket.capacity - basket.stock) / 2), "Simulated restock");
@@ -146,14 +154,14 @@ function displayInventory() {
     });
 
     const controls = document.createElement("div");
-    controls.style.display = "flex";
-    controls.style.flexWrap = "wrap";
-    controls.style.gap = "10px";
+    controls.className = "basket-simulation-actions";
+    restockButton.className = "button basket-btn basket-btn-neutral";
+    lowStockButton.className = "button basket-btn basket-btn-neutral";
     controls.append(restockButton, lowStockButton);
 
     const adjustmentLabel = document.createElement("p");
     adjustmentLabel.textContent = "Set estimated inventory by product type:";
-    adjustmentLabel.style.marginTop = "16px";
+    adjustmentLabel.className = "basket-section-heading";
     const padsLabel = document.createElement("label");
     padsLabel.textContent = "Pads ";
     const padsInput = document.createElement("input");
@@ -161,7 +169,7 @@ function displayInventory() {
     padsInput.min = "0";
     padsInput.step = "1";
     padsInput.value = String(basket.pads);
-    padsInput.style.width = "85px";
+    padsInput.className = "basket-number-input";
     padsInput.setAttribute("aria-label", "Pads for " + basket.name);
     padsLabel.append(padsInput);
     const tamponsLabel = document.createElement("label");
@@ -171,7 +179,7 @@ function displayInventory() {
     tamponsInput.min = "0";
     tamponsInput.step = "1";
     tamponsInput.value = String(basket.tampons);
-    tamponsInput.style.width = "85px";
+    tamponsInput.className = "basket-number-input";
     tamponsInput.setAttribute("aria-label", "Tampons for " + basket.name);
     tamponsLabel.append(tamponsInput);
     const saveButton = makeButton("Save Product Quantities", () => {
@@ -182,13 +190,12 @@ function displayInventory() {
       changeProducts(basket, Number(padsInput.value), Number(tamponsInput.value), "Product quantities updated");
     });
     const adjustmentRow = document.createElement("div");
-    adjustmentRow.style.display = "flex";
-    adjustmentRow.style.flexWrap = "wrap";
-    adjustmentRow.style.gap = "10px";
+    adjustmentRow.className = "basket-input-row";
+    saveButton.className = "button basket-btn basket-btn-primary";
     adjustmentRow.append(padsLabel, tamponsLabel, saveButton);
 
     const settings = document.createElement("div");
-    settings.style.marginTop = "18px";
+    settings.className = "basket-settings";
     const settingsHeading = document.createElement("h4");
     settingsHeading.textContent = "Basket settings";
     const capacityLabel = document.createElement("label");
@@ -198,7 +205,7 @@ function displayInventory() {
     capacityInput.min = "1";
     capacityInput.step = "1";
     capacityInput.value = basket.capacity;
-    capacityInput.style.width = "85px";
+    capacityInput.className = "basket-number-input";
     capacityInput.setAttribute("aria-label", "Capacity for " + basket.name);
     capacityLabel.append(capacityInput);
     const thresholdLabel = document.createElement("label");
@@ -208,7 +215,7 @@ function displayInventory() {
     thresholdInput.min = "0";
     thresholdInput.step = "1";
     thresholdInput.value = basket.threshold;
-    thresholdInput.style.width = "85px";
+    thresholdInput.className = "basket-number-input";
     thresholdInput.setAttribute("aria-label", "Low-stock threshold for " + basket.name);
     thresholdLabel.append(thresholdInput);
     const saveSettings = makeButton("Save Basket Settings", () => {
@@ -247,8 +254,18 @@ function displayInventory() {
       placementMap.invalidateSize();
       placementMap.getContainer().scrollIntoView({ behavior: "smooth", block: "center" });
     });
-    settings.append(settingsHeading, capacityLabel, thresholdLabel, document.createElement("p"), saveSettings, document.createTextNode(" "), deactivateButton, document.createTextNode(" "), moveButton);
-    card.append(heading, quantity, status, controls, adjustmentLabel, adjustmentRow, settings);
+    const settingsInputs = document.createElement("div");
+    settingsInputs.className = "basket-settings-inputs";
+    settingsInputs.append(capacityLabel, thresholdLabel);
+
+    const actionRow = document.createElement("div");
+    actionRow.className = "basket-footer-actions";
+    saveSettings.className = "button basket-btn basket-btn-neutral";
+    moveButton.className = "button basket-btn basket-btn-outline";
+    deactivateButton.className = "button basket-btn basket-btn-danger";
+    actionRow.append(saveSettings, moveButton, deactivateButton);
+    settings.append(settingsHeading, settingsInputs, actionRow);
+    card.append(cardTop, controls, adjustmentLabel, adjustmentRow, settings);
     inventoryContainer.appendChild(card);
   });
 }
