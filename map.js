@@ -118,19 +118,38 @@ function updateMapMarkers() {
       icon: customIcon
     }).addTo(campusMap);
 
-    // Display inventory popup
-    marker.bindPopup(`
-      <div class="nora-map-popup">
-        <strong>${location.name}</strong>
-        <p>Status: ${status}</p>
-        <p>Estimated Stock: ${quantity}</p>
-        <small>Simulated demonstration data</small>
-      </div>
-    `);
+    // DOM-based popup avoids injecting mutable building names as HTML.
+    const popup=document.createElement("div");
+    popup.className="nora-map-popup";
+    const heading=document.createElement("strong");heading.textContent=location.name;
+    const statusLine=document.createElement("p");statusLine.textContent="Demo status: "+status;
+    const quantityLine=document.createElement("p");quantityLine.textContent="Estimated products: "+quantity;
+    const warning=document.createElement("small");
+    warning.textContent="Proposed building, not a verified washroom or stocked location.";
+    const select=document.createElement("button");
+    select.type="button";select.className="nora-map-card-link";
+    select.textContent="View building card";
+    select.addEventListener("click",()=>document.dispatchEvent(
+      new CustomEvent("nora-map-location-selected",{detail:{id:location.id}})));
+    popup.append(heading,statusLine,quantityLine,warning,select);
+    marker.bindPopup(popup);
+    marker.on("click",()=>document.dispatchEvent(
+      new CustomEvent("nora-map-location-selected",{detail:{id:location.id}})));
 
     markers.set(location.id, marker);
   });
 }
+
+// Card selection and map pins stay connected in both directions.
+document.addEventListener("nora-location-selected",event=>{
+  const id=event.detail?.id;
+  if(id===undefined||id===null){campusMap.closePopup();return;}
+  const matching=markers.get(id);
+  if(!matching)return;
+  campusMap.setView(matching.getLatLng(),18);
+  matching.openPopup();
+  if(event.detail?.scroll)document.getElementById("campus-map")?.scrollIntoView({behavior:"smooth",block:"center"});
+});
 
 // Display initial markers
 updateMapMarkers();
