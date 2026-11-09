@@ -121,47 +121,84 @@
     els.list.replaceChildren();
     els.plan.replaceChildren();
     if (!rows.length) {
-      els.list.textContent = "No active baskets. Add a proposed basket in Basket Management.";
-      els.plan.textContent = "No refill plan available.";
+      const emptyInventory = document.createElement("tr");
+      const emptyInventoryCell = document.createElement("td");
+      emptyInventoryCell.colSpan = 8;
+      emptyInventoryCell.textContent = "No active baskets. Add a proposed basket in Basket Management.";
+      emptyInventory.append(emptyInventoryCell);
+      els.list.append(emptyInventory);
+      const emptyPlan = document.createElement("tr");
+      const emptyPlanCell = document.createElement("td");
+      emptyPlanCell.colSpan = 8;
+      emptyPlanCell.textContent = "No refill plan available.";
+      emptyPlan.append(emptyPlanCell);
+      els.plan.append(emptyPlan);
       return;
     }
+    const cell = (tr, value, className) => {
+      const td = document.createElement("td");
+      if (className) td.className = className;
+      if (value instanceof Node) td.append(value);
+      else td.textContent = value;
+      tr.append(td);
+      return td;
+    };
     rows.forEach(row => {
       const {b,stock,capacity,threshold,usage,days} = row;
-      const card = element("div","");
-      card.className = "card";
-      card.append(element("h4",b.name));
-      card.append(element("p",stock+" / "+capacity+" products · Pads: "+(b.pads||0)+" · Tampons: "+(b.tampons||0)+" · Low-stock threshold: "+threshold));
-      if (b.categorySplitEstimated) card.append(element("p","Product breakdown is estimated—verify actual counts.","status-low"));
-      const label = document.createElement("label");
-      label.textContent = "Estimated daily demand (units) ";
+      const tr = document.createElement("tr");
+      cell(tr,b.name,"sc-location");
+      const qty = document.createElement("span");
+      qty.textContent = stock+" / "+capacity;
+      const qtyCell = cell(tr,qty,"sc-number");
+      if (b.categorySplitEstimated) {
+        const note = document.createElement("small");
+        note.className = "sc-note";
+        note.textContent = "Category split estimated";
+        qtyCell.append(note);
+      }
+      cell(tr,String(b.pads ?? 0),"sc-number");
+      cell(tr,String(b.tampons ?? 0),"sc-number");
+      cell(tr,String(threshold),"sc-number");
       const input = document.createElement("input");
-      input.type = "number";input.min = "0";input.step = "1";input.value = String(usage);input.style.width = "80px";
+      input.type = "number";
+      input.min = "0"; input.step = "1";
+      input.value = String(usage);
+      input.className = "sc-demand-input";
       input.setAttribute("aria-label","Estimated daily demand for "+b.name);
-      input.addEventListener("change",()=>{
-        const raw=input.value.trim(), n=Number(raw);
-        if(raw==="" || !Number.isInteger(n) || n<0) {
+      input.addEventListener("change", () => {
+        const raw = input.value.trim(), n = Number(raw);
+        if(raw === "" || !Number.isInteger(n) || n < 0) {
           alert("Enter a non-negative whole number for daily demand.");
-          input.value=String(usage);return;
+          input.value = String(usage); return;
         }
-        rates[String(b.id)]=n;saveRates();render();
+        rates[String(b.id)] = n;
+        saveRates();
+        render();
       });
-      label.append(input);
-      card.append(label,element("p",usage>0?"Estimated days of supply: "+days.toFixed(1):"Estimated days of supply: no demand assumed"));
-      els.list.append(card);
+      cell(tr,input,"sc-number");
+      cell(tr,usage > 0 ? days.toFixed(1) : "—","sc-number");
+      const indicator = document.createElement("span");
+      indicator.className = stock === 0 ? "sc-pill sc-empty" : stock <= threshold ? "sc-pill sc-low" : "sc-pill sc-ok";
+      indicator.textContent = stock === 0 ? "Empty" : stock <= threshold ? "Low" : "Available";
+      cell(tr,indicator);
+      els.list.append(tr);
     });
-    ranked.forEach(row => {
-      const {b,stock,usage,requested,allocated,target} = row;
-      const card = element("div","");
-      card.className="card";
-      card.append(element("h4",b.name));
-      const proposedPads = Math.ceil(allocated/2);
-      const proposedTampons = allocated-proposedPads;
-      card.append(element("p","Target inventory: "+target+" units · Current: "+stock+" · Estimated usage: "+usage+"/day"));
-      card.append(element("p","Requested: "+requested+" units · Allocated from reserve: "+allocated+" units"));
-      card.append(element("p","Illustrative product mix: +"+proposedPads+" pads, +"+proposedTampons+" tampons. Verify demand and product availability."));
-      const status=allocated<requested?"Reserve shortage":requested===0?"No refill indicated":"Planned allocation";
-      card.append(element("strong",status+" · Estimated cost "+money(allocated*settings.unitCost),allocated<requested?"status-low":"status-available"));
-      els.plan.append(card);
+    ranked.forEach((row,index) => {
+      const {b,stock,requested,allocated,target} = row;
+      const tr = document.createElement("tr");
+      cell(tr,String(index+1),"sc-number");
+      cell(tr,b.name,"sc-location");
+      cell(tr,String(stock),"sc-number");
+      cell(tr,String(target),"sc-number");
+      cell(tr,String(requested),"sc-number");
+      cell(tr,String(allocated),"sc-number");
+      const status = allocated < requested ? "Shortage" : requested === 0 ? "No refill" : "Planned";
+      const indicator = document.createElement("span");
+      indicator.className = allocated < requested ? "sc-pill sc-empty" : requested === 0 ? "sc-pill sc-neutral" : "sc-pill sc-ok";
+      indicator.textContent = status;
+      cell(tr,indicator);
+      cell(tr,money(allocated * settings.unitCost),"sc-number");
+      els.plan.append(tr);
     });
   }
   document.getElementById("sc-refresh").addEventListener("click",render);
