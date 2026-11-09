@@ -51,6 +51,9 @@ placementMap.on("click", event => {
   selectionLabel.textContent = (movingBasket ? "New position for " + movingBasket.name : "Selected proposed position") + ": " + selectedCoordinates.map(n => n.toFixed(6)).join(", ");
 });
 setTimeout(() => placementMap.invalidateSize(), 300);
+document.addEventListener("nora-map-visible", () => {
+  setTimeout(() => placementMap.invalidateSize(), 0);
+});
 
 
 function saveInventory() {
@@ -242,6 +245,7 @@ function displayInventory() {
       renderDashboard();
     });
     const moveButton = makeButton("Move Map Pin", () => {
+      if (window.NoraAdminTabs) window.NoraAdminTabs.show("basket-setup");
       movingBasket = basket;
       selectedCoordinates = null;
       if (selectionMarker) placementMap.removeLayer(selectionMarker);
