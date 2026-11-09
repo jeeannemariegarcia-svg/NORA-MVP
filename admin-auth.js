@@ -40,7 +40,7 @@ onAuthStateChanged(auth, async (user) => {
   // STEP 3: Load inventory code only after login.
   if (!dashboardInitialized) {
     try {
-      await import("./admin.js?v=11");
+      await import("./admin.js?v=12");
       await import("./supply-chain.js?v=4");
       dashboardInitialized = true;
     } catch (error) {
