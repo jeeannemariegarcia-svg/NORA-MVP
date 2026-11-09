@@ -186,7 +186,7 @@
     }
     document.getElementById("pr-refill-need").textContent=(chosen?.refillNeed ?? 0)+" units";
     document.getElementById("pr-safety-buffer").textContent=(chosen?.safetyReserveTarget ?? 0)+" units";
-    document.getElementById("pr-reserve-offset").textContent=(chosen?.reserve ?? 0)+" units";
+    document.getElementById("pr-reserve-offset").textContent=chosen?(chosen.reservePads+" pads · "+chosen.reserveTampons+" tampons"):"0 units";
     document.getElementById("pr-net-requirement").textContent=(chosen?.suggested ?? 0)+" units";
     document.getElementById("pr-purchase-total").textContent=chosen?(chosen.padOrder+chosen.tamponOrder)+" units":"0 units";
     document.getElementById("pr-subtotal").textContent=money(chosen?.subtotal||0);
@@ -196,9 +196,10 @@
       "Scenario: "+chosen.baskets+" active baskets · "+chosen.dailyTotal+" units/day estimated demand · "+
       chosen.horizon+" days lead + safety coverage in basket targets · "+chosen.refillNeed+
       " units for indicated basket refills + "+chosen.safetyReserveTarget+
-      " units central safety buffer − "+chosen.reserve+
-      " assumed central reserve = "+chosen.suggested+
-      " units to purchase before MOQ rounding. This is a planning snapshot, not a purchase order.":
+      " units central safety buffer. Reserve has "+chosen.reservePads+
+      " pads and "+chosen.reserveTampons+" tampons. Category-specific gaps total "+
+      chosen.suggested+
+      " units before MOQ rounding. A surplus of one category cannot cover another. This is a simulated planning snapshot.":
       "No active supplier selected. All quotes and purchasing quantities are simulated.";
     lastPlan=chosen?[
       "NORA — Simulated Procurement Plan","Supplier: "+chosen.supplier.name,
