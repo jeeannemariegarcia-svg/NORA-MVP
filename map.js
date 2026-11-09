@@ -41,7 +41,9 @@ function getMapInventory() {
   try {
     const saved = localStorage.getItem("noraBaskets");
 
-    return saved ? JSON.parse(saved) : [];
+    if(!saved) return typeof defaultBaskets!=="undefined" ? defaultBaskets : [];
+    const parsed=JSON.parse(saved);
+    return Array.isArray(parsed)?parsed:[];
   } catch (error) {
     console.error("Unable to load map inventory:", error);
     return [];
