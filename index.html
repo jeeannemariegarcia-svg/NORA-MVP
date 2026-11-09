@@ -6,7 +6,7 @@
   <meta name="description" content="NORA is a SAIT BBA capstone proposal exploring menstrual product access, education, and simulated campus basket locations.">
   <title>NORA | You know where to find it. Period.</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=9">
+  <link rel="stylesheet" href="style.css?v=10">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
 <body class="student-site">
@@ -15,14 +15,18 @@
     <a href="#home" class="student-brand" aria-label="NORA home">
       <img src="assets/nora-logo.png" alt="NORA flower logo" width="156" height="79">
     </a>
-    <nav aria-label="Main navigation">
-      <a href="#about">About NORA</a>
-      <a href="#locations">Explore Locations</a>
-      <a href="#learn">Period 101</a>
+    <nav class="student-top-nav" aria-label="Main navigation">
+      <div class="student-tab-list" role="tablist" aria-label="Student website sections">
+        <button id="tab-home" type="button" role="tab" aria-controls="panel-home" aria-selected="true" tabindex="0" data-tab="home">Home</button>
+        <button id="tab-locations" type="button" role="tab" aria-controls="panel-locations" aria-selected="false" tabindex="-1" data-tab="locations">Find Products</button>
+        <button id="tab-learn" type="button" role="tab" aria-controls="panel-learn" aria-selected="false" tabindex="-1" data-tab="learn">Period 101</button>
+        <button id="tab-about" type="button" role="tab" aria-controls="panel-about" aria-selected="false" tabindex="-1" data-tab="about">About NORA</button>
+      </div>
       <a href="login.html" class="student-admin-link">Admin</a>
     </nav>
   </header>
   <main id="main">
+    <div id="panel-home" class="student-tab-panel" role="tabpanel" aria-labelledby="tab-home" tabindex="0">
     <section id="home" class="student-hero">
       <div class="student-hero-copy">
         <p class="student-eyebrow">SAIT BBA CAPSTONE · PROPOSED PILOT</p>
@@ -40,18 +44,8 @@
         <div class="student-orbit-label">Access · Awareness · Care</div>
       </div>
     </section>
-    <section id="about" class="student-section student-about">
-      <div class="student-section-head">
-        <p class="student-eyebrow">MEET NORA</p>
-        <h2>Access shouldn't be a guessing game.</h2>
-        <p>NORA is a proposed menstrual-access system designed to make period supplies easier to find and manage. It connects a basket-based distribution concept with a campus locator and a restocking dashboard.</p>
-      </div>
-      <div class="student-feature-grid">
-        <article class="student-feature"><span class="student-step">01</span><h3>Washroom baskets</h3><p>Proposed baskets would provide a designated point of access to pads and tampons in selected campus washrooms.</p></article>
-        <article class="student-feature"><span class="student-step">02</span><h3>Restocking dashboard</h3><p>A simulated inventory workflow helps demonstrate how stock levels, shortages, and refill priorities could be managed.</p></article>
-        <article class="student-feature"><span class="student-step">03</span><h3>Online campus map</h3><p>A searchable location finder shows proposed basket locations and example availability before a student heads to a building.</p></article>
-      </div>
-    </section>
+    </div>
+    <div id="panel-locations" class="student-tab-panel" role="tabpanel" aria-labelledby="tab-locations" hidden tabindex="0">
     <section id="locations" class="student-section student-locations">
       <div class="student-section-head">
         <p class="student-eyebrow">EXPLORE THE PROTOTYPE</p>
@@ -70,6 +64,8 @@
         <p class="map-disclaimer">Approximate demonstration points, not directions to a confirmed washroom or free period products. Inventory is simulated in this browser.</p>
       </div>
     </section>
+    </div>
+    <div id="panel-learn" class="student-tab-panel" role="tabpanel" aria-labelledby="tab-learn" hidden tabindex="0">
     <section id="learn" class="student-section student-learn">
       <div class="student-section-head">
         <p class="student-eyebrow">PERIOD 101</p>
@@ -92,6 +88,20 @@
         </div>
       </div>
     </section>
+    </div>
+    <div id="panel-about" class="student-tab-panel" role="tabpanel" aria-labelledby="tab-about" hidden tabindex="0">
+    <section id="about" class="student-section student-about">
+      <div class="student-section-head">
+        <p class="student-eyebrow">MEET NORA</p>
+        <h2>Access shouldn't be a guessing game.</h2>
+        <p>NORA is a proposed menstrual-access system designed to make period supplies easier to find and manage. It connects a basket-based distribution concept with a campus locator and a restocking dashboard.</p>
+      </div>
+      <div class="student-feature-grid">
+        <article class="student-feature"><span class="student-step">01</span><h3>Washroom baskets</h3><p>Proposed baskets would provide a designated point of access to pads and tampons in selected campus washrooms.</p></article>
+        <article class="student-feature"><span class="student-step">02</span><h3>Restocking dashboard</h3><p>A simulated inventory workflow helps demonstrate how stock levels, shortages, and refill priorities could be managed.</p></article>
+        <article class="student-feature"><span class="student-step">03</span><h3>Online campus map</h3><p>A searchable location finder shows proposed basket locations and example availability before a student heads to a building.</p></article>
+      </div>
+    </section>
     <section id="equity" class="student-section student-equity">
       <div class="student-equity-inner"><p class="student-eyebrow">MENSTRUAL EQUITY</p><h2>Period poverty isn't only about products.</h2><p>Difficulty accessing menstrual supplies can also involve cost, lack of information, stigma, or not knowing where to go. NORA's proposed approach focuses on clear location information, a simple distribution model, and respectful conversations.</p><p>Whether you menstruate or you're supporting someone who does, menstrual equity is a campus-wide issue.</p><a class="button" href="#locations">Explore the NORA concept</a></div>
     </section>
@@ -99,6 +109,7 @@
       <h2>Built for a SAIT business capstone.</h2>
       <p>NORA is a student-developed proposal, not an official SAIT service. The website demonstrates a potential future experience while our team studies feasibility, accessibility, and operating requirements.</p>
     </section>
+    </div>
   </main>
   <footer class="student-footer">
     <div class="student-footer-brand"><img src="assets/nora-logo.png" alt="NORA" width="122" height="62"><span>You know where to find it. Period.</span></div>
@@ -107,5 +118,6 @@
   <script src="script.js?v=8"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="map.js?v=7"></script>
+  <script src="student-tabs.js?v=1"></script>
 </body>
 </html>
