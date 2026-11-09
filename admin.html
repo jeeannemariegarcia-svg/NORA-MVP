@@ -156,7 +156,7 @@
         </table>
       </div>
       <h3>Restocking Plan</h3>
-      <p>Refill proposals are based on estimated daily demand, supplier lead time, safety days and basket alerts. Limited central reserve is allocated to the highest-priority baskets first. Planning does not change inventory or place orders. Product cost excludes labour, transport and storage.</p>
+      <p>Refill proposals are based on estimated daily demand, supplier lead time, safety days and basket alerts. Limited combined central reserve is allocated in this planning table. Actual simulated transfers are constrained by pad and tampon balances. Planning does not change inventory or place orders. Product cost excludes labour, transport and storage.</p>
       <div class="sc-table-wrap" tabindex="0" role="region" aria-label="Restocking plan table">
         <table class="sc-table">
           <thead><tr><th scope="col">Priority</th><th scope="col">Location</th><th scope="col">Current</th><th scope="col">Target</th><th scope="col">Requested</th><th scope="col">Allocated</th><th scope="col">Status</th><th scope="col">Est. cost</th></tr></thead>
@@ -181,7 +181,7 @@
           <label>Estimated pad share (%) <input id="pr-pad-share" type="number" min="0" max="100" step="1" value="50"></label>
           <label>Plan with active supplier <select id="pr-selected-supplier"></select></label>
         </div>
-        <p class="pr-note">Central reserve is currently tracked as a combined total, not separate pad and tampon stock. Product mix and supplier quotes are scenario assumptions, not verified inventory or quotations.</p>
+        <p class="pr-note">Central reserve now tracks pads and tampons separately. Older combined totals are migrated into an estimated 50/50 split; verify category counts before treating them as accurate. Product mix, demand and supplier quotes remain scenario assumptions.</p>
         <h4>Supplier Cost Comparison</h4>
         <p class="pr-note">For each active supplier, compare the quantity and total cost required under that supplier's lead time and minimum order assumptions. Longer lead times may increase the quantity needed.</p>
         <div class="sc-table-wrap" role="region" tabindex="0" aria-label="Supplier cost comparison">
@@ -191,7 +191,7 @@
           </table>
         </div>
         <h4>Purchase Recommendation</h4>
-        <p class="pr-note">Formula: indicated basket refill units + central safety buffer − available central reserve. Minimum order quantities apply afterward. Basket targets already cover supplier lead time; lead-time demand is not counted twice.</p>
+        <p class="pr-note">Formula: split basket refill needs and the central safety buffer into estimated pad and tampon demand, subtract each category's reserve, and add the two shortfalls. Minimum order quantities apply afterward.</p>
         <div class="pr-calculation" aria-label="Procurement quantity calculation">
           <div><span>Basket refill need</span><strong id="pr-refill-need">0 units</strong></div>
           <div><span>Central safety buffer</span><strong id="pr-safety-buffer">0 units</strong></div>
