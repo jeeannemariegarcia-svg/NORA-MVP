@@ -127,14 +127,19 @@
     // units again. This is a snapshot estimate without in-transit orders.
     const safetyReserveTarget=dailyTotal*supply.safetyDays;
     const grossRequirement=refillNeed+safetyReserveTarget;
-    const suggested=Math.max(0,grossRequirement-supply.reserve);
-    const pads=Math.round(suggested*padShare/100);
-    const tampons=suggested-pads;
+    // A surplus of tampons cannot cover a shortage of pads (or vice versa).
+    // Use per-category central reserve counts rather than subtracting one pool.
+    const central=window.NoraReserve.read();
+    const grossPads=Math.round(grossRequirement*padShare/100);
+    const grossTampons=grossRequirement-grossPads;
+    const pads=Math.max(0,grossPads-central.reservePads);
+    const tampons=Math.max(0,grossTampons-central.reserveTampons);
+    const suggested=pads+tampons;
     const round=n=>n===0?0:Math.ceil(n/supplier.moq)*supplier.moq;
     const padOrder=round(pads),tamponOrder=round(tampons);
     const subtotal=padOrder*supplier.padCost+tamponOrder*supplier.tamponCost;
     const delivery=padOrder+tamponOrder>0?supplier.deliveryFee:0;
-    return {supplier,horizon,baskets:baskets.length,dailyTotal,reserve:supply.reserve,refillNeed,safetyReserveTarget,grossRequirement,suggested,pads,tampons,padOrder,tamponOrder,subtotal,delivery,total:subtotal+delivery};
+    return {supplier,horizon,baskets:baskets.length,dailyTotal,reserve:supply.reserve,reservePads:central.reservePads,reserveTampons:central.reserveTampons,refillNeed,safetyReserveTarget,grossRequirement,suggested,pads,tampons,padOrder,tamponOrder,subtotal,delivery,total:subtotal+delivery};
   }
   let lastPlan="";
   function render() {
@@ -202,7 +207,7 @@
       "Required basket refills: "+chosen.refillNeed+" units",
       "Central safety buffer: "+chosen.safetyReserveTarget+" units",
       "Gross requirement: "+chosen.grossRequirement+" units",
-      "Less available reserve: "+chosen.reserve+" units",
+      "Reserve: "+chosen.reservePads+" pads and "+chosen.reserveTampons+" tampons",
       "Suggested requirement before MOQ: "+chosen.suggested+" units",
       "Pads: "+chosen.padOrder+" units at "+money(chosen.supplier.padCost),
       "Tampons: "+chosen.tamponOrder+" units at "+money(chosen.supplier.tamponCost),
