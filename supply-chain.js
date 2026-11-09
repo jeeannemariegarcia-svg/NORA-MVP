@@ -4,7 +4,7 @@
   const root = document.getElementById("supply-chain-dashboard");
   if (!root) return;
   const money = n => new Intl.NumberFormat("en-CA", {style:"currency",currency:"CAD"}).format(n);
-  const defaults = {unitCost:0.25,reserve:250,dailyUsage:5,leadDays:3,safetyDays:2};
+  const defaults = {unitCost:0.25,dailyUsage:5,leadDays:3,safetyDays:2};
   const nonNegative = n => typeof n === "number" && Number.isFinite(n) && n >= 0;
   function loadSettings() {
     let stored = {};
@@ -17,6 +17,7 @@
     return clean;
   }
   let settings = loadSettings();
+  let reserveState = window.NoraReserve.read();
   let rates = {};
   try {
     const saved = JSON.parse(localStorage.getItem("noraBasketDemandRates") || "{}");
@@ -30,6 +31,7 @@
     list: document.getElementById("sc-list"),
     plan: document.getElementById("sc-plan"),
     reserve: document.getElementById("sc-reserve-display"),
+    reserveNote: document.getElementById("sc-reserve-note"),
     cost: document.getElementById("sc-cost"),
     warning: document.getElementById("sc-warning"),
     allocated: document.getElementById("sc-allocated"),
@@ -50,21 +52,42 @@
     localStorage.setItem("noraBasketDemandRates", JSON.stringify(rates));
     document.dispatchEvent(new Event("nora-planning-updated"));
   }
-  ["unitCost","reserve","dailyUsage","leadDays","safetyDays"].forEach(key => {
-    const input = document.getElementById("sc-" + key);
-    input.value = settings[key];
-    input.addEventListener("change", () => {
-      const raw = input.value.trim();
-      const n = Number(raw);
-      if (raw === "" || !nonNegative(n) || (key !== "unitCost" && !Number.isInteger(n))) {
-        input.value = settings[key];
-        alert("Enter a valid non-negative " + (key === "unitCost" ? "cost" : "whole number") + ".");
+  ["unitCost","dailyUsage","leadDays","safetyDays"].forEach(key => {
+    const input=document.getElementById("sc-"+key);
+    input.value=settings[key];
+    input.addEventListener("change",()=>{
+      const raw=input.value.trim(), n=Number(raw);
+      if(!raw || !nonNegative(n) || (key!=="unitCost" && !Number.isInteger(n))){
+        input.value=settings[key];
+        alert("Enter a valid non-negative "+(key==="unitCost"?"cost":"whole number")+".");
         return;
       }
-      settings[key] = n;
-      localStorage.setItem("noraSupplySettings", JSON.stringify(settings));
+      settings[key]=n;
+      const current=window.NoraReserve.read();
+      localStorage.setItem("noraSupplySettings",JSON.stringify({...current,...settings}));
       document.dispatchEvent(new Event("nora-planning-updated"));
       render();
+    });
+  });
+  ["reservePads","reserveTampons"].forEach(key=>{
+    const input=document.getElementById("sc-"+key);
+    input.value=reserveState[key];
+    input.addEventListener("change",()=>{
+      const raw=input.value.trim(),n=Number(raw);
+      if(!raw || !Number.isSafeInteger(n) || n<0){
+        input.value=window.NoraReserve.read()[key];
+        alert("Enter a non-negative whole number for reserve products.");
+        return;
+      }
+      const current=window.NoraReserve.read();
+      const pads=key==="reservePads"?n:current.reservePads;
+      const tampons=key==="reserveTampons"?n:current.reserveTampons;
+      try {
+        window.NoraReserve.write(pads,tampons,false);
+      } catch(error) {
+        alert("Unable to save central reserve. "+error.message);
+        input.value=current[key];
+      }
     });
   });
   function element(tag, value, cls) {
@@ -74,6 +97,7 @@
     return node;
   }
   function render() {
+    reserveState=window.NoraReserve.read();
     const baskets = readBaskets();
     const total = baskets.reduce((sum,b) => sum + stockOf(b),0);
     const pads = baskets.reduce((sum,b) => sum + (Number(b.pads) || 0),0);
@@ -98,7 +122,7 @@
       if (b.stock === 0 && a.stock !== 0) return 1;
       return a.days - b.days || a.stock - b.stock || String(a.b.name).localeCompare(String(b.b.name));
     });
-    let reserveRemaining = settings.reserve;
+    let reserveRemaining = reserveState.reserve;
     ranked.forEach(row => {
       row.allocated = Math.min(row.requested,reserveRemaining);
       reserveRemaining -= row.allocated;
@@ -112,11 +136,12 @@
     els.remaining.textContent = total+" (Pads: "+pads+" · Tampons: "+tampons+")";
     els.alerts.textContent = String(alerts.length);
     els.refill.textContent = money(allocatedTotal*settings.unitCost);
-    els.reserve.textContent = settings.reserve+" units (simulated planning input)";
+    els.reserve.textContent = reserveState.reserve+" units (Pads: "+reserveState.reservePads+" · Tampons: "+reserveState.reserveTampons+")";
+    els.reserveNote.textContent = reserveState.reserveMixEstimated ? "Category split estimated from older total-only reserve records. Verify pad and tampon counts before operational use." : "Pad and tampon quantities are entered scenario values; not verified physical stock.";
     els.cost.textContent = money(allocatedTotal*settings.unitCost);
     els.allocated.textContent = allocatedTotal+" / "+requestedTotal+" units";
     els.shortage.textContent = shortage+" units";
-    const reorderAlert = settings.reserve <= reserveReorderPoint
+    const reorderAlert = reserveState.reserve <= reserveReorderPoint
       ? "Reserve reorder alert: stock is at or below the estimated reorder point ("+reserveReorderPoint+" units). "
       : "Reserve reorder point: "+reserveReorderPoint+" units. ";
     els.warning.textContent = reorderAlert+(shortage>0?"Current reserve cannot cover the full recommended refill plan.":"Current reserve covers the proposed refill plan.");
@@ -210,9 +235,14 @@
   // Reload the shared setting instead of displaying a stale cached quantity.
   document.addEventListener("nora-planning-updated", () => {
     settings = loadSettings();
-    ["unitCost","reserve","dailyUsage","leadDays","safetyDays"].forEach(key => {
+    ["unitCost","dailyUsage","leadDays","safetyDays"].forEach(key => {
       const field = document.getElementById("sc-" + key);
       if (field && document.activeElement !== field) field.value = settings[key];
+    });
+    const reserve=window.NoraReserve.read();
+    ["reservePads","reserveTampons"].forEach(key => {
+      const field=document.getElementById("sc-"+key);
+      if(field && document.activeElement!==field)field.value=reserve[key];
     });
     render();
   });
