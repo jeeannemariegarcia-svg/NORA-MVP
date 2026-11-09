@@ -180,67 +180,53 @@ function changeProducts(basket, pads, tampons, action) {
   renderDashboard();
 }
 
-// Move units from the same browser-local central reserve used by Supply Chain.
-// Combined reserve only: pad/tampon allocation is illustrative until separate
-// central inventories are added. This is not a real stock transfer.
+// Simulated transfer from category-specific central reserve; no products created.
 function simulateReserveRestock(basket) {
-  const needed = Math.max(0, basket.capacity - basket.stock);
-  if (needed === 0) {
-    alert("This basket is already full.");
-    return;
-  }
-  let settings;
-  try { settings = JSON.parse(localStorage.getItem("noraSupplySettings") || "{}") || {}; }
-  catch { settings = {}; }
-  const current = settings.reserve === undefined ? 250 : settings.reserve;
-  if (!Number.isInteger(current) || current < 0) {
-    alert("Central reserve must be a non-negative whole number. Correct it in Supply Chain first.");
-    return;
-  }
-  if (current === 0) {
-    alert("Central reserve is empty. No products were transferred.");
-    return;
-  }
-  const transferred = Math.min(needed, current);
-  // Balanced illustrative mix. Actual pad/tampon reserve availability is not
-  // yet known, so this does not confirm that specific products are on hand.
-  const addPads = Math.ceil(transferred / 2);
-  const addTampons = transferred - addPads;
-  const nextPads = basket.pads + addPads;
-  const nextTampons = basket.tampons + addTampons;
-  const nextReserve = current - transferred;
-  const nextSettings = {...settings, reserve: nextReserve};
-  const nextBaskets = baskets.map(b => b.id === basket.id
-    ? {...b, pads: nextPads, tampons: nextTampons, stock: b.stock + transferred,
-       categorySplitEstimated: true}
-    : b);
+  const needed=Math.max(0,basket.capacity-basket.stock);
+  if(!needed){alert("This basket is already full.");return;}
+  const reserve=window.NoraReserve.read();
+  const available=reserve.reservePads+reserve.reserveTampons;
+  if(!available){alert("Central reserve is empty. No products were transferred.");return;}
+  const transferred=Math.min(needed,available);
+  // Illustrative balanced mix, constrained by actual per-category reserve counts.
+  let addPads=Math.min(reserve.reservePads,Math.ceil(transferred/2));
+  let addTampons=Math.min(reserve.reserveTampons,transferred-addPads);
+  let remaining=transferred-addPads-addTampons;
+  if(remaining){const extraPads=Math.min(remaining,reserve.reservePads-addPads);addPads+=extraPads;remaining-=extraPads;}
+  if(remaining){addTampons+=Math.min(remaining,reserve.reserveTampons-addTampons);}
+  const moved=addPads+addTampons;
+  if(moved!==transferred){alert("Unable to allocate simulated reserve by product type.");return;}
+  const nextBaskets=baskets.map(b=>b.id===basket.id?
+    {...b,pads:b.pads+addPads,tampons:b.tampons+addTampons,
+      stock:b.stock+moved,categorySplitEstimated:Boolean(b.categorySplitEstimated||reserve.reserveMixEstimated)}:b);
+  const settingsBefore=localStorage.getItem("noraSupplySettings");
+  const basketsBefore=localStorage.getItem("noraBaskets");
   try {
-    localStorage.setItem("noraSupplySettings", JSON.stringify(nextSettings));
-    localStorage.setItem("noraBaskets", JSON.stringify(nextBaskets));
-  } catch (error) {
-    // Avoid a partially recorded reserve transfer when possible.
+    // Both values are stored in the same browser, but localStorage is not transactional.
+    localStorage.setItem("noraBaskets",JSON.stringify(nextBaskets));
+    window.NoraReserve.write(reserve.reservePads-addPads,reserve.reserveTampons-addTampons,reserve.reserveMixEstimated);
+  }catch(error){
     try {
-      localStorage.setItem("noraSupplySettings", JSON.stringify(settings));
-      localStorage.setItem("noraBaskets", JSON.stringify(baskets));
-    } catch {}
-    alert("Unable to save simulated restock. No transfer was confirmed.");
+      if(basketsBefore===null)localStorage.removeItem("noraBaskets");
+      else localStorage.setItem("noraBaskets",basketsBefore);
+      if(settingsBefore===null)localStorage.removeItem("noraSupplySettings");
+      else localStorage.setItem("noraSupplySettings",settingsBefore);
+    }catch{}
+    alert("Could not save simulated transfer. Please check stored inventory.");
     return;
   }
-  basket.pads = nextPads;
-  basket.tampons = nextTampons;
-  basket.stock += transferred;
-  basket.categorySplitEstimated = true;
-  logChange(basket, transferred,
-    "Simulated central reserve transfer: " + transferred + " units (" +
-    current + " → " + nextReserve + " in reserve; illustrative " +
-    addPads + " pads / " + addTampons + " tampons)");
+  basket.pads+=addPads;
+  basket.tampons+=addTampons;
+  basket.stock+=moved;
+  basket.categorySplitEstimated=Boolean(basket.categorySplitEstimated||reserve.reserveMixEstimated);
+  logChange(basket,moved,
+    "Simulated reserve transfer: "+addPads+" pads + "+addTampons+" tampons; "+
+    "reserve "+available+" → "+(available-moved)+" units"+
+    (reserve.reserveMixEstimated?" (reserve category split estimated)":""));
   document.dispatchEvent(new Event("nora-inventory-updated"));
-  document.dispatchEvent(new Event("nora-planning-updated"));
   renderDashboard();
-  if (transferred < needed) {
-    alert("Partial restock: transferred " + transferred + " of " + needed +
-      " needed units. Central reserve is now empty.");
-  }
+  if(moved<needed)alert("Partial restock: "+moved+" of "+needed+
+    " units transferred. Central reserve is empty.");
 }
 
 function updateDashboard() {
