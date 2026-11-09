@@ -13,6 +13,7 @@
   >
 
   <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <style>
   [hidden] {
     display: none !important;
@@ -69,7 +70,7 @@
     </div>
 
     <h2>Basket Management</h2>
-    <p>Add proposed locations or adjust capacity and low-stock thresholds. New locations appear in the student list but require verified coordinates before they can appear on the map.</p>
+    <p>Add proposed locations or adjust capacity and low-stock thresholds. Click the campus map to select a proposed pin location. Pins are for demonstration only, not confirmed installations.</p>
     <form id="add-basket-form" class="card">
       <label for="new-basket-name">Location name</label>
       <input id="new-basket-name" type="text" maxlength="100" required placeholder="e.g., Proposed pilot location">
@@ -77,6 +78,11 @@
       <input id="new-basket-capacity" type="number" min="1" step="1" value="50" required>
       <label for="new-basket-threshold">Low-stock threshold</label>
       <input id="new-basket-threshold" type="number" min="0" step="1" value="10" required>
+      <p>Click the map to select a proposed basket position:</p>
+      <div id="admin-location-map" style="height:350px;width:100%;margin:12px 0"></div>
+      <p id="selected-map-location" role="status">No position selected.</p>
+      <button id="save-map-move" type="button" class="button" hidden>Save Pin Position</button>
+      <button id="cancel-map-move" type="button" class="button" hidden>Cancel Move</button>
       <button class="button" type="submit">Add Proposed Basket</button>
     </form>
     <h2>Basket Inventory</h2>
@@ -97,6 +103,7 @@
     NORA © 2026 | Admin Prototype — Simulated Data
   </footer>
 
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script type="module" src="admin-auth.js"></script>
 
 </body>

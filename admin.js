@@ -25,6 +25,23 @@ const activeBaskets = () => baskets.filter(basket => basket.active !== false);
 const restockHistory = readStoredArray("noraRestockHistory", []);
 const inventoryContainer = document.getElementById("admin-inventory");
 const historyContainer = document.getElementById("restock-history");
+const placementMap = L.map("admin-location-map").setView([51.064, -114.089], 16);
+L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution: '&copy; OpenStreetMap contributors', maxZoom: 19
+}).addTo(placementMap);
+let selectedCoordinates = null;
+let selectionMarker = null;
+let movingBasket = null;
+const cancelMoveButton = document.getElementById("cancel-map-move");
+const selectionLabel = document.getElementById("selected-map-location");
+placementMap.on("click", event => {
+  selectedCoordinates = [event.latlng.lat, event.latlng.lng];
+  if (selectionMarker) placementMap.removeLayer(selectionMarker);
+  selectionMarker = L.marker(selectedCoordinates).addTo(placementMap);
+  selectionLabel.textContent = (movingBasket ? "New position for " + movingBasket.name : "Selected proposed position") + ": " + selectedCoordinates.map(n => n.toFixed(6)).join(", ");
+});
+setTimeout(() => placementMap.invalidateSize(), 300);
+
 
 function saveInventory() {
   localStorage.setItem("noraBaskets", JSON.stringify(baskets));
@@ -186,7 +203,20 @@ function displayInventory() {
       logChange(basket, 0, "Basket deactivated");
       renderDashboard();
     });
-    settings.append(settingsHeading, capacityLabel, thresholdLabel, document.createElement("p"), saveSettings, document.createTextNode(" "), deactivateButton);
+    const moveButton = makeButton("Move Map Pin", () => {
+      movingBasket = basket;
+      selectedCoordinates = null;
+      if (selectionMarker) placementMap.removeLayer(selectionMarker);
+      selectionMarker = null;
+      const current = Array.isArray(basket.coordinates) ? basket.coordinates : null;
+      if (current) placementMap.setView(current, 18);
+      selectionLabel.textContent = "Moving " + basket.name + ": click a new position on the map, then Save Pin Position.";
+      document.getElementById("save-map-move").hidden = false;
+      document.getElementById("cancel-map-move").hidden = false;
+      placementMap.invalidateSize();
+      placementMap.getContainer().scrollIntoView({ behavior: "smooth", block: "center" });
+    });
+    settings.append(settingsHeading, capacityLabel, thresholdLabel, document.createElement("p"), saveSettings, document.createTextNode(" "), deactivateButton, document.createTextNode(" "), moveButton);
     card.append(heading, quantity, status, controls, adjustmentLabel, adjustmentRow, settings);
     inventoryContainer.appendChild(card);
   });
@@ -208,6 +238,27 @@ function displayHistory() {
   });
 }
 
+function endMove() {
+  movingBasket = null;
+  selectedCoordinates = null;
+  if (selectionMarker) placementMap.removeLayer(selectionMarker);
+  selectionMarker = null;
+  document.getElementById("save-map-move").hidden = true;
+  document.getElementById("cancel-map-move").hidden = true;
+  selectionLabel.textContent = "No position selected.";
+}
+document.getElementById("cancel-map-move").addEventListener("click", endMove);
+document.getElementById("save-map-move").addEventListener("click", () => {
+  if (!movingBasket || !selectedCoordinates) {
+    alert("Click a new map position before saving.");
+    return;
+  }
+  movingBasket.coordinates = [...selectedCoordinates];
+  saveInventory();
+  logChange(movingBasket, 0, "Map pin moved");
+  endMove();
+  renderDashboard();
+});
 const addBasketForm = document.getElementById("add-basket-form");
 addBasketForm.addEventListener("submit", event => {
   event.preventDefault();
@@ -226,12 +277,24 @@ addBasketForm.addEventListener("submit", event => {
     alert("This basket location already exists. Reactivate it instead if needed.");
     return;
   }
+  if (movingBasket) {
+    alert("Finish or cancel moving the existing pin before adding a basket.");
+    return;
+  }
+  if (!selectedCoordinates) {
+    alert("Click the campus map to choose a proposed position first.");
+    return;
+  }
   const nextId = Math.max(0, ...baskets.map(b => Number(b.id) || 0)) + 1;
-  const basket = { id: nextId, name, stock: 0, capacity, threshold, active: true, products: "Pads and tampons" };
+  const basket = { id: nextId, name, stock: 0, capacity, threshold, active: true, products: "Pads and tampons", coordinates: [...selectedCoordinates] };
   baskets.push(basket);
   saveInventory();
   logChange(basket, 0, "Proposed basket added");
   addBasketForm.reset();
+  selectedCoordinates = null;
+  if (selectionMarker) placementMap.removeLayer(selectionMarker);
+  selectionMarker = null;
+  selectionLabel.textContent = "No position selected.";
   renderDashboard();
 });
 
