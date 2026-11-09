@@ -5,7 +5,8 @@
   const valid = new Set(tabs.map(tab => tab.dataset.tab));
   const nameFromHash = () => {
     const name = decodeURIComponent(location.hash.replace(/^#/, ""));
-    return valid.has(name) ? name : "overview";
+    const normalized = name === "basket-setup" || name === "inventory" ? "basket-management" : name;
+    return valid.has(normalized) ? normalized : "overview";
   };
   function activate(name, updateUrl = false) {
     if (!valid.has(name)) name = "overview";
@@ -19,7 +20,7 @@
       history.pushState(null, "", "#" + name);
     }
     // Leaflet maps initialized inside a hidden panel need to measure again.
-    if (name === "basket-setup") document.dispatchEvent(new Event("nora-map-visible"));
+    if (name === "basket-management") document.dispatchEvent(new Event("nora-map-visible"));
   }
   tabs.forEach((tab, index) => {
     tab.addEventListener("click", () => activate(tab.dataset.tab, true));
