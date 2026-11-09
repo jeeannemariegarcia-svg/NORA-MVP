@@ -278,6 +278,13 @@ function displayInventory() {
     status.className = "basket-status " + (basket.stock === 0 ? "basket-empty" : basket.stock <= basket.threshold ? "basket-low" : "basket-ok");
     cardTop.append(headingWrap, status);
 
+    const reserveInfo = document.createElement("p");
+    const reserveNow = window.NoraReserve.read();
+    reserveInfo.className = "basket-quantity";
+    reserveInfo.textContent = "Central reserve available: " +
+      reserveNow.reservePads + " pads · " + reserveNow.reserveTampons +
+      " tampons (" + reserveNow.reserve + " total)" +
+      (reserveNow.reserveMixEstimated ? " — estimated category split" : "");
     const restockButton = makeButton("Restock from Reserve", () => {
       simulateReserveRestock(basket);
     });
@@ -402,7 +409,7 @@ function displayInventory() {
     deactivateButton.className = "button basket-btn basket-btn-danger";
     actionRow.append(saveSettings, moveButton, deactivateButton);
     settings.append(settingsHeading, settingsInputs, actionRow);
-    card.append(cardTop, controls, adjustmentLabel, adjustmentRow, settings);
+    card.append(cardTop, reserveInfo, controls, adjustmentLabel, adjustmentRow, settings);
     inventoryContainer.appendChild(card);
   });
   const selected = activeBaskets().find(b => b.id === selectedBasketId);
