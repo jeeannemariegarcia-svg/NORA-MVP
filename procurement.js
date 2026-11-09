@@ -179,6 +179,10 @@
         recommendations.append(tr);
       });
     }
+    document.getElementById("pr-refill-need").textContent=(chosen?.refillNeed ?? 0)+" units";
+    document.getElementById("pr-safety-buffer").textContent=(chosen?.safetyReserveTarget ?? 0)+" units";
+    document.getElementById("pr-reserve-offset").textContent=(chosen?.reserve ?? 0)+" units";
+    document.getElementById("pr-net-requirement").textContent=(chosen?.suggested ?? 0)+" units";
     document.getElementById("pr-purchase-total").textContent=chosen?(chosen.padOrder+chosen.tamponOrder)+" units":"0 units";
     document.getElementById("pr-subtotal").textContent=money(chosen?.subtotal||0);
     document.getElementById("pr-delivery").textContent=money(chosen?.delivery||0);
