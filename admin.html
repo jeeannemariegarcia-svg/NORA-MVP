@@ -189,6 +189,13 @@
           </table>
         </div>
         <h4>Purchase Recommendation</h4>
+        <p class="pr-note">Formula: indicated basket refill units + central safety buffer − available central reserve. Minimum order quantities apply afterward. Basket targets already cover supplier lead time; lead-time demand is not counted twice.</p>
+        <div class="pr-calculation" aria-label="Procurement quantity calculation">
+          <div><span>Basket refill need</span><strong id="pr-refill-need">0 units</strong></div>
+          <div><span>Central safety buffer</span><strong id="pr-safety-buffer">0 units</strong></div>
+          <div><span>Less central reserve</span><strong id="pr-reserve-offset">0 units</strong></div>
+          <div><span>Net units needed</span><strong id="pr-net-requirement">0 units</strong></div>
+        </div>
         <div class="sc-table-wrap" role="region" tabindex="0" aria-label="Proposed procurement quantities">
           <table class="sc-table">
             <thead><tr><th scope="col">Product</th><th scope="col">Suggested units</th><th scope="col">Order units (MOQ)</th><th scope="col">Unit price</th><th scope="col">Est. product cost</th></tr></thead>
