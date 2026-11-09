@@ -621,3 +621,25 @@ footer {
   .student-map-wrap {padding:12px;}
   .student-site #campus-map {height:350px;}
 }
+
+/* Student navigation: one visible topic at a time, with keyboard-accessible tabs. */
+.student-site .student-tab-panel[hidden] {display:none !important;}
+.student-header .student-top-nav {display:flex;align-items:center;gap:16px;min-width:0;}
+.student-header .student-tab-list {display:flex;align-items:center;gap:5px;max-width:100%;overflow-x:auto;padding:3px;scrollbar-width:thin;}
+.student-site .student-tab-list [role="tab"] {flex:0 0 auto;appearance:none;border:1px solid transparent;border-radius:999px;background:transparent;color:#55436d;padding:10px 15px;font:600 13px/1.25 "Poppins",Arial,sans-serif;cursor:pointer;white-space:nowrap;}
+.student-site .student-tab-list [role="tab"]:hover {background:#f4eef9;color:#5f378f;}
+.student-site .student-tab-list [role="tab"][aria-selected="true"] {background:#7050a2;color:white;box-shadow:0 3px 10px #7050a223;}
+.student-site .student-tab-list [role="tab"]:focus-visible {outline:3px solid #8455b8;outline-offset:2px;}
+.student-site .student-tab-panel {min-height:55vh;outline:0;}
+.student-site .student-tab-panel:focus-visible {outline:3px solid #8455b8;outline-offset:-3px;}
+@media(max-width:900px) {
+ .student-header {align-items:flex-start;}
+ .student-header .student-top-nav {flex:1 1 100%;justify-content:space-between;align-items:center;}
+ .student-header .student-tab-list {flex:1;min-width:0;}
+}
+@media(max-width:650px) {
+ .student-header .student-top-nav {gap:8px;}
+ .student-site .student-tab-list [role="tab"] {font-size:12px;padding:9px 12px;}
+ .student-header nav .student-admin-link {flex:0 0 auto;font-size:11px;}
+ .student-site .student-tab-panel {min-height:45vh;}
+}
