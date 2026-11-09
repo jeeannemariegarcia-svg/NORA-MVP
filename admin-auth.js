@@ -43,7 +43,7 @@ onAuthStateChanged(auth, async (user) => {
       await import("./reserve.js?v=1");
       await import("./admin.js?v=17");
       await import("./supply-chain.js?v=7");
-      await import("./procurement.js?v=5");
+      await import("./procurement.js?v=6");
       await import("./admin-tabs.js?v=2");
       dashboardInitialized = true;
     } catch (error) {
