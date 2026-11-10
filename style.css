@@ -527,13 +527,27 @@ footer {
 .student-hero-actions {display:flex;flex-wrap:wrap;align-items:center;gap:20px;margin:28px 0;}
 .student-text-link {font-weight:600;color:#6c4794;}
 .student-notice {font-size:12px;max-width:640px;padding:14px 16px;background:#fff9;border-left:3px solid #8a65b0;border-radius:8px;color:#534760;}
-.student-hero-art {position:relative;min-height:350px;display:flex;align-items:center;justify-content:center;isolation:isolate;}
-.student-orbit {position:absolute;border-radius:50%;z-index:-1;}
-.orbit-one {width:310px;height:310px;background:#d4bce9;transform:translate(22px,-8px);}
-.orbit-two {width:245px;height:245px;border:25px solid #ffffffa8;transform:translate(-65px,38px);}
-.student-hero-mark {width:min(100%,350px);padding:35px 24px;border-radius:30px;background:#fff;box-shadow:0 18px 60px #46306520;transform:rotate(-5deg);}
-.student-hero-mark img {display:block;width:100%;height:auto;}
-.student-orbit-label {position:absolute;bottom:9px;right:5%;font-size:12px;letter-spacing:.08em;color:#684c84;}
+/* The Floating Bloom: layered art, no card, ring or hard backdrop. */
+.student-hero-art {
+  position:relative; min-height:540px; width:100%; display:grid;
+  place-items:center; isolation:isolate; overflow:visible;
+}
+.student-bloom-main, .student-bloom-shadow {
+  display:block; position:absolute; width:min(100%, 550px); height:auto;
+  aspect-ratio:968 / 908; object-fit:contain; pointer-events:none; user-select:none;
+}
+.student-bloom-main {
+  z-index:1; filter:drop-shadow(0 18px 26px rgba(57,28,87,.12));
+}
+.student-bloom-shadow {
+  z-index:0; width:min(125%,650px); opacity:.1;
+  transform:translate(34px,-24px) rotate(12deg);
+  filter:grayscale(.2);
+}
+.student-orbit-label {
+  position:absolute; z-index:2; bottom:-7px; right:5%; color:#684c84;
+  font-size:12px; letter-spacing:.08em; white-space:nowrap;
+}
 .student-section-head {max-width:750px;margin-bottom:34px;}
 .student-section-head>p:last-child {color:#655a70;font-size:16px;}
 .student-feature-grid,.student-product-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;}
@@ -600,7 +614,7 @@ footer {
 .student-site :is(a,button,input):focus-visible {outline:3px solid #7651aa;outline-offset:3px;}
 @media(max-width:950px){
   .student-hero {grid-template-columns:1fr;gap:16px;}
-  .student-hero-art {min-height:280px;}
+  .student-hero-art {min-height:410px; max-width:560px; margin-inline:auto;}
   .student-location-grid,.student-cycle {grid-template-columns:1fr;}
   .student-feature-grid {grid-template-columns:repeat(3,minmax(0,1fr));}
   .student-product-grid {grid-template-columns:repeat(2,minmax(0,1fr));}
@@ -612,10 +626,10 @@ footer {
   .student-header nav a {font-size:11px;}
   .student-brand img {max-width:118px;}
   .student-hero h1 {font-size:39px;}
-  .student-hero-art {min-height:240px;}
-  .student-hero-mark {width:235px;}
-  .orbit-one {width:220px;height:220px;}
-  .orbit-two {width:170px;height:170px;}
+  .student-hero-art {min-height:320px; max-width:350px; margin-inline:auto;}
+  .student-bloom-main {width:min(92%,350px);}
+  .student-bloom-shadow {width:min(108%,395px); transform:translate(15px,-10px) rotate(12deg);}
+  .student-orbit-label {bottom:-3px;right:50%;transform:translateX(50%);font-size:10px;}
   .student-feature-grid,.student-product-grid,.student-cycle-phases {grid-template-columns:1fr;}
   .student-location-visual {height:180px;}
   .student-map-wrap {padding:12px;}
