@@ -145,6 +145,15 @@ function saveInventory() {
 function saveHistory() {
   localStorage.setItem("noraRestockHistory", JSON.stringify(restockHistory));
 }
+function noraShowSaved(message) {
+  const status = document.getElementById("nora-save-feedback");
+  if (!status) return;
+  status.hidden = false;
+  status.textContent = message + " — saved in this browser only (demo).";
+}
+document.addEventListener("nora-demo-saved", event => {
+  noraShowSaved(event.detail?.message || "Scenario updated");
+});
 
 function getStatus(basket) {
   if (basket.stock === 0) return "Out of stock";
@@ -160,6 +169,7 @@ function logChange(basket, change, action) {
     time: new Date().toLocaleString()
   });
   saveHistory();
+  noraShowSaved(action || "Inventory activity recorded");
 }
 
 function changeProducts(basket, pads, tampons, action) {
@@ -513,6 +523,64 @@ function displayInactiveBaskets() {
   });
 }
 
+function renderNextActions() {
+  const container = document.getElementById("nora-action-list");
+  if (!container) return;
+  container.replaceChildren();
+  const low = activeBaskets()
+    .filter(b => Number(b.stock) <= Number(b.threshold ?? 10))
+    .sort((a,b) => Number(a.stock) - Number(b.stock));
+  const reserve = window.NoraReserve.read();
+  const urgent = low[0];
+  if (urgent) {
+    const card = document.createElement("article");
+    card.className = "nora-action-card nora-action-urgent";
+    const head = document.createElement("strong");
+    head.textContent = (Number(urgent.stock) === 0 ? "Empty basket: " : "Low stock: ") + urgent.name;
+    const desc = document.createElement("p");
+    desc.textContent = urgent.stock + " / " + urgent.capacity +
+      " example products remaining. Review this proposed basket before planning a refill.";
+    const open = makeButton("Review basket", () => {
+      selectBasket(urgent);
+      window.NoraAdminTabs?.show("basket-management");
+      document.getElementById("basket-editor-title")?.scrollIntoView({block:"center",behavior:"smooth"});
+    });
+    card.append(head,desc,open);
+    container.append(card);
+  } else {
+    const good = document.createElement("p");
+    good.className = "nora-action-good";
+    good.textContent = "No currently simulated basket is below its low-stock threshold.";
+    container.append(good);
+  }
+  if (low.length > 1) {
+    const more = document.createElement("p");
+    more.textContent = (low.length - 1) + " additional simulated location(s) also require review.";
+    container.append(more);
+  }
+  if (reserve.reserve <= 0) {
+    const warning = document.createElement("p");
+    warning.textContent = "Central demonstration reserve is empty. Review the Supply Chain planning tab.";
+    container.append(warning);
+  } else if (reserve.reserveMixEstimated) {
+    const warning = document.createElement("p");
+    warning.textContent = "Central reserve pad/tampon counts are estimated. Verify them before making a real purchasing decision.";
+    container.append(warning);
+  }
+}
+document.getElementById("nora-review-baskets")?.addEventListener("click", () => {
+  window.NoraAdminTabs?.show("basket-management");
+});
+document.getElementById("nora-reset-demo")?.addEventListener("click", () => {
+  if (!window.confirm("Reset all NORA inventory, central reserve, supplier, purchasing, and activity demo data stored in THIS browser? This cannot be undone.")) return;
+  [
+    "noraBaskets","noraRestockHistory","noraSupplySettings",
+    "noraBasketDemandRates","noraProcurementSuppliers",
+    "noraProcurementSelectedSupplier","noraProcurementPadShare"
+  ].forEach(key => localStorage.removeItem(key));
+  // Reload so all independent planning modules rehydrate from the same defaults.
+  window.location.reload();
+});
 function renderDashboard() {
   updateDashboard();
   displayInventory();
@@ -520,11 +588,13 @@ function renderDashboard() {
   updateBasketPins();
   displayHistory();
   displayInactiveBaskets();
+  renderNextActions();
 }
 
 document.addEventListener("nora-planning-updated", () => {
   // Reflect reserve edits made in Supply Chain on the selected basket card.
   displayInventory();
+  renderNextActions();
 });
 saveInventory();
 renderDashboard();
