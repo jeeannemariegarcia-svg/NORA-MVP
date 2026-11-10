@@ -3,17 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="NORA is a SAIT BBA capstone proposal exploring menstrual product access, education, and simulated campus basket locations.">
+  <meta name="description" content="Meet NORA, a proposed SAIT BBA capstone menstrual-access pilot. Explore simulated campus locations, period products, and menstrual equity.">
   <title>NORA | You know where to find it. Period.</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=10">
+  <link rel="stylesheet" href="style.css?v=11">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
 <body class="student-site">
   <a class="skip-link" href="#main">Skip to content</a>
   <header class="student-header">
     <a href="#home" class="student-brand" aria-label="NORA home">
-      <img src="assets/nora-logo.png" alt="NORA flower logo" width="156" height="79">
+      <img src="assets/nora-logo.webp" alt="NORA flower logo" width="156" height="79">
     </a>
     <nav class="student-top-nav" aria-label="Main navigation">
       <div class="student-tab-list" role="tablist" aria-label="Student website sections">
@@ -31,7 +31,7 @@
       <div class="student-hero-copy">
         <p class="student-eyebrow">SAIT BBA CAPSTONE · PROPOSED PILOT</p>
         <h1>You know where to find it. <em>Period.</em></h1>
-        <p class="student-lead">Period supplies should be easier to locate. NORA explores a simple, visible way to connect students with menstrual products and clear information across campus.</p>
+        <p class="student-lead">NORA is a proposed system designed to make period supplies easier to find, access, and manage—through designated washroom baskets, inventory monitoring, and an online campus map.</p>
         <div class="student-hero-actions">
           <a href="#locations" class="button">Explore proposed locations</a>
           <a href="#about" class="student-text-link">How NORA would work</a>
@@ -40,7 +40,7 @@
       </div>
       <div class="student-hero-art" aria-hidden="true">
         <div class="student-orbit orbit-one"></div><div class="student-orbit orbit-two"></div>
-        <div class="student-hero-mark"><img src="assets/nora-logo.png" alt=""></div>
+        <div class="student-hero-mark"><img src="assets/nora-logo.webp" alt=""></div>
         <div class="student-orbit-label">Access · Awareness · Care</div>
       </div>
     </section>
@@ -50,7 +50,7 @@
       <div class="student-section-head">
         <p class="student-eyebrow">EXPLORE THE PROTOTYPE</p>
         <h2>Find a building. See the idea.</h2>
-        <p>Search the demonstration locations, then select a building card or map pin to see a building reference image and a simulated inventory summary.</p>
+        <p>Explore how the NORA website could help students find participating washrooms and view example product availability. Select a building card or map pin to see details.</p>
       </div>
       <div class="student-search-row">
         <label for="location-search">Search buildings</label>
@@ -69,50 +69,60 @@
     <section id="learn" class="student-section student-learn">
       <div class="student-section-head">
         <p class="student-eyebrow">PERIOD 101</p>
-        <h2>Different bodies. Different needs.</h2>
-        <p>There's no single right product for every person. Learning the options can make period care feel more manageable and less intimidating.</p>
+        <h2>4 phases. 1 beautiful cycle.</h2>
+        <p>The menstrual cycle is a natural process that prepares the body for a possible pregnancy. It often lasts about 21–35 days, although individual cycles vary.</p>
       </div>
-      <div class="student-product-grid">
-        <article class="student-product"><span aria-hidden="true">✦</span><h3>Pads</h3><p>Absorbent products worn in underwear. Available in different lengths and absorbencies, including overnight options.</p></article>
-        <article class="student-product"><span aria-hidden="true">✦</span><h3>Tampons</h3><p>Absorbent products inserted into the vagina. Available in different absorbencies, with or without applicators.</p></article>
-        <article class="student-product"><span aria-hidden="true">✦</span><h3>Menstrual cups</h3><p>Reusable flexible cups that collect menstrual flow. They can be an alternative to disposable products when used and cleaned as directed.</p></article>
-        <article class="student-product"><span aria-hidden="true">✦</span><h3>Period underwear</h3><p>Reusable underwear with built-in absorbent layers. It may be worn on its own or as backup, depending on flow.</p></article>
-      </div>
-      <div class="student-cycle">
-        <div><p class="student-eyebrow">THE MENSTRUAL CYCLE</p><h3>Four phases, one natural process.</h3><p>Cycles vary from person to person. These phases describe common biological patterns, not a schedule everyone experiences identically.</p></div>
+
+      <div class="student-cycle student-cycle-first">
+        <div class="student-cycle-intro">
+          <div class="student-cycle-wheel" role="img" aria-label="Illustrative menstrual-cycle phases: menstruation, follicular phase, ovulation and luteal phase"><span>4 phases<br><strong>one cycle</strong></span></div>
+          <p class="student-cycle-caption">The diagram is illustrative, not a fixed calendar. Cycle lengths and ovulation timing differ between people.</p>
+        </div>
         <div class="student-cycle-phases">
-          <article><strong>Menstruation</strong><span>Bleeding as the uterine lining sheds</span></article>
-          <article><strong>Follicular phase</strong><span>The lining rebuilds as hormones change</span></article>
-          <article><strong>Ovulation</strong><span>An ovary may release an egg</span></article>
-          <article><strong>Luteal phase</strong><span>The body prepares for a possible pregnancy</span></article>
+          <article><strong>01 · Menstruation</strong><span>The uterine lining sheds, causing bleeding. Some people experience cramps, fatigue, or mood changes.</span><small>May help: period products, pain relief, rest, and hydration.</small></article>
+          <article><strong>02 · Follicular phase</strong><span>The uterine lining rebuilds and estrogen levels rise. Energy may increase for some people.</span><small>May help: sleep, nutrition, and comfortable clothing.</small></article>
+          <article><strong>03 · Ovulation</strong><span>An egg may be released. Some people notice changes in cervical discharge.</span><small>May help: hydration and awareness of your own cycle.</small></article>
+          <article><strong>04 · Luteal phase</strong><span>Hormonal changes prepare the body for a possible pregnancy. Bloating, cramps, or mood changes may occur.</span><small>May help: rest, emotional support, and symptom relief.</small></article>
         </div>
       </div>
+      <div class="student-section-head student-products-heading">
+        <p class="student-eyebrow">PERIOD PRODUCTS</p>
+        <h2>Different bodies. Different needs.</h2>
+        <p>There is no one “right” product for everyone. Explore common options from the NORA brochure.</p>
+      </div>
+      <div class="student-product-grid">
+        <article class="student-product"><span aria-hidden="true">✦</span><h3>Pads</h3><p>Absorbent products that attach to underwear. Available in different sizes, lengths, and absorbencies, including overnight and winged styles.</p></article>
+        <article class="student-product"><span aria-hidden="true">✦</span><h3>Tampons</h3><p>Small absorbent products inserted into the vagina, offered in different absorbencies with or without applicators.</p></article>
+        <article class="student-product"><span aria-hidden="true">✦</span><h3>Menstrual cups</h3><p>Reusable flexible cups that collect menstrual flow and can last for years with proper care.</p></article>
+        <article class="student-product"><span aria-hidden="true">✦</span><h3>Period underwear</h3><p>Reusable underwear with built-in absorbent layers, worn on its own or as backup depending on flow.</p></article>
+      </div>
+      <p class="student-education-note">Educational overview adapted from the NORA capstone brochure. If you have health concerns or symptoms that interfere with daily life, seek guidance from a qualified healthcare professional.</p>
     </section>
     </div>
     <div id="panel-about" class="student-tab-panel" role="tabpanel" aria-labelledby="tab-about" hidden tabindex="0">
     <section id="about" class="student-section student-about">
       <div class="student-section-head">
         <p class="student-eyebrow">MEET NORA</p>
-        <h2>Access shouldn't be a guessing game.</h2>
-        <p>NORA is a proposed menstrual-access system designed to make period supplies easier to find and manage. It connects a basket-based distribution concept with a campus locator and a restocking dashboard.</p>
+        <h2>Meet NORA: access, awareness, and care.</h2>
+        <p>NORA is a proposed modular system to make personal-care supplies easier to find, access, and manage. Three connected concepts demonstrate how a basket-based pilot could work at SAIT.</p>
       </div>
       <div class="student-feature-grid">
-        <article class="student-feature"><span class="student-step">01</span><h3>Washroom baskets</h3><p>Proposed baskets would provide a designated point of access to pads and tampons in selected campus washrooms.</p></article>
-        <article class="student-feature"><span class="student-step">02</span><h3>Restocking dashboard</h3><p>A simulated inventory workflow helps demonstrate how stock levels, shortages, and refill priorities could be managed.</p></article>
-        <article class="student-feature"><span class="student-step">03</span><h3>Online campus map</h3><p>A searchable location finder shows proposed basket locations and example availability before a student heads to a building.</p></article>
+        <article class="student-feature"><span class="student-step">01</span><h3>Basket prototype</h3><p>A designated access point for period products in selected washrooms. Sensor assistance is a future concept, not an installed feature.</p></article>
+        <article class="student-feature"><span class="student-step">02</span><h3>Inventory and restocking</h3><p>A prototype dashboard simulates stock levels, shortages, and refill priorities so the team can explore an operating model.</p></article>
+        <article class="student-feature"><span class="student-step">03</span><h3>Product locator website</h3><p>A searchable campus map lets students explore proposed basket locations and sample product availability.</p></article>
       </div>
     </section>
     <section id="equity" class="student-section student-equity">
-      <div class="student-equity-inner"><p class="student-eyebrow">MENSTRUAL EQUITY</p><h2>Period poverty isn't only about products.</h2><p>Difficulty accessing menstrual supplies can also involve cost, lack of information, stigma, or not knowing where to go. NORA's proposed approach focuses on clear location information, a simple distribution model, and respectful conversations.</p><p>Whether you menstruate or you're supporting someone who does, menstrual equity is a campus-wide issue.</p><a class="button" href="#locations">Explore the NORA concept</a></div>
+      <div class="student-equity-inner"><p class="student-eyebrow">MENSTRUAL EQUITY & PERIOD POVERTY</p><h2>Access should be stigma-free.</h2><p>Period poverty means not having reliable access to menstrual products. Financial barriers, stigma, and limited resources can make that harder.</p><p>NORA aims to explore menstrual equity on campus, encourage open conversations, and support a more inclusive community. Whether you menstruate or support someone who does, this affects all of us.</p><p class="student-equity-source">Statistics from the printed brochure are not displayed here until their original sources have been verified.</p><a class="button" href="#locations">Explore the proposed locations</a></div>
     </section>
     <section class="student-section student-project-note">
       <h2>Built for a SAIT business capstone.</h2>
-      <p>NORA is a student-developed proposal, not an official SAIT service. The website demonstrates a potential future experience while our team studies feasibility, accessibility, and operating requirements.</p>
+      <p>Developed by the NORA team for our SAIT Bachelor of Business Administration capstone. NORA is a student-developed proposal, not an official SAIT service. The website demonstrates possible student access and simulated inventory while the team studies feasibility and operations.</p>
     </section>
     </div>
   </main>
   <footer class="student-footer">
-    <div class="student-footer-brand"><img src="assets/nora-logo.png" alt="NORA" width="122" height="62"><span>You know where to find it. Period.</span></div>
+    <div class="student-footer-brand"><img src="assets/nora-logo.webp" alt="NORA" width="122" height="62"><span>You know where to find it. Period.</span></div>
     <p>© 2026 NORA Team · SAIT BBA Capstone · Prototype with simulated data</p>
   </footer>
   <script src="script.js?v=8"></script>
