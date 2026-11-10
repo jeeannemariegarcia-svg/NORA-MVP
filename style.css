@@ -1099,3 +1099,53 @@ footer {
     animation:none!important;
   }
 }
+
+/* Critical UX: reveal every student navigation tab without horizontal scrolling. */
+.student-site .student-header .student-top-nav {flex-wrap:wrap;justify-content:flex-end;}
+.student-site .student-header .student-tab-list {
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  max-width:100%;
+  overflow-x:visible;
+  gap:5px;
+}
+@media (max-width:900px) {
+  .student-site .student-header .student-top-nav {flex:1 1 100%;justify-content:center;}
+  .student-site .student-header .student-tab-list {flex:1 1 100%;justify-content:center;}
+}
+@media (max-width:650px) {
+  .student-site .student-header .student-top-nav {gap:8px;justify-content:center;}
+  .student-site .student-header .student-tab-list {justify-content:center;}
+  .student-site .student-tab-list [role="tab"] {white-space:normal;text-align:center;font-size:11px;padding:8px 10px;}
+}
+
+/* About NORA: accessible, native FAQ disclosures. */
+.student-site .student-faq {background:#faf7fd;}
+.student-site .student-disclosure-list {display:grid;gap:12px;max-width:950px;}
+.student-site .student-disclosure-list details {
+  background:#fff;border:1px solid #e6dced;border-radius:14px;
+  padding:0 18px;box-shadow:0 3px 10px #39214b0b;
+}
+.student-site .student-disclosure-list summary {
+  cursor:pointer;list-style:revert;padding:18px 4px;
+  color:#482b65;font-weight:600;font-size:15px;line-height:1.5;
+}
+.student-site .student-disclosure-list summary:focus-visible {outline:3px solid #8455b8;outline-offset:4px;}
+.student-site .student-disclosure-list details[open] {border-color:#aa88c9;}
+.student-site .student-disclosure-list details p {
+  margin:0;padding:0 4px 20px;color:#574962;font-size:14px;line-height:1.75;
+}
+.student-site .student-disclosure-list a {color:#6a3996;text-decoration:underline;}
+
+/* Privacy statements are deliberately limited to what this prototype actually does. */
+.student-site .student-privacy {background:#fff;}
+.student-site .student-privacy-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;}
+.student-site .student-privacy-grid article {border-radius:16px;border:1px solid #e8ddec;background:#fbf8fd;padding:24px;}
+.student-site .student-privacy-grid h3 {color:#4d2d6c;font-size:18px;margin:0 0 9px;}
+.student-site .student-privacy-grid p {font-size:13px;line-height:1.75;color:#5d5266;margin:0;}
+.student-site .student-privacy-note {max-width:950px;margin:20px 0 0;font-size:13px;line-height:1.7;color:#65566c;}
+.student-site .student-footer a {color:inherit;text-decoration:underline;text-underline-offset:3px;}
+@media (max-width:650px) {
+  .student-site .student-privacy-grid {grid-template-columns:1fr;}
+  .student-site .student-privacy-grid article {padding:20px;}
+}
