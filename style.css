@@ -1048,3 +1048,54 @@ footer {
  .student-site .student-ack-grid {grid-template-columns:minmax(0,1fr);}
  .student-site .student-reference-category {padding:20px 15px;}
 }
+
+/* NORA homepage: layered lavender waves, gentle motion and reduced-motion support. */
+.student-site .student-hero {
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+  padding-bottom:clamp(125px,12vw,190px);
+}
+.student-site .student-hero-copy,
+.student-site .student-hero-art {
+  position:relative;
+  z-index:2;
+}
+.student-site .nora-wave {
+  position:absolute;
+  bottom:0;left:0;width:100%;
+  height:clamp(105px,12vw,170px);
+  z-index:1;
+  pointer-events:none;
+  overflow:hidden;
+}
+.student-site .nora-wave svg {
+  display:block;
+  width:104%;
+  height:100%;
+  max-width:none;
+  transform:translateX(0);
+  transform-origin:center bottom;
+  animation:nora-wave-drift 9s ease-in-out infinite;
+}
+.student-site .nora-wave-front {
+  animation:nora-wave-soften 9s ease-in-out infinite;
+}
+@keyframes nora-wave-drift {
+  0%,100% {transform:translateX(0);}
+  50% {transform:translateX(-2%);}
+}
+@keyframes nora-wave-soften {
+  0%,100% {opacity:.55;}
+  50% {opacity:.72;}
+}
+@media(max-width:650px) {
+  .student-site .student-hero {padding-bottom:100px;}
+  .student-site .nora-wave {height:95px;}
+}
+@media(prefers-reduced-motion:reduce) {
+  .student-site .nora-wave svg,
+  .student-site .nora-wave-front {
+    animation:none!important;
+  }
+}
