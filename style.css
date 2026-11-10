@@ -1099,3 +1099,69 @@ footer {
     animation:none!important;
   }
 }
+
+/* NORA gentle-motion pass. Existing animated lavender waves are preserved. */
+
+/* 1: Floating Bloom — slow, small motion that keeps the original artwork in place. */
+.student-site .student-bloom-main {
+  animation: nora-bloom-float 8s ease-in-out infinite;
+  will-change: transform;
+}
+@keyframes nora-bloom-float {
+  0%,100% { transform:translate3d(0,0,0); }
+  50% { transform:translate3d(0,-12px,0); }
+}
+
+/* 2: When a hidden tab becomes visible, gently reveal its contents. */
+.student-site .student-tab-panel:not([hidden]) > .student-section,
+.student-site .student-tab-panel:not([hidden]) > .student-hero {
+  animation: nora-tab-reveal 300ms ease-out both;
+}
+@keyframes nora-tab-reveal {
+  from { opacity:0; transform:translateY(9px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+/* 3: Location cards lift on pointer hover; expanded details fade in on creation. */
+.student-site .student-location-card {
+  transition:transform 240ms ease, box-shadow 240ms ease, border-color 240ms ease;
+}
+@media(hover:hover) and (pointer:fine) {
+  .student-site .student-location-card:hover {
+    transform:translateY(-5px);
+    box-shadow:0 14px 32px rgba(48,32,70,.14);
+  }
+}
+.student-site .student-location-detail {
+  animation:nora-card-expand 260ms ease-out both;
+}
+@keyframes nora-card-expand {
+  from { opacity:0; transform:translateY(-7px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+/* 4: Country carousel slides fade smoothly when manually selected. */
+.student-site .student-culture-slide:not([hidden]) {
+  animation:nora-culture-reveal 300ms ease-out both;
+}
+@keyframes nora-culture-reveal {
+  from {opacity:0; transform:translateX(9px);}
+  to {opacity:1; transform:translateX(0);}
+}
+
+/* Respect OS and browser motion preferences: preserve the entire static layout. */
+@media(prefers-reduced-motion:reduce) {
+  .student-site .student-bloom-main,
+  .student-site .student-tab-panel:not([hidden]) > .student-section,
+  .student-site .student-tab-panel:not([hidden]) > .student-hero,
+  .student-site .student-location-detail,
+  .student-site .student-culture-slide:not([hidden]) {
+    animation:none!important;
+    transform:none!important;
+  }
+  .student-site .student-location-card,
+  .student-site .student-location-card:hover {
+    transition:none!important;
+    transform:none!important;
+  }
+}
