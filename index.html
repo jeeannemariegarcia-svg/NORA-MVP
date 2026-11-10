@@ -6,7 +6,7 @@
   <meta name="description" content="Meet NORA, a proposed SAIT BBA capstone menstrual-access pilot. Explore simulated campus locations, period products, and menstrual equity.">
   <title>NORA | You know where to find it. Period.</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=18">
+  <link rel="stylesheet" href="style.css?v=21">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
 <body class="student-site">
@@ -223,7 +223,7 @@
                   <h3>Canada: product choice meets menstrual equity</h3>
                   <p>Canadian retailers carry disposable pads and tampons in different formats, including the bilingual packages pictured here. Other menstrual products include reusable cups and underwear.</p>
                   <p><strong>Access lens:</strong> Even when a product exists in the market, price, physical accessibility and stigma can prevent people from getting what they need. NORA explores a campus-level response, not a replacement for wider policy.</p>
-                  <div class="student-culture-sources"><span>Sources &amp; image references</span><a href="https://www.canada.ca/en/women-gender-equality/gender-equality/mestrual-equity.html" target="_blank" rel="noopener noreferrer">Government of Canada · Menstrual equity</a><a href="https://www.realcanadiansuperstore.ca/en/ultra-thin-feminine-pads-with-wings-for-women-size/p/21018757_EA" target="_blank" rel="noopener noreferrer">Real Canadian Superstore · Pads</a><a href="https://www.londondrugs.com/products/tampax-tampons-regular-20s/p/L2513463" target="_blank" rel="noopener noreferrer">London Drugs · Tampons</a></div>
+                  <div class="student-culture-sources"><span>Sources &amp; image references</span><a href="https://www.canada.ca/en/women-gender-equality/funding/equality-action/menstrual-equity.html" target="_blank" rel="noopener noreferrer">Government of Canada · Menstrual equity</a><a href="https://www.realcanadiansuperstore.ca/en/ultra-thin-feminine-pads-with-wings-for-women-size/p/21018757_EA" target="_blank" rel="noopener noreferrer">Real Canadian Superstore · Pads</a><a href="https://www.londondrugs.com/products/tampax-tampons-regular-20s/p/L2513463" target="_blank" rel="noopener noreferrer">London Drugs · Tampons</a></div>
                 </div>
               </div>
               <div class="student-culture-controls" aria-label="Culture slideshow navigation">
@@ -302,6 +302,36 @@
       </div>
       <p class="student-business-caution">Operational burden, costs, permissions and savings remain hypotheses to validate with SAIT. The inventory dashboard currently demonstrates a simulated workflow; it is not an installed monitoring system.</p>
     </section>
+    <section id="faq" class="student-section student-faq" aria-labelledby="nora-faq-title">
+      <div class="student-section-head">
+        <p class="student-eyebrow">QUICK ANSWERS</p>
+        <h2 id="nora-faq-title">Frequently asked questions</h2>
+        <p>What to expect from NORA today, and what would require an approved SAIT pilot.</p>
+      </div>
+      <div class="student-disclosure-list">
+        <details><summary>Is NORA available at SAIT right now?</summary><p>Not as a confirmed NORA service. This is a SAIT BBA capstone proposal and interactive demonstration. Proposed baskets and the inventory map are not proof that supplies are installed or available at those locations.</p></details>
+        <details><summary>Are NORA menstrual products free?</summary><p>Providing products without cost to students is the goal of the proposed pilot. NORA is not yet a verified product distribution service; availability would depend on SAIT approval, funding and implementation.</p></details>
+        <details><summary>Where would I find products?</summary><p>The <a href="#locations">Find Products</a> tab demonstrates how proposed participating buildings could be shown. Its locations and stock statuses are simulated. Please do not rely on them as an active directory of campus supplies.</p></details>
+        <details><summary>Who is NORA intended to support?</summary><p>NORA is designed to improve access for anyone who needs menstrual products, regardless of gender identity or circumstances. Actual access arrangements would need to be determined with SAIT.</p></details>
+        <details><summary>What happens when a basket runs out?</summary><p>In the proposed pilot, an assigned staff member or volunteer would check and replenish baskets using agreed procedures. The admin dashboard currently simulates stock and restocking; it does not send operational alerts to SAIT staff.</p></details>
+        <details><summary>Does NORA track who takes a product?</summary><p>The current student website does not require a personal account to explore proposed locations. Its inventory demonstration tracks example quantities, not the identities of people taking products. A future pilot would require its own privacy and data-handling review.</p></details>
+        <details><summary>How can I share feedback or report low stock?</summary><p>A live student reporting service has not been launched. A QR-code or reporting workflow is being considered for a future pilot. The current demonstration cannot guarantee that a message will reach campus operations staff.</p></details>
+      </div>
+    </section>
+    <section id="privacy" class="student-section student-privacy" aria-labelledby="nora-privacy-title">
+      <div class="student-section-head">
+        <p class="student-eyebrow">TRANSPARENCY</p>
+        <h2 id="nora-privacy-title">Privacy &amp; Data Use</h2>
+        <p>What the current NORA demonstration does with information, and the limits of its privacy claims.</p>
+      </div>
+      <div class="student-privacy-grid">
+        <article><h3>Student-facing website</h3><p>You can explore public pages and proposed locations without registering or providing a name. This prototype does not include a live student feedback form or a personal product-collection history.</p></article>
+        <article><h3>Local demonstration inventory</h3><p>Example basket quantities, supply scenarios and certain admin activity records use browser local storage. They can differ between devices and browsers, are not a shared authoritative inventory system, and may remain on the device until cleared.</p></article>
+        <article><h3>Administrator sign-in</h3><p>The admin login uses Firebase Authentication, an external service, to verify access. Administrator sign-in information is handled by that provider; successful login does not turn this browser-local demo into a shared inventory database.</p></article>
+        <article><h3>External services</h3><p>The website is hosted with GitHub Pages and loads services or assets from providers including Google Fonts, OpenStreetMap map tiles, Leaflet resources and credited image hosts. Those providers may receive technical request information, such as an IP address, when resources load. See their respective privacy notices for details.</p></article>
+      </div>
+      <p class="student-privacy-note">This description covers the current capstone prototype, not a promise about a future installed system. NORA has not completed an institutional privacy assessment for a live campus deployment. Please do not enter personal or sensitive information into demonstration inventory fields.</p>
+    </section>
     <section class="student-section student-project-note">
       <h2>Built for a SAIT business capstone.</h2>
       <p>Developed by the NORA team for our SAIT Bachelor of Business Administration capstone. This student-developed proposal explores future menstrual access and operating requirements at SAIT.</p>
@@ -359,12 +389,12 @@
   </main>
   <footer class="student-footer">
     <div class="student-footer-brand"><img src="assets/nora-logo-transparent.png" alt="NORA" width="122" height="62"><span>You know where to find it. Period.</span></div>
-    <p>© 2026 NORA Team · SAIT BBA Capstone · Prototype with simulated data</p>
+    <p>© 2026 NORA Team · SAIT BBA Capstone · Prototype with simulated data · <a href="#privacy">Privacy &amp; Data Use</a> · <a href="#faq">FAQ</a></p>
   </footer>
   <script src="script.js?v=8"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="map.js?v=7"></script>
-  <script src="student-tabs.js?v=1"></script>
+  <script src="student-tabs.js?v=3"></script>
   <script src="culture-carousel.js?v=1"></script>
 </body>
 </html>
