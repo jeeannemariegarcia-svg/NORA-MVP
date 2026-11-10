@@ -760,3 +760,70 @@ footer {
  .student-site .student-cycle-phases article {min-height:unset;}
  .student-site .student-product-photo {height:210px;}
 }
+
+/* Brochure statistics, menstrual history and respectful Indigenous resource section */
+.student-site .student-equity-inner {max-width:1120px;}
+.student-site .student-equity-stat-grid {
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;
+  margin:28px 0 16px;
+}
+.student-site .student-equity-stat {
+  border-radius:16px;background:#ffffffd9;padding:23px 21px;
+  border:1px solid #dac7e9;min-width:0;
+  display:flex;flex-direction:column;gap:9px;
+}
+.student-site .student-equity-stat strong {
+  display:block;color:#6b3998;font-size:clamp(28px,3vw,42px);line-height:1.1;
+  letter-spacing:-.03em;
+}
+.student-site .student-equity-stat p {font-size:13px !important;line-height:1.6;margin:0;flex:1;}
+.student-site .student-equity-stat a,.student-site .student-equity-stat span {
+  font-size:11px;line-height:1.5;overflow-wrap:anywhere;color:#6c448e;
+}
+.student-site .student-equity-source {max-width:1040px;font-size:12px !important;}
+.student-site .student-history {
+  padding:0;margin:70px 0 10px;max-width:100%;
+}
+.student-site .student-history-heading {margin-bottom:26px;}
+.student-site .student-history-feature {
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);
+  gap:clamp(22px,4vw,55px);
+  align-items:center;min-width:0;
+  background:#f6f0fb;border-radius:20px;padding:clamp(18px,3vw,34px);
+}
+.student-site .student-moon-figure {margin:0;min-width:0;}
+.student-site .student-moon-figure img {
+  width:100%;height:auto;display:block;border-radius:14px;
+}
+.student-site .student-moon-figure figcaption {font-size:11px;color:#6a5978;line-height:1.55;margin-top:9px;}
+.student-site .student-history-intro {min-width:0;}
+.student-site .student-history-intro h3 {font-size:clamp(22px,2.2vw,30px);}
+.student-site .student-history-intro p {font-size:14px;color:#584868;line-height:1.75;}
+.student-site .student-history-links {display:flex;flex-direction:column;gap:7px;overflow-wrap:anywhere;}
+.student-site .student-history-links a {font-size:12px;font-weight:600;color:#70449f;text-decoration:underline;}
+.student-site .student-history-accordion {display:grid;gap:11px;margin-top:24px;}
+.student-site .student-history-accordion details {
+  border:1px solid #e3d8ed;background:#fbf8fe;border-radius:13px;overflow:hidden;
+}
+.student-site .student-history-accordion summary {
+  display:flex;align-items:center;justify-content:space-between;gap:12px;
+  font-weight:600;cursor:pointer;list-style:none;padding:19px 22px;
+  color:#3b2457;font-size:15px;
+}
+.student-site .student-history-accordion summary::-webkit-details-marker {display:none;}
+.student-site .student-history-accordion summary span {font-size:24px;color:#8a62b1;font-weight:400;}
+.student-site .student-history-accordion details[open] summary span {transform:rotate(45deg);}
+.student-site .student-history-accordion summary:focus-visible {outline:3px solid #7c4ca5;outline-offset:-3px;}
+.student-site .student-history-detail {padding:0 22px 19px;}
+.student-site .student-history-detail p {font-size:14px;line-height:1.7;color:#61536b;}
+.student-site .student-history-note {
+  margin:19px 0 0;color:#796886;font-size:12px;max-width:850px;
+}
+@media(max-width:900px){
+  .student-site .student-history-feature {grid-template-columns:minmax(0,1fr);}
+  .student-site .student-moon-figure {max-width:660px;}
+}
+@media(max-width:720px){
+  .student-site .student-equity-stat-grid {grid-template-columns:minmax(0,1fr);}
+  .student-site .student-history {margin-top:48px;}
+}
