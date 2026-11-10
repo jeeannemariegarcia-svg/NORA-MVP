@@ -998,3 +998,53 @@ footer {
   .student-site .student-culture-arrow span {display:none;}
   .student-site .student-business-grid,.student-site .student-business-flow ol {grid-template-columns:minmax(0,1fr);}
 }
+
+/* NORA Team & Resources — capstone credits, acknowledgements and research */
+.student-site .student-team-section {background:#fff;}
+.student-site .student-team-grid {display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:16px;}
+.student-site .student-team-card {
+  background:#fbf8fd;border:1px solid #e8dced;border-radius:18px;
+  padding:26px 14px;text-align:center;min-width:0;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+}
+.student-site .student-team-avatar {
+  width:88px;height:88px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(135deg,#d9c6ec,#a97bcf);color:#472266;
+  font-weight:700;font-size:26px;letter-spacing:.02em;margin-bottom:9px;
+  border:4px solid #fff;box-shadow:0 4px 18px #39214b18;
+}
+.student-site .student-team-card h3 {font-size:15px;line-height:1.4;margin:0;color:#352144;}
+.student-site .student-team-card p {font-size:11px;line-height:1.5;color:#796689;margin:0;}
+.student-site .student-team-photo-note {font-size:12px;color:#746385;max-width:810px;margin:18px 0 0;}
+.student-site .student-acknowledgements {background:#f4edf9;}
+.student-site .student-ack-grid {display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:17px;}
+.student-site .student-ack-grid article {
+  background:#fff;border:1px solid #e4d6ed;border-radius:16px;
+  padding:24px;min-width:0;
+}
+.student-site .student-ack-grid article .student-eyebrow {font-size:10px;line-height:1.4;letter-spacing:.08em;}
+.student-site .student-ack-grid article h3 {font-size:19px;margin:10px 0;color:#46265f;}
+.student-site .student-ack-grid article p:not(.student-eyebrow) {font-size:13px;color:#635471;line-height:1.7;}
+.student-site .student-ack-note {font-size:12px;color:#6b587e;margin:18px 0 0;max-width:920px;}
+.student-site .student-resources {background:#fff;}
+.student-site .student-reference-category {margin-top:31px;padding:22px 25px;background:#faf7fd;border:1px solid #e9dfef;border-radius:15px;}
+.student-site .student-reference-category h3 {font-size:19px;color:#543374;margin:0 0 15px;}
+.student-site .student-reference-category>p {font-size:13px;color:#5f4f6c;line-height:1.7;}
+.student-site .student-reference-list {list-style:none;margin:0;padding:0;display:grid;gap:14px;}
+.student-site .student-reference-list li {padding:0 0 14px;border-bottom:1px solid #e6dced;overflow-wrap:anywhere;}
+.student-site .student-reference-list li:last-child {padding:0;border:0;}
+.student-site .student-reference-list a {color:#693a93;font-size:13px;line-height:1.6;font-weight:600;text-decoration:underline;}
+.student-site .student-reference-list p {margin:4px 0 0;font-size:12px;color:#736280;line-height:1.6;}
+.student-site .student-reference-note {font-size:12px;color:#766789;margin-top:16px;}
+@media(max-width:1080px){
+ .student-site .student-team-grid {grid-template-columns:repeat(3,minmax(0,1fr));}
+ .student-site .student-ack-grid {grid-template-columns:repeat(2,minmax(0,1fr));}
+}
+@media(max-width:650px){
+ .student-site .student-team-grid {grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+ .student-site .student-team-card {padding:19px 10px;}
+ .student-site .student-team-avatar {width:75px;height:75px;font-size:22px;}
+ .student-site .student-ack-grid {grid-template-columns:minmax(0,1fr);}
+ .student-site .student-reference-category {padding:20px 15px;}
+}
