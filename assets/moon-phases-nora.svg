@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 480" role="img" aria-labelledby="title desc">
+<title id="title">Moon phases across a lavender sky</title>
+<desc id="desc">Original NORA educational illustration of five moon phases, with mountains and small stars; not a depiction of an Indigenous ceremony.</desc>
+<defs>
+<linearGradient id="sky" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#2e174e"/><stop offset="1" stop-color="#8556ad"/></linearGradient>
+<linearGradient id="land" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#b48bd1"/><stop offset="1" stop-color="#d9c1ea"/></linearGradient>
+<mask id="m1"><rect width="720" height="480" fill="black"/><circle cx="126" cy="194" r="39" fill="white"/><circle cx="105" cy="182" r="39" fill="black"/></mask>
+<mask id="m2"><rect width="720" height="480" fill="black"/><circle cx="249" cy="194" r="39" fill="white"/><ellipse cx="231" cy="194" rx="30" ry="39" fill="black"/></mask>
+<mask id="m4"><rect width="720" height="480" fill="black"/><circle cx="496" cy="194" r="39" fill="white"/><ellipse cx="514" cy="194" rx="30" ry="39" fill="black"/></mask>
+<mask id="m5"><rect width="720" height="480" fill="black"/><circle cx="619" cy="194" r="39" fill="white"/><circle cx="640" cy="182" r="39" fill="black"/></mask>
+</defs>
+<rect width="720" height="480" rx="28" fill="url(#sky)"/>
+<g fill="#f8e9ff" opacity=".72"><circle cx="77" cy="72" r="2.4"/><circle cx="178" cy="105" r="1.7"/><circle cx="291" cy="63" r="2.6"/><circle cx="418" cy="101" r="2"/><circle cx="542" cy="57" r="2.8"/><circle cx="656" cy="93" r="1.8"/><circle cx="360" cy="42" r="2.2"/></g>
+<g fill="#f2dcfb"><circle cx="126" cy="194" r="39" mask="url(#m1)"/><circle cx="249" cy="194" r="39" mask="url(#m2)"/><circle cx="372" cy="194" r="39"/><circle cx="496" cy="194" r="39" mask="url(#m4)"/><circle cx="619" cy="194" r="39" mask="url(#m5)"/></g>
+<path d="M0 368Q76 323 154 368T313 358T484 360T720 327V480H0Z" fill="#9e74bf" opacity=".60"/>
+<path d="M0 405Q111 361 216 409T442 399T720 380V480H0Z" fill="url(#land)" opacity=".66"/>
+<text x="360" y="304" text-anchor="middle" font-family="Poppins,Arial,sans-serif" font-size="22" fill="#fff" font-weight="600">Cycles of the moon</text>
+<text x="360" y="334" text-anchor="middle" font-family="Poppins,Arial,sans-serif" font-size="13" fill="#f4e9ff">An original educational illustration by the NORA team</text>
+</svg>
