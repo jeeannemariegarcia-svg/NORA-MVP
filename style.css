@@ -827,3 +827,68 @@ footer {
   .student-site .student-equity-stat-grid {grid-template-columns:minmax(0,1fr);}
   .student-site .student-history {margin-top:48px;}
 }
+
+/* Final education polish: show complete product photos and visual panels. */
+.student-site .student-product-grid {
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:22px;
+}
+.student-site .student-product {
+  display:grid;
+  grid-template-rows:auto 1fr auto;
+  min-width:0;
+  align-items:stretch;
+}
+.student-site .student-product-photo {
+  width:100%;
+  height:clamp(260px,23vw,340px);
+  display:flex;
+  align-items:center;justify-content:center;
+  overflow:visible;
+  padding:18px;
+  box-sizing:border-box;
+  background:#f8f4fc;
+}
+.student-site .student-product-photo img {
+  width:100%;height:100%;
+  max-width:100%;max-height:100%;
+  object-fit:contain;object-position:center;
+  padding:0;box-sizing:border-box;
+  display:block;
+}
+.student-site .student-product-copy {padding:20px 24px 16px;}
+.student-site .student-product-credit {padding:12px 24px 18px;}
+.student-site .student-history-detail-grid {
+  display:grid;
+  grid-template-columns:minmax(0,.9fr) minmax(0,1.4fr);
+  align-items:start;
+  gap:clamp(20px,3vw,36px);
+  padding:0 22px 24px;
+}
+.student-site .student-history-visual {
+  margin:0;max-width:100%;min-width:0;
+}
+.student-site .student-history-visual img {
+  display:block;width:100%;height:auto;max-width:100%;
+  border-radius:12px;
+  background:#f6edfa;
+  object-fit:contain;
+}
+.student-site .student-history-visual figcaption {
+  font-size:11px;color:#71617f;line-height:1.55;margin-top:9px;
+}
+.student-site .student-history-detail-grid .student-history-detail {
+  padding:0;min-width:0;
+}
+.student-site .student-history-detail-grid .student-history-detail p:first-child {margin-top:0;}
+@media(max-width:900px) {
+  .student-site .student-history-detail-grid {
+    grid-template-columns:minmax(0,1fr);
+  }
+  .student-site .student-history-visual {max-width:550px;}
+}
+@media(max-width:700px) {
+  .student-site .student-product-grid {grid-template-columns:minmax(0,1fr);}
+  .student-site .student-product-photo {height:280px;}
+  .student-site .student-history-detail-grid {padding:0 17px 20px;}
+}
