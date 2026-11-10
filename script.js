@@ -53,7 +53,7 @@ function buildCard(basket){
     symbol.setAttribute("aria-hidden","true");
     visual.append(symbol,el("span","student-photo-label","Building photo coming soon"));
   }
-  visual.append(el("span","student-building-label",basket.id===1?"BUILDING M":basket.id===2?"BUILDING N":"PROPOSED LOCATION"));
+  visual.append(el("span","student-building-label","PROPOSED LOCATION"));
   const inside=el("div","student-location-content");
   const row=el("div","student-location-top");
   row.append(el("h3","",basket.name||"Unnamed location"),el("span","student-stock-tag",statusOf(basket)));
