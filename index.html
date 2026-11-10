@@ -6,7 +6,7 @@
   <meta name="description" content="Meet NORA, a proposed SAIT BBA capstone menstrual-access pilot. Explore simulated campus locations, period products, and menstrual equity.">
   <title>NORA | You know where to find it. Period.</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=13">
+  <link rel="stylesheet" href="style.css?v=14">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
 <body class="student-site">
@@ -36,7 +36,6 @@
           <a href="#locations" class="button">Explore proposed locations</a>
           <a href="#about" class="student-text-link">How NORA would work</a>
         </div>
-        <p class="student-notice"><strong>Prototype only:</strong> These locations and stock counts are simulated. NORA baskets are not confirmed as installed or available at SAIT.</p>
       </div>
       <div class="student-hero-art" aria-hidden="true">
         <img class="student-bloom-shadow" src="assets/nora-flower.svg" alt="" width="968" height="908">
@@ -56,12 +55,12 @@
         <label for="location-search">Search buildings</label>
         <input type="search" id="location-search" placeholder="Try Stan Grad or Senator Burns…" autocomplete="off">
       </div>
-      <div class="student-demo-warning" role="note"><strong>Demonstration only.</strong> Photo references show buildings, not washroom locations. Exact washrooms, product availability, and on-campus installation have not been verified.</div>
+      <div class="student-demo-warning" role="note"><strong>Prototype notice:</strong> Locations, washroom access points, and inventory are demonstrations only. NORA baskets are not confirmed to be installed at SAIT; building photos are references, not proof of availability.</div>
       <div id="location-list" class="student-location-grid" aria-live="polite"></div>
       <div class="student-map-wrap">
         <div class="student-map-heading"><h3>Campus map preview</h3><p>Select a marker to expand its matching building card.</p></div>
         <div id="campus-map" role="region" aria-label="Map of proposed NORA demonstration building locations"></div>
-        <p class="map-disclaimer">Approximate demonstration points, not directions to a confirmed washroom or free period products. Inventory is simulated in this browser.</p>
+        
       </div>
     </section>
     </div>
@@ -125,6 +124,61 @@
         </article>
       </div>
       <p class="student-education-note">Educational overview adapted from the NORA capstone brochure. If you have health concerns or symptoms that interfere with daily life, seek guidance from a qualified healthcare professional.</p>
+      <section id="period-history" class="student-history" aria-labelledby="period-history-title">
+        <div class="student-section-head student-history-heading">
+          <p class="student-eyebrow">PERIODS THROUGH TIME</p>
+          <h2 id="period-history-title">Moon Time, menstrual history, and Canada</h2>
+          <p>Menstrual care has never been only about products. Culture, knowledge, community, and access have all shaped how people experience periods.</p>
+        </div>
+        <div class="student-history-feature">
+          <figure class="student-moon-figure">
+            <img src="assets/moon-phases-nora.svg" alt="Five stylized phases of the moon in a lavender night sky" loading="lazy" width="720" height="480">
+            <figcaption>Original NORA educational illustration of moon phases. It is not a representation of an Indigenous ceremony.</figcaption>
+          </figure>
+          <div class="student-history-intro">
+            <p class="student-eyebrow">INDIGENOUS TEACHINGS</p>
+            <h3>Moon Time: knowledge, respect, and community</h3>
+            <p>In some First Nations and Métis communities, menstruation is called <em>Moon Time</em> and may be understood through teachings about renewal, rest, and respect for the body. Traditions and protocols vary across Nations, families, and individuals; they are living practices, not only history.</p>
+            <p>For example, an Ojibwe account shared by Indigenous Dance describes Elders supporting girls through a first-menstruation ceremony and passing on teachings about care and community responsibility.</p>
+            <p class="student-history-links"><a href="https://indigenousdance.ca/en/cultures/ojibwe/our-dance-myths-and-stories/" target="_blank" rel="noopener noreferrer">Read the Ojibwe account · Indigenous Dance</a></p>
+          </div>
+        </div>
+        <div class="student-history-accordion">
+          <details>
+            <summary>Before modern period products <span aria-hidden="true">+</span></summary>
+            <div class="student-history-detail">
+              <p>Before modern commercially produced products, people around the world used different reusable materials and approaches to manage menstrual flow. Practices varied widely depending on community, environment, available resources, and personal needs. We will add documented historical examples to the resources list rather than assuming one universal method.</p>
+            </div>
+          </details>
+          <details>
+            <summary>Indigenous perspectives in Canada <span aria-hidden="true">+</span></summary>
+            <div class="student-history-detail">
+              <p>The Native Women's Association of Canada's culturally safe parent and caregiver toolkit describes the importance of Nation- and family-specific coming-of-age teachings, including understandings of menstruation as a meaningful transition. The Kwek Society also shares publicly offered Moon Time stories from different Indigenous communities.</p>
+              <p>These examples do not represent every First Nations, Inuit, or Métis community. Students can learn more directly from the organizations and the voices they choose to share publicly.</p>
+              <div class="student-history-links">
+                <a href="https://nwac.ca/assets-knowledge-centre/31-March-STBBI_Toolki-EN.pdf" target="_blank" rel="noopener noreferrer">NWAC · Culturally Safe Caregiver Toolkit (PDF)</a>
+                <a href="https://kweksociety.org/traditional-teachings-2/" target="_blank" rel="noopener noreferrer">The Kwek Society · Traditional Teachings</a>
+              </div>
+            </div>
+          </details>
+          <details>
+            <summary>Colonization, stigma, and knowledge <span aria-hidden="true">+</span></summary>
+            <div class="student-history-detail">
+              <p>Colonial policies and institutions affected the ways Indigenous knowledge, family relationships, and health teachings could be passed between generations. Present-day menstrual conversations also involve stigma, inequality, and the need for culturally safe care. Indigenous health organizations emphasize that communities hold distinct teachings and strengths.</p>
+              <p>Instead of treating Indigenous menstrual experiences as a single historical story, NORA recognizes both ongoing cultural knowledge and present-day barriers.</p>
+              <p class="student-history-links"><a href="https://www.canada.ca/en/public-health/services/publications/aboriginal-health/healthcare-indigenous-women.html" target="_blank" rel="noopener noreferrer">Public Health Agency of Canada · Indigenous healthcare barriers</a></p>
+            </div>
+          </details>
+          <details>
+            <summary>Menstrual equity in Canada today <span aria-hidden="true">+</span></summary>
+            <div class="student-history-detail">
+              <p>Access to period care depends on more than product design: affordability, washroom facilities, education, and stigma all matter. NORA's proposed campus baskets and locator are one way to explore more visible access and better information for students.</p>
+              <p class="student-history-links"><a href="https://www.canada.ca/en/women-gender-equality/gender-equality/mestrual-equity.html" target="_blank" rel="noopener noreferrer">Women and Gender Equality Canada · Menstrual equity</a></p>
+            </div>
+          </details>
+        </div>
+        <p class="student-history-note">Cultural teachings are specific to their communities. These summaries link to publicly shared materials; images of ceremonies or Elders are not reproduced without explicit permission.</p>
+      </section>
     </section>
     </div>
     <div id="panel-about" class="student-tab-panel" role="tabpanel" aria-labelledby="tab-about" hidden tabindex="0">
@@ -141,11 +195,23 @@
       </div>
     </section>
     <section id="equity" class="student-section student-equity">
-      <div class="student-equity-inner"><p class="student-eyebrow">MENSTRUAL EQUITY & PERIOD POVERTY</p><h2>Access should be stigma-free.</h2><p>Period poverty means not having reliable access to menstrual products. Financial barriers, stigma, and limited resources can make that harder.</p><p>NORA aims to explore menstrual equity on campus, encourage open conversations, and support a more inclusive community. Whether you menstruate or support someone who does, this affects all of us.</p><p class="student-equity-source">Statistics from the printed brochure are not displayed here until their original sources have been verified.</p><a class="button" href="#locations">Explore the proposed locations</a></div>
+      <div class="student-equity-inner">
+        <p class="student-eyebrow">MENSTRUAL EQUITY & PERIOD POVERTY</p>
+        <h2>Access should be stigma-free.</h2>
+        <p>Period poverty means not having reliable access to menstrual products. Financial barriers, stigma, and limited resources can make that harder.</p>
+        <div class="student-equity-stat-grid" aria-label="Research statistics featured in the NORA brochure">
+          <article class="student-equity-stat"><strong>1 in 6</strong><p>Canadians who menstruate have experienced period poverty.</p><a href="https://www.canada.ca/en/women-gender-equality/gender-equality/mestrual-equity.html" target="_blank" rel="noopener noreferrer">Government of Canada · 2023 survey</a></article>
+          <article class="student-equity-stat"><strong>1 in 3</strong><p>Post-secondary students struggle to afford menstrual products.</p><span>Brochure research · citation pending</span></article>
+          <article class="student-equity-stat"><strong>70%</strong><p>Post-secondary students have missed class due to an unexpected period.</p><span>Brochure research · citation pending</span></article>
+        </div>
+        <p class="student-equity-source">Figures are retained from NORA's capstone brochure. The first statistic is supported by Women and Gender Equality Canada's 2023 survey; original sources and exact wording for the other two figures are being verified and will be added to Resources.</p>
+        <p>NORA aims to explore menstrual equity on campus, encourage open conversations, and support a more inclusive community. Whether you menstruate or support someone who does, this affects all of us.</p>
+        <a class="button" href="#locations">Explore the proposed locations</a>
+      </div>
     </section>
     <section class="student-section student-project-note">
       <h2>Built for a SAIT business capstone.</h2>
-      <p>Developed by the NORA team for our SAIT Bachelor of Business Administration capstone. NORA is a student-developed proposal, not an official SAIT service. The website demonstrates possible student access and simulated inventory while the team studies feasibility and operations.</p>
+      <p>Developed by the NORA team for our SAIT Bachelor of Business Administration capstone. This student-developed proposal explores future menstrual access and operating requirements at SAIT.</p>
     </section>
     </div>
   </main>
