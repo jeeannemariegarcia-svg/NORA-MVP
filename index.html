@@ -6,7 +6,7 @@
   <meta name="description" content="Meet NORA, a proposed SAIT BBA capstone menstrual-access pilot. Explore simulated campus locations, period products, and menstrual equity.">
   <title>NORA | You know where to find it. Period.</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="style.css?v=21">
+  <link rel="stylesheet" href="style.css?v=22">
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 </head>
 <body class="student-site">
@@ -50,6 +50,15 @@
         </svg>
       </div>
     </section>
+    <section class="student-section nora-how-works" aria-labelledby="nora-how-title">
+      <div class="student-section-head"><p class="student-eyebrow">PROPOSED STUDENT EXPERIENCE</p><h2 id="nora-how-title">How NORA would work</h2><p>A simple path from finding supplies to keeping them available. This workflow is a proposal, not an active campus service.</p></div>
+      <ol class="nora-steps">
+        <li><span aria-hidden="true">01</span><div><h3>Find a proposed location</h3><p>Explore an example campus map and see which washrooms might participate after approval.</p></div></li>
+        <li><span aria-hidden="true">02</span><div><h3>Access products</h3><p>In an implemented pilot, take the pads or tampons you need from a designated basket.</p></div></li>
+        <li><span aria-hidden="true">03</span><div><h3>Help maintain access</h3><p>Report low stock through an approved channel, while campus staff manage replenishment.</p></div></li>
+      </ol>
+      <a class="button" href="#locations">Explore the location demo</a>
+    </section>
     </div>
     <div id="panel-locations" class="student-tab-panel" role="tabpanel" aria-labelledby="tab-locations" hidden tabindex="0">
     <section id="locations" class="student-section student-locations">
@@ -64,6 +73,15 @@
       </div>
       <div class="student-demo-warning" role="note"><strong>Prototype notice:</strong> Locations, washroom access points, and inventory are demonstrations only. NORA baskets are not confirmed to be installed at SAIT; building photos are references, not proof of availability.</div>
       <div id="location-list" class="student-location-grid" aria-live="polite"></div>
+      <section class="nora-student-report" aria-labelledby="nora-report-title">
+        <div><p class="student-eyebrow">REPORTING WORKFLOW · DEMONSTRATION ONLY</p><h3 id="nora-report-title">What if a basket were empty?</h3><p>Try a local low-stock report to see how a future reporting experience could work. This does <strong>not</strong> alert SAIT, contact NORA staff, or update actual inventory.</p></div>
+        <form id="nora-low-stock-form">
+          <label for="nora-report-location">Proposed demonstration building</label>
+          <select id="nora-report-location" required><option value="">Choose a building</option><option value="Stan Grad Centre">Stan Grad Centre</option><option value="Senator Burns Building">Senator Burns Building</option></select>
+          <button class="button" type="submit">Simulate low-stock report</button>
+        </form>
+        <p id="nora-report-status" role="status" aria-live="polite"></p>
+      </section>
       <div class="student-map-wrap">
         <div class="student-map-heading"><h3>Campus map preview</h3><p>Select a marker to expand its matching building card.</p></div>
         <div id="campus-map" role="region" aria-label="Map of proposed NORA demonstration building locations"></div>
@@ -391,7 +409,7 @@
     <div class="student-footer-brand"><img src="assets/nora-logo-transparent.png" alt="NORA" width="122" height="62"><span>You know where to find it. Period.</span></div>
     <p>© 2026 NORA Team · SAIT BBA Capstone · Prototype with simulated data · <a href="#privacy">Privacy &amp; Data Use</a> · <a href="#faq">FAQ</a></p>
   </footer>
-  <script src="script.js?v=8"></script>
+  <script src="script.js?v=9"></script>
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="map.js?v=7"></script>
   <script src="student-tabs.js?v=3"></script>
