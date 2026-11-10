@@ -82,6 +82,7 @@
         Object.assign(s,{name:name.value.trim(),padCost:values[0],tamponCost:values[1],
           leadDays:values[2],moq:values[3],deliveryFee:values[4],status:status.value});
         persist();renderDirectory();render();
+        document.dispatchEvent(new CustomEvent("nora-demo-saved",{detail:{message:"Supplier scenario saved"}}));
       });
       [name,pad,tampon,lead,moq,fee,status,save].forEach(value=>cell(row,value));
       directory.append(row);
@@ -222,9 +223,10 @@
     suppliers.push({id,name:"New Supplier Scenario",padCost:0.25,tamponCost:0.30,
       leadDays:5,moq:50,deliveryFee:10,status:"Under review"});
     persist();renderDirectory();render();
+    document.dispatchEvent(new CustomEvent("nora-demo-saved",{detail:{message:"New supplier scenario added"}}));
     directory.lastElementChild?.querySelector("input")?.focus();
   });
-  select.addEventListener("change",()=>{selectedId=select.value;render();});
+  select.addEventListener("change",()=>{selectedId=select.value;render();document.dispatchEvent(new CustomEvent("nora-demo-saved",{detail:{message:"Selected supplier updated"}}));});
   shareField.addEventListener("change",()=>{
     const raw=shareField.value.trim(),n=Number(raw);
     if(!raw||!Number.isInteger(n)||n<0||n>100){
@@ -232,6 +234,7 @@
       shareField.value=String(padShare);return;
     }
     padShare=n;localStorage.setItem("noraProcurementPadShare",JSON.stringify(n));render();
+    document.dispatchEvent(new CustomEvent("nora-demo-saved",{detail:{message:"Product mix assumption saved"}}));
   });
   document.getElementById("pr-copy-plan").addEventListener("click",async()=>{
     try {await navigator.clipboard.writeText(lastPlan);}
