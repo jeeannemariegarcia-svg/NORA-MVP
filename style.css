@@ -676,3 +676,87 @@ footer {
  .student-cycle-wheel {width:250px;}
  .student-cycle-wheel > span {width:115px;height:115px;}
 }
+
+/* Period 101 layout repair — prevent intrinsic grid overflow. */
+.student-site #panel-learn,.student-site #panel-learn section,.student-site #panel-learn .student-cycle,
+.student-site #panel-learn .student-cycle-phases,.student-site #panel-learn .student-product-grid {
+  min-width:0;max-width:100%;box-sizing:border-box;
+}
+.student-site .student-cycle-first {
+  display:grid;
+  width:100%;
+  grid-template-columns:minmax(0, .82fr) minmax(0, 1.45fr);
+  gap:clamp(22px,3vw,46px);
+  align-items:center;
+  overflow:hidden;
+}
+.student-site .student-cycle-intro {
+  min-width:0;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:15px;
+}
+.student-site .student-cycle-wheel {
+  display:grid;place-items:center;
+  width:clamp(200px,24vw,295px);
+  height:clamp(200px,24vw,295px);
+  flex:none;max-width:100%;
+  aspect-ratio:1 / 1;
+  padding:0;box-sizing:border-box;
+  border-radius:50%;
+}
+.student-site .student-cycle-wheel > span {
+  width:clamp(100px,10vw,130px);
+  height:clamp(100px,10vw,130px);
+  box-sizing:border-box;
+}
+.student-site .student-cycle-phases {
+  display:grid;
+  grid-template-columns:repeat(2,minmax(0,1fr));
+  width:100%;gap:12px;
+  min-width:0;
+}
+.student-site .student-cycle-phases article {
+  min-width:0;max-width:100%;height:100%;
+  overflow-wrap:anywhere;min-height:170px;
+}
+.student-site .student-cycle-phases article span,
+.student-site .student-cycle-phases article small {white-space:normal;overflow-wrap:break-word;}
+.student-site .student-product-grid {
+  display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;
+}
+.student-site .student-product {
+  min-width:0;max-width:100%;padding:0;overflow:hidden;
+  display:flex;flex-direction:column;
+}
+.student-site .student-product-photo {
+  display:grid;place-items:center;width:100%;height:185px;
+  background:#f6f0fb;overflow:hidden;
+}
+.student-site .student-product-photo img {
+  display:block;width:100%;height:100%;object-fit:contain;
+  padding:10px;box-sizing:border-box;
+}
+.student-site .student-product-copy {padding:18px 20px 4px;flex:1;}
+.student-site .student-product-copy h3 {margin:0 0 12px;}
+.student-site .student-product-copy p {margin:0;}
+.student-site .student-product-credit {
+  margin:0;padding:12px 20px 16px;
+  font-size:10px;line-height:1.6;color:#655976;
+  border-top:1px solid #e9dfef;
+  overflow-wrap:anywhere;
+}
+.student-site .student-product-credit a {color:#70499b;}
+@media(max-width:1100px) {
+ .student-site .student-product-grid {grid-template-columns:repeat(2,minmax(0,1fr));}
+ .student-site .student-cycle-first {grid-template-columns:minmax(0,1fr);}
+}
+@media(max-width:620px) {
+ .student-site .student-cycle-first {padding:22px 16px;gap:20px;}
+ .student-site .student-cycle-wheel {width:230px;height:230px;}
+ .student-site .student-cycle-phases,.student-site .student-product-grid {grid-template-columns:minmax(0,1fr);}
+ .student-site .student-cycle-phases article {min-height:unset;}
+ .student-site .student-product-photo {height:210px;}
+}
