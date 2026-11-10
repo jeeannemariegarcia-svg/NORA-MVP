@@ -51,8 +51,8 @@
     link.addEventListener("click",event=>{
       const id=link.getAttribute("href").slice(1);
       if (!id) return;
+      if(!panels.has(id) && !Object.prototype.hasOwnProperty.call(aliases,id)) return;
       const tab=normalize(id);
-      if(!panels.has(tab))return;
       event.preventDefault();
       activate(tab,{changeHash:true});
     });
