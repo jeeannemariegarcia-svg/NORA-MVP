@@ -12,7 +12,7 @@
     rel="stylesheet"
   >
 
-  <link rel="stylesheet" href="style.css?v=8">
+  <link rel="stylesheet" href="style.css?v=23">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
   <style>
   [hidden] {
@@ -41,6 +41,7 @@
   <section id="admin-dashboard" hidden>
 
     <h2>Inventory Management Dashboard</h2>
+    <p id="nora-save-feedback" role="status" aria-live="polite" class="nora-save-feedback" hidden></p>
 
     <p>
       Monitor menstrual product availability,
@@ -79,7 +80,20 @@
       </div>
 
     </div>
-
+      <section class="nora-admin-actions" aria-labelledby="nora-actions-title">
+        <div class="nora-admin-section-heading"><h3 id="nora-actions-title">Recommended Next Actions</h3><p>Priorities derived from your browser's simulated inventory, not an official campus work order.</p></div>
+        <div id="nora-action-list" class="nora-action-list" role="status" aria-live="polite"></div>
+      </section>
+      <section class="nora-admin-workflow" aria-labelledby="nora-workflow-title">
+        <h3 id="nora-workflow-title">Simple replenishment workflow</h3>
+        <ol><li>Review stock alerts</li><li>Open the basket editor</li><li>Simulate replenishment</li><li>Check the activity log</li></ol>
+        <button class="button" id="nora-review-baskets" type="button">Review Basket Management</button>
+      </section>
+      <div class="nora-admin-demo-tools">
+        <h3>Demonstration Controls</h3>
+        <p>Reset only this browser's NORA inventory and supply-chain scenarios. The reset cannot affect any other user's data or real campus inventory.</p>
+        <button id="nora-reset-demo" type="button" class="button bm-secondary">Reset This Browser's Demo</button>
+      </div>
     </section>
 
     <section id="panel-basket-management" class="admin-tab-panel" role="tabpanel" aria-labelledby="tab-basket-management" tabindex="0" hidden>
@@ -131,9 +145,10 @@
         <div class="card"><h3>Active Baskets</h3><strong id="sc-baskets">0</strong></div>
         <div class="card"><h3>Products Remaining</h3><strong id="sc-stock">0</strong></div>
         <div class="card"><h3>Restock Alerts</h3><strong id="sc-alerts">0</strong></div>
-        <div class="card"><h3>Cost to Refill All</h3><strong id="sc-refill">$0.00</strong></div>
+        <div class="card"><h3>Estimated Cost of Allocated Refill</h3><strong id="sc-refill">$0.00</strong></div>
       </div>
       <h3>Planning Assumptions</h3>
+      <p class="nora-metric-hint">These values are illustrative. <strong>Lead time</strong> is the estimated days for a supplier order to arrive; <strong>safety stock</strong> provides extra coverage when demand or delivery varies.</p>
       <div class="card">
         <p>Adjust these estimates for different pilot scenarios. Changes stay in this browser.</p>
         <div style="display:flex;flex-wrap:wrap;gap:14px">
@@ -156,6 +171,7 @@
         </table>
       </div>
       <h3>Restocking Plan</h3>
+      <p class="nora-metric-hint"><strong>Reorder point</strong> indicates when reserve purchasing should be considered. <strong>Requested</strong> is the calculated refill need; <strong>Allocated</strong> is what the currently simulated central reserve can cover. A shortage is the difference.</p>
       <p>Refill proposals are based on estimated daily demand, supplier lead time, safety days and basket alerts. Limited combined central reserve is allocated in this planning table. Actual simulated transfers are constrained by pad and tampon balances. Planning does not change inventory or place orders. Product cost excludes labour, transport and storage.</p>
       <div class="sc-table-wrap" tabindex="0" role="region" aria-label="Restocking plan table">
         <table class="sc-table">
@@ -183,6 +199,7 @@
         </div>
         <p class="pr-note">Central reserve now tracks pads and tampons separately. Older combined totals are migrated into an estimated 50/50 split; verify category counts before treating them as accurate. Product mix, demand and supplier quotes remain scenario assumptions.</p>
         <h4>Supplier Cost Comparison</h4>
+        <p class="nora-metric-hint"><strong>MOQ (minimum order quantity)</strong> is the smallest quantity a supplier scenario allows per product. Compare total estimated cost alongside delivery fees and lead times.</p>
         <p class="pr-note">For each active supplier, compare the quantity and total cost required under that supplier's lead time and minimum order assumptions. Longer lead times may increase the quantity needed.</p>
         <div class="sc-table-wrap" role="region" tabindex="0" aria-label="Supplier cost comparison">
           <table class="sc-table">

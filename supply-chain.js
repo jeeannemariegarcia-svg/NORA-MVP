@@ -66,6 +66,7 @@
       const current=window.NoraReserve.read();
       localStorage.setItem("noraSupplySettings",JSON.stringify({...current,...settings}));
       document.dispatchEvent(new Event("nora-planning-updated"));
+      document.dispatchEvent(new CustomEvent("nora-demo-saved",{detail:{message:"Supply planning assumption saved"}}));
       render();
     });
   });
@@ -84,6 +85,7 @@
       const tampons=key==="reserveTampons"?n:current.reserveTampons;
       try {
         window.NoraReserve.write(pads,tampons,{verifiedField:key});
+        document.dispatchEvent(new CustomEvent("nora-demo-saved",{detail:{message:"Central reserve estimate saved"}}));
       } catch(error) {
         alert("Unable to save central reserve. "+error.message);
         input.value=current[key];
@@ -200,6 +202,7 @@
         }
         rates[String(b.id)] = n;
         saveRates();
+        document.dispatchEvent(new CustomEvent("nora-demo-saved",{detail:{message:"Estimated basket demand saved"}}));
         render();
       });
       cell(tr,input,"sc-number");

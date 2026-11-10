@@ -4,7 +4,7 @@
   if (!root) return;
   const tabs = [...root.querySelectorAll('[role="tab"]')];
   const panels = new Map(tabs.map(tab => [tab.dataset.tab, document.getElementById(tab.getAttribute("aria-controls"))]));
-  const aliases = {equity:"about"};
+  const aliases = {equity:"about",faq:"about",privacy:"about"};
   const normalize = name => panels.has(name) ? name : aliases[name] || "home";
   let current = "";
   function activate(name, {focus=false, changeHash=false}={}) {
@@ -43,7 +43,11 @@
     });
   });
   function showHashTab() {
-    activate(window.location.hash.slice(1));
+    const target = window.location.hash.slice(1);
+    activate(target);
+    if (target === "faq" || target === "privacy") {
+      requestAnimationFrame(() => document.getElementById(target)?.scrollIntoView({block:"start"}));
+    }
   }
   window.addEventListener("hashchange",showHashTab);
   window.addEventListener("popstate",showHashTab);
@@ -54,7 +58,11 @@
       if(!panels.has(id) && !Object.prototype.hasOwnProperty.call(aliases,id)) return;
       const tab=normalize(id);
       event.preventDefault();
-      activate(tab,{changeHash:true});
+      if (id === "faq" || id === "privacy") {
+        activate(tab);
+        history.pushState(null, "", "#"+id);
+        requestAnimationFrame(() => document.getElementById(id)?.scrollIntoView({behavior:"smooth",block:"start"}));
+      } else activate(tab,{changeHash:true});
     });
   });
   // Preserve map-to-card navigation should a marker be selected programmatically.

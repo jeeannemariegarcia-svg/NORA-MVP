@@ -1099,3 +1099,85 @@ footer {
     animation:none!important;
   }
 }
+
+/* Critical UX: reveal every student navigation tab without horizontal scrolling. */
+.student-site .student-header .student-top-nav {flex-wrap:wrap;justify-content:flex-end;}
+.student-site .student-header .student-tab-list {
+  flex-wrap:wrap;
+  justify-content:flex-end;
+  max-width:100%;
+  overflow-x:visible;
+  gap:5px;
+}
+@media (max-width:900px) {
+  .student-site .student-header .student-top-nav {flex:1 1 100%;justify-content:center;}
+  .student-site .student-header .student-tab-list {flex:1 1 100%;justify-content:center;}
+}
+@media (max-width:650px) {
+  .student-site .student-header .student-top-nav {gap:8px;justify-content:center;}
+  .student-site .student-header .student-tab-list {justify-content:center;}
+  .student-site .student-tab-list [role="tab"] {white-space:normal;text-align:center;font-size:11px;padding:8px 10px;}
+}
+
+/* About NORA: accessible, native FAQ disclosures. */
+.student-site .student-faq {background:#faf7fd;}
+.student-site .student-disclosure-list {display:grid;gap:12px;max-width:950px;}
+.student-site .student-disclosure-list details {
+  background:#fff;border:1px solid #e6dced;border-radius:14px;
+  padding:0 18px;box-shadow:0 3px 10px #39214b0b;
+}
+.student-site .student-disclosure-list summary {
+  cursor:pointer;list-style:revert;padding:18px 4px;
+  color:#482b65;font-weight:600;font-size:15px;line-height:1.5;
+}
+.student-site .student-disclosure-list summary:focus-visible {outline:3px solid #8455b8;outline-offset:4px;}
+.student-site .student-disclosure-list details[open] {border-color:#aa88c9;}
+.student-site .student-disclosure-list details p {
+  margin:0;padding:0 4px 20px;color:#574962;font-size:14px;line-height:1.75;
+}
+.student-site .student-disclosure-list a {color:#6a3996;text-decoration:underline;}
+
+/* Privacy statements are deliberately limited to what this prototype actually does. */
+.student-site .student-privacy {background:#fff;}
+.student-site .student-privacy-grid {display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;}
+.student-site .student-privacy-grid article {border-radius:16px;border:1px solid #e8ddec;background:#fbf8fd;padding:24px;}
+.student-site .student-privacy-grid h3 {color:#4d2d6c;font-size:18px;margin:0 0 9px;}
+.student-site .student-privacy-grid p {font-size:13px;line-height:1.75;color:#5d5266;margin:0;}
+.student-site .student-privacy-note {max-width:950px;margin:20px 0 0;font-size:13px;line-height:1.7;color:#65566c;}
+.student-site .student-footer a {color:inherit;text-decoration:underline;text-underline-offset:3px;}
+@media (max-width:650px) {
+  .student-site .student-privacy-grid {grid-template-columns:1fr;}
+  .student-site .student-privacy-grid article {padding:20px;}
+}
+
+/* High-value usability: guided student experience and local-only reporting demo. */
+.student-site .nora-how-works {background:#fff;}
+.student-site .nora-steps {list-style:none;padding:0;margin:0 0 28px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:15px;}
+.student-site .nora-steps li {display:flex;gap:16px;border-radius:18px;padding:23px;background:#f8f2fc;border:1px solid #e7dbea;align-items:flex-start;}
+.student-site .nora-steps li > span {display:grid;place-items:center;flex:none;width:40px;height:40px;border-radius:50%;background:#e6d2f4;color:#604078;font-weight:700;font-size:14px;}
+.student-site .nora-steps h3 {font-size:17px;margin:0 0 8px;color:#482962;}
+.student-site .nora-steps p {font-size:13px;line-height:1.65;margin:0;color:#675672;}
+.student-site .nora-student-report {margin-top:32px;border:1px solid #dccbe8;background:#fff;border-radius:20px;padding:27px;display:grid;gap:14px;max-width:950px;}
+.student-site .nora-student-report h3 {font-size:21px;color:#442464;margin:4px 0;}
+.student-site .nora-student-report p {font-size:14px;line-height:1.65;color:#60516d;margin:0;}
+.student-site .nora-student-report form {display:flex;flex-wrap:wrap;align-items:end;gap:12px;}
+.student-site .nora-student-report label {font-size:13px;font-weight:600;color:#553b72;flex:1 1 230px;}
+.student-site .nora-student-report select {width:100%;display:block;margin-top:6px;border:1px solid #bca8cf;border-radius:10px;padding:11px;background:#fff;font:inherit;color:#352b40;}
+.student-site .nora-student-report #nora-report-status:not(:empty) {border-left:4px solid #9465b5;padding:10px 14px;background:#f5edf9;color:#4c3461;border-radius:5px;}
+@media(max-width:860px) {.student-site .nora-steps {grid-template-columns:1fr;}}
+@media(max-width:650px) {.student-site .nora-student-report {padding:19px;}}
+
+/* Admin: prioritize the next action and make destructive resets unmistakable. */
+.nora-admin-actions,.nora-admin-workflow,.nora-admin-demo-tools {margin-top:22px;padding:22px;border-radius:17px;border:1px solid #e2d7eb;background:#fff;}
+.nora-admin-section-heading h3,.nora-admin-workflow h3,.nora-admin-demo-tools h3 {margin:0 0 8px;color:#4c316b;}
+.nora-admin-section-heading p,.nora-admin-demo-tools p {color:#665773;font-size:13px;line-height:1.6;}
+.nora-action-list {display:grid;gap:12px;}
+.nora-action-card {border:1px solid #dcc8e6;border-left:4px solid #8e62aa;border-radius:11px;background:#fbf7fd;padding:17px;}
+.nora-action-card strong {display:block;color:#4f315d;font-size:16px;}
+.nora-action-card p,.nora-action-list>p {font-size:13px;color:#5f5269;line-height:1.6;}
+.nora-action-good {background:#f7f2fa;padding:15px;border-radius:10px;}
+.nora-admin-workflow ol {display:flex;flex-wrap:wrap;gap:12px 27px;padding-left:23px;color:#50445b;font-size:13px;}
+.nora-admin-demo-tools {background:#faf7fc;}
+.nora-admin-demo-tools button {border-color:#87568c;}
+.nora-metric-hint {font-size:13px;line-height:1.7;color:#594c65;background:#f7f2fb;border-left:3px solid #9c7ab9;padding:11px 15px;border-radius:7px;}
+.nora-save-feedback:not([hidden]) {background:#efe7f7;color:#492a67;border-left:4px solid #895db0;padding:12px 16px;border-radius:8px;font-size:13px;font-weight:600;}

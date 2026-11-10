@@ -105,3 +105,14 @@ window.addEventListener("storage",event=>{
  if(event.key==="noraBaskets")displayLocations(searchInput?.value||"");
 });
 displayLocations();
+
+/* Student low-stock reporting interaction — never sends, stores or shares a report. */
+const noraLowStockForm = document.getElementById("nora-low-stock-form");
+noraLowStockForm?.addEventListener("submit", event => {
+  event.preventDefault();
+  const building = document.getElementById("nora-report-location")?.value;
+  const status = document.getElementById("nora-report-status");
+  if (!building || !status) return;
+  status.textContent = "Demo only: your example report for " + building +
+    " was shown on this screen. Nothing was sent, saved, or delivered to SAIT or the NORA team.";
+});
